@@ -1,0 +1,92 @@
+# Project-owned shared goal editor. Template inputs contain validated IDs only.
+# Heavy bodies cross hidden-event boundaries; no technology x slot windows.
+ttegs_capture = { country_event = { id = ttegoal.11 } }
+ttegs_request = { country_event = { id = ttegoal.10 } }
+ttegs_commit = { country_event = { id = ttegoal.12 } }
+ttegs_cancel = { country_event = { id = ttegoal.13 } }
+
+country_event = {
+ id = ttegoal.13 hide_window = yes is_triggered_only = yes
+ immediate = {
+  remove_country_flag=ttegs_pending_alpha
+remove_country_flag=ttegs_pending_arbitrary_mod_new
+remove_country_flag=ttegs_pending_repeatable
+  remove_country_flag = ttegs_dialog
+  remove_country_flag = ttegs_pending_valid
+  remove_country_flag = ttegs_occupied
+  clear_variable = ttegs_destination
+  clear_variable = ttegs_origin
+  clear_variable = ttegs_count
+ }
+}
+country_event = {
+ id = ttegoal.11 hide_window = yes is_triggered_only = yes
+ immediate = {
+  ttegs_cancel = yes
+  set_variable = { which = ttegs_count value = 0 }
+  set_variable = { which = ttegs_origin value = 0 }
+  if={limit={has_country_flag=tte_viewed_alpha} set_country_flag=ttegs_pending_alpha change_variable={which=ttegs_count value=1} if={limit={has_country_flag=ttegs_pending_alpha has_country_flag=tte_goal_alpha} set_variable={which=ttegs_origin value=tte_rank_alpha}}}
+if={limit={has_country_flag=tte_viewed_arbitrary_mod_new} set_country_flag=ttegs_pending_arbitrary_mod_new change_variable={which=ttegs_count value=1} if={limit={has_country_flag=ttegs_pending_arbitrary_mod_new has_country_flag=tte_goal_arbitrary_mod_new} set_variable={which=ttegs_origin value=tte_rank_arbitrary_mod_new}}}
+if={limit={has_country_flag=tte_viewed_repeatable} set_country_flag=ttegs_pending_repeatable change_variable={which=ttegs_count value=1} if={limit={has_country_flag=ttegs_pending_repeatable has_country_flag=tte_goal_repeatable} set_variable={which=ttegs_origin value=tte_rank_repeatable}}}
+ }
+}
+country_event = {
+ id = ttegoal.10 hide_window = yes is_triggered_only = yes
+ immediate = {
+  ttegs_recheck = yes
+  if = {
+   limit = { check_variable = { which = ttegs_count value = 1 } check_variable = { which = ttegs_destination value >= 1 } check_variable = { which = ttegs_destination value <= 5 } has_country_flag = ttegs_pending_valid }
+   if = { limit = { check_variable = { which = ttegs_origin value = ttegs_destination } } ttegs_cancel = yes }
+   else = {
+    if={limit={check_variable={which=ttegs_destination value=1} has_country_flag=tte_slot_1} set_country_flag=ttegs_occupied}
+if={limit={check_variable={which=ttegs_destination value=2} has_country_flag=tte_slot_2} set_country_flag=ttegs_occupied}
+if={limit={check_variable={which=ttegs_destination value=3} has_country_flag=tte_slot_3} set_country_flag=ttegs_occupied}
+if={limit={check_variable={which=ttegs_destination value=4} has_country_flag=tte_slot_4} set_country_flag=ttegs_occupied}
+if={limit={check_variable={which=ttegs_destination value=5} has_country_flag=tte_slot_5} set_country_flag=ttegs_occupied}
+    if = { limit = { has_country_flag = ttegs_occupied }
+     set_country_flag = ttegs_dialog
+     country_event = { id = ttegoal.1 }
+    }
+    else = { ttegs_commit = yes }
+   }
+  }
+  else = { ttegs_cancel = yes }
+ }
+}
+country_event = {
+ id = ttegoal.12 hide_window = yes is_triggered_only = yes
+ immediate = {
+  # Recheck the frozen technology, not a node clicked behind the confirmation.
+  ttegs_recheck = yes
+  if = {
+   limit = { check_variable = { which = ttegs_count value = 1 } check_variable = { which = ttegs_destination value >= 1 } check_variable = { which = ttegs_destination value <= 5 } has_country_flag = ttegs_pending_valid }
+   set_variable = { which = ttegs_origin value = 0 }
+   country_event = { id = ttegoal.15 }
+   # Change all ranks atomically before invoking the research refresh once.
+   country_event = { id = ttegoal.16 }
+   country_event = { id = ttegoal.17 }
+   if = { limit = { NOT = { has_country_flag = tte_has_goal } } set_country_flag = tte_automation }
+   set_country_flag = tte_has_goal
+   tte_refresh = yes
+  }
+  ttegs_cancel = yes
+ }
+}
+country_event = {
+ id = ttegoal.15 hide_window = yes is_triggered_only = yes
+ immediate = { if={limit={has_country_flag=ttegs_pending_alpha has_country_flag=tte_goal_alpha} set_variable={which=ttegs_origin value=tte_rank_alpha}}
+if={limit={has_country_flag=ttegs_pending_arbitrary_mod_new has_country_flag=tte_goal_arbitrary_mod_new} set_variable={which=ttegs_origin value=tte_rank_arbitrary_mod_new}}
+if={limit={has_country_flag=ttegs_pending_repeatable has_country_flag=tte_goal_repeatable} set_variable={which=ttegs_origin value=tte_rank_repeatable}} }
+}
+country_event = {
+ id = ttegoal.16 hide_window = yes is_triggered_only = yes
+ immediate = { if={limit={has_country_flag=tte_goal_alpha NOT={has_country_flag=ttegs_pending_alpha} check_variable={which=tte_rank_alpha value=ttegs_destination}} if={limit={check_variable={which=ttegs_origin value>0}} set_variable={which=tte_rank_alpha value=ttegs_origin}} else={remove_country_flag=tte_goal_alpha clear_variable=tte_rank_alpha}}
+if={limit={has_country_flag=tte_goal_arbitrary_mod_new NOT={has_country_flag=ttegs_pending_arbitrary_mod_new} check_variable={which=tte_rank_arbitrary_mod_new value=ttegs_destination}} if={limit={check_variable={which=ttegs_origin value>0}} set_variable={which=tte_rank_arbitrary_mod_new value=ttegs_origin}} else={remove_country_flag=tte_goal_arbitrary_mod_new clear_variable=tte_rank_arbitrary_mod_new}}
+if={limit={has_country_flag=tte_goal_repeatable NOT={has_country_flag=ttegs_pending_repeatable} check_variable={which=tte_rank_repeatable value=ttegs_destination}} if={limit={check_variable={which=ttegs_origin value>0}} set_variable={which=tte_rank_repeatable value=ttegs_origin}} else={remove_country_flag=tte_goal_repeatable clear_variable=tte_rank_repeatable}} }
+}
+country_event = {
+ id = ttegoal.17 hide_window = yes is_triggered_only = yes
+ immediate = { if={limit={has_country_flag=ttegs_pending_alpha} set_country_flag=tte_goal_alpha set_variable={which=tte_rank_alpha value=ttegs_destination}}
+if={limit={has_country_flag=ttegs_pending_arbitrary_mod_new} set_country_flag=tte_goal_arbitrary_mod_new set_variable={which=tte_rank_arbitrary_mod_new value=ttegs_destination}}
+if={limit={has_country_flag=ttegs_pending_repeatable} set_country_flag=tte_goal_repeatable set_variable={which=tte_rank_repeatable value=ttegs_destination}} }
+}

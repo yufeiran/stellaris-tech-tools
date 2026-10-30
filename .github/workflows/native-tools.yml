@@ -1,0 +1,105 @@
+name: Native tools candidate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/1.3.1-candidate]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: compiled-core-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  native:
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-2022
+            rust_target: x86_64-pc-windows-msvc
+            target: Windows-x86_64
+            binary: tte-core.exe
+            extension: zip
+          - runner: ubuntu-22.04
+            rust_target: x86_64-unknown-linux-musl
+            target: Linux-x86_64-musl
+            binary: tte-core
+            extension: tar.gz
+          - runner: macos-15-intel
+            rust_target: x86_64-apple-darwin
+            target: macOS-x86_64
+            binary: tte-core
+            extension: tar.gz
+          - runner: macos-15
+            rust_target: aarch64-apple-darwin
+            target: macOS-arm64
+            binary: tte-core
+            extension: tar.gz
+    runs-on: ${{ matrix.runner }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: native_mod/compiled_adapter
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Install author toolchain only
+        run: |
+          rustup toolchain install 1.98.0 --profile minimal --component rustfmt
+          rustup override set 1.98.0
+          rustup target add '${{ matrix.rust_target }}'
+          if [ '${{ runner.os }}' = Linux ]; then
+            sudo apt-get update -qq
+            sudo apt-get install -y musl-tools
+          fi
+          # License texts for std are part of rust-docs, never a player dependency.
+          rustup component add rust-docs
+          cargo fetch --locked
+      - name: Native Rust regressions
+        run: |
+          cargo fmt --all --check
+          cargo test --locked --target '${{ matrix.rust_target }}'
+          node --test ../../tests/pdf-export.test.cjs
+      - name: Build tiny standalone core
+        run: |
+          cargo build --release --locked --target '${{ matrix.rust_target }}'
+          if [ '${{ runner.os }}' = macOS ]; then
+            codesign --force --sign - 'target/${{ matrix.rust_target }}/release/${{ matrix.binary }}'
+            codesign --verify --strict 'target/${{ matrix.rust_target }}/release/${{ matrix.binary }}'
+          fi
+          python tools/package.py --binary 'target/${{ matrix.rust_target }}/release/${{ matrix.binary }}' --target '${{ matrix.target }}' --source-commit "$GITHUB_SHA" --output ../build/compiled-package
+      - name: Shipped wrapper, no system Python in child PATH
+        run: |
+          python tools/accept.py --archive '../build/compiled-package/TTE-Native-Core-${{ matrix.target }}-prototype.${{ matrix.extension }}' --output '../build/compiled acceptance'
+      - name: Preserve native acceptance evidence
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,tarfile
+          from pathlib import Path
+          base=Path('../build')
+          receipt=json.loads((base/'compiled acceptance/acceptance.json').read_text())
+          package=next((base/'compiled-package').glob('TTE-Native-Core-*-prototype.*'))
+          assert receipt['status']=='PASS'
+          assert receipt['sourceCommit']==os.environ['GITHUB_SHA']
+          assert receipt['archiveSha256']==hashlib.sha256(package.read_bytes()).hexdigest()
+          with tarfile.open(base/'native-acceptance.tar.gz','x:gz') as archive:
+              for path in ('compiled-package/package.json','compiled acceptance/acceptance.json','compiled acceptance/stdout.log','compiled acceptance/stderr.log','compiled acceptance/wizard-stdout.log','compiled acceptance/wizard-stderr.log','compiled acceptance/embedded-stdout.log','compiled acceptance/embedded-stderr.log','compiled acceptance/web-stdout.log','compiled acceptance/web-stderr.log'):
+                  archive.add(base/path,arcname=path)
+          PY
+      - name: Upload candidate kit and acceptance (no release publishing)
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-${{ matrix.target }}
+          if-no-files-found: error
+          retention-days: 7
+          path: |
+            native_mod/build/compiled-package/*
+            native_mod/build/native-acceptance.tar.gz

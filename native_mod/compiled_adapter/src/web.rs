@@ -173,7 +173,7 @@ pub fn payload(report: &Json, sources: &Sources) -> Result<Vec<u8>> {
                 .or_default() += 1;
         }
     }
-    let data = json!({"meta":{"game":{"name":"v1.3.0","raw":"v1.3.0"},
+    let data = json!({"meta":{"game":{"name":"v1.3.1","raw":"v1.3.1"},
             "iconAtlas":hints["iconAtlas"],"localViewer":true},
         "sources":layers,"technologies":technologies,"dlcs":[],"searchPinyin":hints["searchPinyin"],
         "diagnostics":{"counts":issue_counts,"eligibility":"unknown / engine-controlled","liveSaveState":false}});
@@ -213,6 +213,10 @@ fn asset(path: &str) -> Option<(&'static str, &'static [u8])> {
         "/search.js" => (
             "text/javascript; charset=utf-8",
             include_bytes!("../../../dist/search.js"),
+        ),
+        "/pdf-export.js" => (
+            "text/javascript; charset=utf-8",
+            include_bytes!("../../../dist/pdf-export.js"),
         ),
         "/assets/tech-icons.a3d201959e2f.webp" => ("image/webp", ATLAS),
         "/assets/field-physics.svg" => (

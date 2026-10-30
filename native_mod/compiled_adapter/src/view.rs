@@ -282,6 +282,118 @@ fn graph_option(curator: &str) -> Result<String> {
         "{width=294 height=35}",
     )
 }
+fn goal_controls(shell: &str) -> Result<String> {
+    let parsed = script::parse(shell)?;
+    let panel = gui::named(&parsed.entries()[0].value, "EVENT_DIPLO")?;
+    let list = gui::named(&panel.value, "option_list")?;
+    let raw = gui::property(&shell[list.span.clone()], "position", "{x=0 y=316}")?;
+    let raw = gui::property(&raw, "size", "{x=294 y=420}")?;
+    let shell = gui::edits(shell, vec![(list.span.start, list.span.end, raw)])?;
+    let mut controls = String::from("containerWindowType={name=ttegs_controls position={x=-314 y=52} orientation=upper_right size={width=294 height=310} effectbuttonType={name=ttegs_selected position={x=0 y=0} size={x=292 y=50} quadTextureSprite=GFX_tiled_window_transparent font=\"cg_16b\" multiline=yes buttonText=ttegs_selected_label effect=ttegs_selected_tip}");
+    for slot in 1..=MAX_GOALS {
+        controls.push_str(&format!("effectbuttonType={{name=ttegs_slot_{slot} position={{x=0 y={}}} size={{x=292 y=44}} quadTextureSprite=GFX_tiling_button_standard font=\"cg_16b\" multiline=yes buttonText=ttegs_slot_{slot} effect=ttegs_slot_{slot} clicksound=click}}",52+(slot-1)*46));
+    }
+    controls.push_str("effectbuttonType={name=ttegs_remove position={x=0 y=286} size={x=292 y=28} quadTextureSprite=GFX_tiling_button_standard font=\"cg_16b\" buttonText=tte_untrack_selected effect=ttegs_remove clicksound=click}} ");
+    gui::append(&shell, &controls)
+}
+
+fn compile_goal_slots(out: &mut View, techs: &[Tech]) -> Result<()> {
+    out.events.insert(0, "namespace=ttegoal".into());
+    let ids = techs.iter().map(|t| t.id.clone()).collect::<Vec<_>>();
+    let raw = crate::goal_slots::scripts(&ids, "tte_viewed_")?;
+    let parsed = script::parse(&raw)?;
+    for e in parsed.entries() {
+        if e.key.as_deref() == Some("country_event") {
+            out.events.push(raw[e.span.clone()].into());
+        } else {
+            out.effects.push(raw[e.span.clone()].into());
+        }
+    }
+    let checks=techs.iter().map(|t|format!("if={{limit={{has_country_flag=ttegs_pending_{} {}}} set_country_flag=ttegs_pending_valid}} if={{limit={{has_country_flag=tte_viewed_{} {}}} set_country_flag=ttegs_selected_valid}}",t.id,t.addable(),t.id,t.addable())).collect::<String>();
+    out.effects
+        .push("ttegs_recheck={country_event={id=ttegoal.14}}".into());
+    out.events.push(format!("country_event={{id=ttegoal.14 hide_window=yes is_triggered_only=yes immediate={{remove_country_flag=ttegs_pending_valid remove_country_flag=ttegs_selected_valid {checks}}}}}"));
+    for (name, flag) in [
+        ("GetTTEGSSelected", "tte_viewed_"),
+        ("GetTTEGSPending", "ttegs_pending_"),
+    ] {
+        let branches = techs
+            .iter()
+            .map(|t| {
+                format!(
+                    "text={{trigger={{has_country_flag={flag}{}}} localization_key={}}}",
+                    t.id, t.id
+                )
+            })
+            .collect::<String>();
+        out.getters.push(format!(
+            "defined_text={{name={name} random=no {branches} default=ttegs_pick}}"
+        ));
+    }
+    let slots=(1..=MAX_GOALS).map(|n|format!("text={{trigger={{check_variable={{which=ttegs_destination value={n}}}}} localization_key=ttegs_occupant_{n}}}")).collect::<String>();
+    out.getters.push(format!(
+        "defined_text={{name=GetTTEGSOccupant random=no {slots} default=tte_goal_none}}"
+    ));
+    let numbers=(1..=MAX_GOALS).map(|n|format!("text={{trigger={{check_variable={{which=ttegs_destination value={n}}}}} localization_key=ttegs_number_{n}}}")).collect::<String>();
+    out.getters.push(format!(
+        "defined_text={{name=GetTTEGSSlot random=no {numbers} default=tte_goal_none}}"
+    ));
+    for n in 1..=MAX_GOALS {
+        out.loc(
+            format!("ttegs_occupant_{n}"),
+            format!("[Root.GetTTEGoal{n}]"),
+            format!("[Root.GetTTEGoal{n}]"),
+        );
+        out.loc(format!("ttegs_number_{n}"), n.to_string(), n.to_string());
+        out.buttons.push(t!("ttegs_slot_@n@={potential={from={is_ai=no}} allow={from={is_ai=no has_country_flag=ttegs_selected_valid NOT={has_country_flag=ttegs_dialog}}} effect={custom_tooltip=ttegs_tip_@n@ from={hidden_effect={ttegs_capture=yes set_variable={which=ttegs_destination value=@n@} ttegs_request=yes}}}}",n=n));
+    }
+    out.loc(
+        "ttegs_selected_label",
+        "[From.GetTTEGSSelected]",
+        "[From.GetTTEGSSelected]",
+    );
+    let tips=techs.iter().map(|t|format!("text={{trigger={{has_country_flag=tte_viewed_{}}} localization_key=tte_detail_{}}}",t.id,t.id)).collect::<String>();
+    out.getters.push(format!(
+        "defined_text={{name=GetTTEGSSelectedTip random=no {tips} default=ttegs_pick}}"
+    ));
+    out.loc(
+        "ttegs_selected_details",
+        "[From.GetTTEGSSelectedTip]",
+        "[From.GetTTEGSSelectedTip]",
+    );
+    out.buttons.push(button(
+        "ttegs_selected_tip",
+        "",
+        "",
+        "ttegs_selected_details",
+    ));
+    out.buttons.push(button(
+        "ttegs_remove",
+        "has_country_flag=tte_has_view_selection NOT={has_country_flag=ttegs_dialog}",
+        "tte_untrack_selected=yes",
+        "tte_untrack_selected",
+    ));
+    let labels: BTreeMap<String, BTreeMap<String, String>> =
+        serde_json::from_str(include_str!("../assets/goal-slots-ui.json"))
+            .map_err(|e| e.to_string())?;
+    for (lang, rows) in labels {
+        let dest = out.localisation.entry(lang).or_default();
+        for (key, value) in rows {
+            if key == "slot" || key == "tip" {
+                for n in 1..=MAX_GOALS {
+                    dest.insert(
+                        format!("ttegs_{key}_{n}"),
+                        value.replace("{n}", &n.to_string()),
+                    );
+                }
+            } else {
+                dest.insert(format!("ttegs_{key}"), value);
+            }
+        }
+    }
+    out.events.push("country_event={id=ttegoal.1 title=ttegs_confirm_title desc=ttegs_confirm_desc picture=GFX_evt_physics_research is_triggered_only=yes option={name=ttegs_confirm hidden_effect={ttegs_commit=yes}} option={name=ttegs_cancel default_hide_option=yes hidden_effect={ttegs_cancel=yes}}}".into());
+    Ok(())
+}
 pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View> {
     let curator_source = gui::effective(
         sources,
@@ -412,17 +524,17 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
         })
         .collect::<Vec<_>>()
         .join(" ");
-    let clear_view = format!("remove_country_flag=tte_has_view_selection {clear_view}");
+    let clear_view = format!("remove_country_flag=tte_has_view_selection remove_country_flag=ttegs_selected_valid {clear_view}");
     out.effects
         .push("tte_view_clear={country_event={id=tteview.1}}".into());
     out.events.push(format!("country_event={{id=tteview.1 hide_window=yes is_triggered_only=yes immediate={{ {clear_view} }} }}"));
     let mut home = vec![
-        option("tte_select_open", &jump("tteselect.1"), ""),
         option("tte_full", "tte_open_atlas=yes", ""),
+        option("ttegs_browse", &jump("tteselect.1"), ""),
         option("tte_plan_details", &jump("tte.5"), ""),
     ];
     for slot in 1..=MAX_GOALS {
-        home.push(option(&format!("tte_goal_slot_{slot}"),&t!("if={limit={has_country_flag=tte_slot_@slot@} tte_open_tracked_@slot@=yes} else={@jump@}",slot=slot,jump=jump("tteselect.1")),""));
+        home.push(option(&format!("tte_goal_slot_{slot}"),&t!("if={limit={has_country_flag=tte_slot_@slot@} tte_open_tracked_@slot@=yes} else={tte_open_atlas=yes}",slot=slot),""));
     }
     home.extend([
         option(
@@ -450,7 +562,7 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
         &home,
         "tte_home_window",
         "tte_option",
-        "tte_refresh=yes",
+        "ttegs_cancel=yes tte_refresh=yes",
     ));
     out.events.push(event(
         "tte.5",
@@ -547,6 +659,7 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
         "Untrack selected technology",
     );
     out.loc("tte_pick_first", "点击卡片高亮前置；悬停查看详情，然后使用右侧按钮追踪。", "Click a card to highlight prerequisites; hover for details, then track it using the buttons on the right.");
+    compile_goal_slots(&mut out, techs)?;
     out.buttons.push(button("tte_open", "", &jump("tte.1"), ""));
     let parents: BTreeMap<_, _> = techs
         .iter()
@@ -565,7 +678,7 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
         let k = &tech.id;
         let e = chosen_event(i);
         let select = format!("tte_select_node_{k}=yes");
-        out.effects.push(t!("tte_select_node_@key@={tte_view_clear=yes set_country_flag=tte_has_view_selection set_country_flag=tte_viewed_@key@ tte_view_visit_@key@=yes tte_remember_@key@=yes}",key=k));
+        out.effects.push(t!("tte_select_node_@key@={tte_view_clear=yes set_country_flag=tte_has_view_selection set_country_flag=tte_viewed_@key@ if={limit={@addable@} set_country_flag=ttegs_selected_valid} tte_view_visit_@key@=yes tte_remember_@key@=yes}",key=k,addable=tech.addable()));
         let area = AREAS.iter().position(|a| a == &tech.area).unwrap();
         let icon = tech
             .block
@@ -1053,26 +1166,12 @@ fn compile_graphs(
             }
             let graph=t!("containerWindowType={name=tte_graph_clip position={x=18 y=62} size={width=-332 height=-164} clipping=yes containerWindowType={name=tte_graph position={x=0 y=0} size={width=-22 height=100%} verticalScrollbar=tte_tree_wheel scroll_wheel_factor=128 background={name=graph_background quadTextureSprite=GFX_tile_outliner_bg} containerWindowType={name=tte_graph_content size={width=100% height=@h@} @widgets@}}} instantTextBoxType={name=legend text=tte_full_legend position={x=20 y=-28} orientation=lower_left maxWidth=1600 maxHeight=24 font=\"cg_16b\" alwaysTransparent=yes}",h=content_height,widgets=widgets.join("\n"));
             let name = format!("tte_graph_{mode}_{area_index}");
-            out.gui
-                .push(gui::append(&gui::shell(curator, &name, true)?, &graph)?);
+            out.gui.push(goal_controls(&gui::append(
+                &gui::shell(curator, &name, true)?,
+                &graph,
+            )?)?);
             let mut choices = vec![
                 option("tte_inspect_selected", "tte_inspect_selected=yes", ""),
-                option(
-                    "tte_track_selected",
-                    &format!(
-                        "tte_track_selected=yes {}",
-                        jump(&graph_event(mode, area_index))
-                    ),
-                    "",
-                ),
-                option(
-                    "tte_untrack_selected",
-                    &format!(
-                        "tte_untrack_selected=yes {}",
-                        jump(&graph_event(mode, area_index))
-                    ),
-                    "",
-                ),
                 option(
                     if mode == 0 {
                         "tte_zoom_large"
@@ -1115,7 +1214,7 @@ fn compile_graphs(
                 option("tte_back", &jump("tte.1"), ""),
                 option("tte_close", "", ""),
             ]);
-            out.events.push(event(&graph_event(mode,area_index),"tte_full","tte_intro",&choices,&name,"tte_graph_option",&t!("tte_refresh=yes set_variable={which=tte_atlas_mode value=@mode@} set_variable={which=tte_atlas_area value=@area@}",mode=mode,area=area_index)));
+            out.events.push(event(&graph_event(mode,area_index),"tte_full","ttegs_graph_help",&choices,&name,"tte_graph_option",&t!("tte_refresh=yes set_variable={which=tte_atlas_mode value=@mode@} set_variable={which=tte_atlas_area value=@area@}",mode=mode,area=area_index)));
         }
     }
     Ok(())

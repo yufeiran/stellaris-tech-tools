@@ -1,0 +1,78 @@
+# Project-owned shared goal editor. Template inputs contain validated IDs only.
+# Heavy bodies cross hidden-event boundaries; no technology x slot windows.
+ttegs_capture = { country_event = { id = ttegoal.11 } }
+ttegs_request = { country_event = { id = ttegoal.10 } }
+ttegs_commit = { country_event = { id = ttegoal.12 } }
+ttegs_cancel = { country_event = { id = ttegoal.13 } }
+
+country_event = {
+ id = ttegoal.13 hide_window = yes is_triggered_only = yes
+ immediate = {
+  {{CLEAR}}
+  remove_country_flag = ttegs_dialog
+  remove_country_flag = ttegs_pending_valid
+  remove_country_flag = ttegs_occupied
+  clear_variable = ttegs_destination
+  clear_variable = ttegs_origin
+  clear_variable = ttegs_count
+ }
+}
+country_event = {
+ id = ttegoal.11 hide_window = yes is_triggered_only = yes
+ immediate = {
+  ttegs_cancel = yes
+  set_variable = { which = ttegs_count value = 0 }
+  set_variable = { which = ttegs_origin value = 0 }
+  {{CAPTURE}}
+ }
+}
+country_event = {
+ id = ttegoal.10 hide_window = yes is_triggered_only = yes
+ immediate = {
+  ttegs_recheck = yes
+  if = {
+   limit = { check_variable = { which = ttegs_count value = 1 } check_variable = { which = ttegs_destination value >= 1 } check_variable = { which = ttegs_destination value <= 5 } has_country_flag = ttegs_pending_valid }
+   if = { limit = { check_variable = { which = ttegs_origin value = ttegs_destination } } ttegs_cancel = yes }
+   else = {
+    {{OCCUPIED}}
+    if = { limit = { has_country_flag = ttegs_occupied }
+     set_country_flag = ttegs_dialog
+     country_event = { id = ttegoal.1 }
+    }
+    else = { ttegs_commit = yes }
+   }
+  }
+  else = { ttegs_cancel = yes }
+ }
+}
+country_event = {
+ id = ttegoal.12 hide_window = yes is_triggered_only = yes
+ immediate = {
+  # Recheck the frozen technology, not a node clicked behind the confirmation.
+  ttegs_recheck = yes
+  if = {
+   limit = { check_variable = { which = ttegs_count value = 1 } check_variable = { which = ttegs_destination value >= 1 } check_variable = { which = ttegs_destination value <= 5 } has_country_flag = ttegs_pending_valid }
+   set_variable = { which = ttegs_origin value = 0 }
+   country_event = { id = ttegoal.15 }
+   # Change all ranks atomically before invoking the research refresh once.
+   country_event = { id = ttegoal.16 }
+   country_event = { id = ttegoal.17 }
+   if = { limit = { NOT = { has_country_flag = tte_has_goal } } set_country_flag = tte_automation }
+   set_country_flag = tte_has_goal
+   tte_refresh = yes
+  }
+  ttegs_cancel = yes
+ }
+}
+country_event = {
+ id = ttegoal.15 hide_window = yes is_triggered_only = yes
+ immediate = { {{ORIGIN}} }
+}
+country_event = {
+ id = ttegoal.16 hide_window = yes is_triggered_only = yes
+ immediate = { {{DISPLACE}} }
+}
+country_event = {
+ id = ttegoal.17 hide_window = yes is_triggered_only = yes
+ immediate = { {{ASSIGN}} }
+}

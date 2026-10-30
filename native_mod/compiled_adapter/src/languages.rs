@@ -176,9 +176,14 @@ pub fn expand(rows: &mut Localisation, report: &Json, sources: &Sources) -> Resu
         })
         .collect();
     for (col, language) in LANGUAGES[2..].iter().enumerate() {
-        let mut texts = BTreeMap::new();
+        // Explicit project-owned translations (e.g. the shared goal editor)
+        // take precedence over phrase reconstruction, never over source keys.
+        let mut texts = rows.get(*language).cloned().unwrap_or_default();
         let mut cache = BTreeMap::new();
         for (key, value) in &english {
+            if texts.contains_key(key) {
+                continue;
+            }
             if key.starts_with("tte_caption_") && !key.starts_with("tte_caption_full_") {
                 continue;
             }

@@ -1,0 +1,122 @@
+{
+  "english": {
+    "slot": "Set as Goal {n}\\n[From.GetTTEGoal{n}]",
+    "tip": "Set the selected technology as Goal {n}. Replacing an occupied slot asks for confirmation. An already tracked technology moves or swaps slots.",
+    "pick": "Click a technology, then choose a goal slot on the right.",
+    "confirm_title": "Change research goal?",
+    "confirm_desc": "Selected: [Root.GetTTEGSPending]\\nGoal [Root.GetTTEGSSlot]: [Root.GetTTEGSOccupant]\\n\\nReplace this goal with the selected technology. If it is already tracked, the two slots swap. Cancel keeps your current goals.\\n\\nThis does not turn on automatic research. Your research gears stay as you set them.",
+    "confirm": "Confirm change",
+    "cancel": "Cancel",
+    "browse": "Browse by purpose or name",
+    "route": "Prerequisite route",
+    "graph_help": "Click a technology, then assign its goal slot on the right. Goal 1 comes first. Research gears control manual or automatic selection."
+  },
+  "simp_chinese": {
+    "slot": "设为目标 {n}\\n[From.GetTTEGoal{n}]",
+    "tip": "将选中的科技设为目标 {n}。替换已占用的位置会先确认；已经追踪的科技会移动或交换位置。",
+    "pick": "点击科技查看前置，再在右侧选择目标位置。",
+    "confirm_title": "更换科研目标？",
+    "confirm_desc": "选中科技：[Root.GetTTEGSPending]\\n目标 [Root.GetTTEGSSlot]：[Root.GetTTEGSOccupant]\\n\\n用选中的科技替换这个目标。若选中科技已在目标列表中，则交换两个位置。取消会保留现有目标。\\n\\n这不会开启自动科研，原版科研齿轮保持你的设置。",
+    "confirm": "确认更换",
+    "cancel": "取消",
+    "browse": "按用途或名称找科技",
+    "route": "查看前置路线",
+    "graph_help": "点击科技，再在右侧选择目标位置。目标 1 优先；原版科研齿轮决定手动还是自动选卡。"
+  },
+  "japanese": {
+    "slot": "目標 {n} に設定\\n[From.GetTTEGoal{n}]",
+    "tip": "選択した技術を目標 {n} に設定します。既存の目標を置き換える前に確認します。追跡中の技術は移動または入れ替えます。",
+    "pick": "技術をクリックして前提を確認し、右側で目標の位置を選んでください。",
+    "confirm_title": "研究目標を変更しますか？",
+    "confirm_desc": "選択：[Root.GetTTEGSPending]\\n目標 [Root.GetTTEGSSlot]：[Root.GetTTEGSOccupant]\\n\\nこの目標を選択した技術に置き換えます。すでに追跡中なら、2つの位置を入れ替えます。キャンセルすると現在の目標を維持します。\\n\\n自動研究は有効になりません。研究の歯車設定は変わりません。",
+    "confirm": "変更を確定",
+    "cancel": "キャンセル",
+    "browse": "用途や名前から探す",
+    "route": "前提技術のルート",
+    "graph_help": "技術を選び、右側で目標の位置を設定します。目標1が優先です。手動・自動の選択は研究の歯車で切り替えます。"
+  },
+  "korean": {
+    "slot": "목표 {n}로 설정\\n[From.GetTTEGoal{n}]",
+    "tip": "선택한 기술을 목표 {n}로 설정합니다. 기존 목표를 교체하기 전에 확인합니다. 이미 추적 중인 기술은 이동하거나 자리를 바꿉니다.",
+    "pick": "기술을 눌러 선행 기술을 보고 오른쪽에서 목표 위치를 선택하세요.",
+    "confirm_title": "연구 목표를 변경할까요?",
+    "confirm_desc": "선택: [Root.GetTTEGSPending]\\n목표 [Root.GetTTEGSSlot]: [Root.GetTTEGSOccupant]\\n\\n이 목표를 선택한 기술로 교체합니다. 이미 추적 중이면 두 위치를 바꿉니다. 취소하면 기존 목표를 유지합니다.\\n\\n자동 연구를 켜지 않습니다. 연구 톱니바퀴 설정은 유지됩니다.",
+    "confirm": "변경 확인",
+    "cancel": "취소",
+    "browse": "용도나 이름으로 찾기",
+    "route": "선행 기술 경로",
+    "graph_help": "기술을 선택하고 오른쪽에서 목표 위치를 정하세요. 목표 1이 우선입니다. 연구 톱니바퀴로 수동·자동 선택을 정합니다."
+  },
+  "russian": {
+    "slot": "Назначить целью {n}\\n[From.GetTTEGoal{n}]",
+    "tip": "Назначить выбранную технологию целью {n}. Замена занятой цели требует подтверждения. Уже отслеживаемая цель перемещается или меняется местами.",
+    "pick": "Выберите технологию, затем назначьте ей место среди целей справа.",
+    "confirm_title": "Изменить цель исследования?",
+    "confirm_desc": "Выбрано: [Root.GetTTEGSPending]\\nЦель [Root.GetTTEGSSlot]: [Root.GetTTEGSOccupant]\\n\\nЗаменить эту цель выбранной технологией. Если она уже отслеживается, две цели поменяются местами. Отмена сохранит текущие цели.\\n\\nАвтоисследование не включается. Настройки шестерёнок исследования сохраняются.",
+    "confirm": "Подтвердить изменение",
+    "cancel": "Отмена",
+    "browse": "Поиск по назначению или имени",
+    "route": "Путь к предпосылкам",
+    "graph_help": "Выберите технологию и место цели справа. Цель 1 важнее остальных. Ручной или автоматический выбор задают шестерёнки исследования."
+  },
+  "french": {
+    "slot": "Définir comme objectif {n}\\n[From.GetTTEGoal{n}]",
+    "tip": "Définir la technologie sélectionnée comme objectif {n}. Le remplacement demande confirmation. Un objectif déjà suivi est déplacé ou échangé.",
+    "pick": "Cliquez sur une technologie, puis choisissez sa place parmi les objectifs à droite.",
+    "confirm_title": "Modifier l’objectif de recherche ?",
+    "confirm_desc": "Sélection : [Root.GetTTEGSPending]\\nObjectif [Root.GetTTEGSSlot] : [Root.GetTTEGSOccupant]\\n\\nRemplacer cet objectif par la technologie sélectionnée. Si elle est déjà suivie, les deux places sont échangées. Annuler conserve les objectifs actuels.\\n\\nLa recherche automatique n’est pas activée. Vos réglages des engrenages restent inchangés.",
+    "confirm": "Confirmer la modification",
+    "cancel": "Annuler",
+    "browse": "Par usage ou par nom",
+    "route": "Parcours des prérequis",
+    "graph_help": "Choisissez une technologie puis sa place à droite. Objectif 1 en priorité. Les engrenages règlent le choix manuel ou automatique."
+  },
+  "german": {
+    "slot": "Als Ziel {n} festlegen\\n[From.GetTTEGoal{n}]",
+    "tip": "Die gewählte Technologie als Ziel {n} festlegen. Das Ersetzen erfordert eine Bestätigung. Bereits verfolgte Ziele werden verschoben oder getauscht.",
+    "pick": "Technologie anklicken und rechts einen Zielplatz auswählen.",
+    "confirm_title": "Forschungsziel ändern?",
+    "confirm_desc": "Auswahl: [Root.GetTTEGSPending]\\nZiel [Root.GetTTEGSSlot]: [Root.GetTTEGSOccupant]\\n\\nDieses Ziel durch die gewählte Technologie ersetzen. Wird sie bereits verfolgt, tauschen die beiden Ziele die Plätze. Abbrechen behält alle Ziele bei.\\n\\nDie automatische Forschung wird nicht eingeschaltet. Die Forschungszahnräder bleiben unverändert.",
+    "confirm": "Änderung bestätigen",
+    "cancel": "Abbrechen",
+    "browse": "Nach Zweck oder Name suchen",
+    "route": "Voraussetzungspfad",
+    "graph_help": "Technologie und rechts einen Zielplatz wählen. Ziel 1 hat Vorrang. Die Forschungszahnräder steuern manuelle oder automatische Auswahl."
+  },
+  "spanish": {
+    "slot": "Establecer como objetivo {n}\\n[From.GetTTEGoal{n}]",
+    "tip": "Establecer la tecnología seleccionada como objetivo {n}. Sustituir un objetivo requiere confirmación. Una tecnología ya seguida se mueve o intercambia su posición.",
+    "pick": "Pulsa una tecnología y elige su posición entre los objetivos de la derecha.",
+    "confirm_title": "¿Cambiar el objetivo de investigación?",
+    "confirm_desc": "Selección: [Root.GetTTEGSPending]\\nObjetivo [Root.GetTTEGSSlot]: [Root.GetTTEGSOccupant]\\n\\nSustituir este objetivo por la tecnología seleccionada. Si ya se sigue, se intercambian las posiciones. Cancelar conserva los objetivos actuales.\\n\\nNo se activa la investigación automática. Los engranajes conservan su configuración.",
+    "confirm": "Confirmar cambio",
+    "cancel": "Cancelar",
+    "browse": "Buscar por uso o nombre",
+    "route": "Ruta de requisitos",
+    "graph_help": "Elige una tecnología y su posición a la derecha. El objetivo 1 tiene prioridad. Los engranajes controlan la selección manual o automática."
+  },
+  "polish": {
+    "slot": "Ustaw jako cel {n}\\n[From.GetTTEGoal{n}]",
+    "tip": "Ustaw wybraną technologię jako cel {n}. Zastąpienie celu wymaga potwierdzenia. Śledzona technologia zostaje przeniesiona lub zamieniona miejscami.",
+    "pick": "Kliknij technologię, a następnie wybierz jej miejsce wśród celów po prawej.",
+    "confirm_title": "Zmienić cel badań?",
+    "confirm_desc": "Wybrano: [Root.GetTTEGSPending]\\nCel [Root.GetTTEGSSlot]: [Root.GetTTEGSOccupant]\\n\\nZastąp ten cel wybraną technologią. Jeśli jest już śledzona, cele zamienią się miejscami. Anulowanie zachowa obecne cele.\\n\\nAutomatyczne badania nie zostaną włączone. Ustawienia kół zębatych pozostają bez zmian.",
+    "confirm": "Potwierdź zmianę",
+    "cancel": "Anuluj",
+    "browse": "Według zastosowania lub nazwy",
+    "route": "Ścieżka wymagań",
+    "graph_help": "Wybierz technologię i jej miejsce po prawej. Cel 1 ma pierwszeństwo. Koła zębate sterują ręcznym lub automatycznym wyborem."
+  },
+  "braz_por": {
+    "slot": "Definir como objetivo {n}\\n[From.GetTTEGoal{n}]",
+    "tip": "Definir a tecnologia selecionada como objetivo {n}. Substituir um objetivo pede confirmação. Uma tecnologia já acompanhada é movida ou troca de posição.",
+    "pick": "Clique em uma tecnologia e escolha sua posição entre os objetivos à direita.",
+    "confirm_title": "Alterar objetivo de pesquisa?",
+    "confirm_desc": "Selecionada: [Root.GetTTEGSPending]\\nObjetivo [Root.GetTTEGSSlot]: [Root.GetTTEGSOccupant]\\n\\nSubstituir este objetivo pela tecnologia selecionada. Se já for acompanhada, as duas posições serão trocadas. Cancelar mantém os objetivos atuais.\\n\\nA pesquisa automática não é ativada. Suas configurações das engrenagens permanecem iguais.",
+    "confirm": "Confirmar alteração",
+    "cancel": "Cancelar",
+    "browse": "Buscar por uso ou nome",
+    "route": "Rota de pré-requisitos",
+    "graph_help": "Escolha uma tecnologia e sua posição à direita. O objetivo 1 vem primeiro. As engrenagens controlam a escolha manual ou automática."
+  }
+}

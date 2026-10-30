@@ -53,7 +53,7 @@
     prereqSection: $("#prereqSection"), prereqList: $("#prereqList"), unlockSection: $("#unlockSection"),
     unlockList: $("#unlockList"), effectSection: $("#effectSection"), effectList: $("#effectList"),
     detailId: $("#detailId"), detailSource: $("#detailSource"), helpButton: $("#helpButton"),
-    helpPopover: $("#helpPopover"), scrim: $("#scrim"), fatalError: $("#fatalError"),
+    helpPopover: $("#helpPopover"), scrim: $("#scrim"), fatalError: $("#fatalError"), exportPdf: $("#exportPdf"),
   };
 
   const savedLanguage = (() => {
@@ -213,6 +213,8 @@
     $$('button[data-language]').forEach(button => button.classList.toggle("active", button.dataset.language === state.language));
     document.documentElement.lang = state.language === "en" ? "en" : "zh-CN";
     window.TechI18n.apply(state.language);
+    dom.exportPdf.textContent = pair("导出 PDF", "Export PDF");
+    dom.exportPdf.title = pair("导出当前学科与筛选结果；中英文名称与 ID 可用 Ctrl+F 搜索", "Export the current field and filters; Ctrl+F searches bilingual names and IDs");
     if (state.data) {
       dom.versionLabel.textContent = `${state.data.meta.game.name} · ${text("localData")}`;
       document.title = `Stellaris ${text("brand")} · ${state.data.meta.game.raw}`;
@@ -853,6 +855,31 @@
       const rect = dom.viewport.getBoundingClientRect(); setScaleAt(state.transform.scale / 1.2, rect.width / 2, rect.height / 2); markInteraction();
     });
     dom.fitView.addEventListener("click", fitView);
+    dom.exportPdf.addEventListener("click", async () => {
+      if (!state.renderer?.items.length) return;
+      dom.exportPdf.disabled = true;
+      try {
+        await document.fonts.ready;
+        const atlas = state.renderer.iconAtlas;
+        let exportedAtlas = null;
+        if (atlas?.image?.complete && atlas.image.naturalWidth) {
+          const image = document.createElement("canvas");
+          image.width = atlas.image.naturalWidth; image.height = atlas.image.naturalHeight;
+          image.getContext("2d").drawImage(atlas.image, 0, 0);
+          exportedAtlas = { data: image.toDataURL("image/png"), width: image.width, height: image.height,
+            columns: atlas.columns, tileSize: atlas.tileSize };
+          image.width = 0; image.height = 0;
+        }
+        window.TechTreePdf.open({ items: state.renderer.items, edges: state.renderer.edges, bands: state.renderer.bands }, {
+          language: state.language, atlas: exportedAtlas,
+          subtitle: `${state.data.meta.game.name} · ${state.area === "all" ? pair("全部学科", "All fields") : areaName(state.area)} · ${new Date().toLocaleDateString()}`,
+          onClose: () => dom.exportPdf.focus(),
+        });
+      } catch (error) {
+        dom.canvasStatus.hidden = false;
+        dom.canvasStatus.textContent = pair("PDF 导出失败：", "PDF export failed: ") + error.message;
+      } finally { dom.exportPdf.disabled = false; }
+    });
     dom.detailClose.addEventListener("click", closeDetails);
 
     dom.minimap.addEventListener("pointerdown", event => {

@@ -8,6 +8,7 @@ mod dbsnapshot;
 mod diagnostics;
 #[allow(dead_code)] // Not exposed until full native generation is accepted.
 mod emitter;
+mod goal_slots;
 #[allow(dead_code)]
 mod gui;
 #[allow(dead_code)]
