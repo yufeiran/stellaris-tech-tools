@@ -10,12 +10,15 @@ import argparse
 import hashlib
 import json
 import os
+import re
+import time
 from pathlib import Path
 import shutil
 import sqlite3
 import subprocess
 import tarfile
 import zipfile
+from urllib.request import build_opener, ProxyHandler
 from package import machine, linkage
 
 
@@ -84,6 +87,9 @@ def check(archive, output):
     before = {p: sha(p) for p in protected}
     env = {k: os.environ[k] for k in ('HOME', 'USERPROFILE', 'TEMP', 'TMP', 'TMPDIR', 'LANG', 'LC_ALL', 'SystemRoot', 'WINDIR', 'COMSPEC') if k in os.environ}
     env.update(PYTHONHOME='/no-python', PYTHONPATH='/no-python', TTE_CORE_NO_PAUSE='1')
+    isolated_home=output/'isolated home'
+    isolated_home.mkdir()
+    env.update(HOME=str(isolated_home),USERPROFILE=str(isolated_home))
     if os.name == 'nt':
         env['PATH'] = str(Path(os.environ['SystemRoot'])/'System32')
         entry = [str(Path(os.environ['SystemRoot'])/'System32/cmd.exe'), '/d', '/s', '/c']
@@ -208,6 +214,38 @@ def check(archive, output):
     backup_hashes={sha(p) for p in (output/'embedded auto output/Workshop-backups').glob('*.zip')}
     if backup_hashes!={old_zip_hash,first_installed_hash}:raise ValueError('Rerun backup mismatch')
     if len(list((docs/'mod').glob('tte_native_generated_*.mod')))!=1:raise ValueError('Rerun created a Local Mod')
+    if manifest.get('webAtlas'):
+        for name in ('OPEN-TECH-TREE.bat','OPEN-TECH-TREE.sh','OPEN-TECH-TREE.command','WEB-ATLAS-README.txt'):
+            shutil.copyfile(root/name,embedded/name)
+        web_protected={p:sha(p) for folder in (game,source,docs,embedded) for p in folder.rglob('*') if p.is_file()}
+        web_entry=embedded/('OPEN-TECH-TREE.bat' if os.name=='nt' else ('OPEN-TECH-TREE.command' if manifest['target'].startswith('macOS') else 'OPEN-TECH-TREE.sh'))
+        web_args=['--documents',str(docs),'--output-parent',str(output/'web output'),'--no-open','--web-request-limit','1']
+        web_command=(subprocess.list2cmdline(entry)+' "'+subprocess.list2cmdline([str(web_entry),*web_args])+'"') if os.name=='nt' else ['/bin/sh',str(web_entry),*web_args]
+        with (output/'web-stdout.log').open('x',encoding='utf-8') as stdout,(output/'web-stderr.log').open('x',encoding='utf-8') as stderr:
+            process=subprocess.Popen(web_command,cwd=output,env=env,stdin=subprocess.PIPE,stdout=stdout,stderr=stderr,text=True,encoding='utf-8')
+            process.stdin.write('\n');process.stdin.flush();process.stdin.close()
+            address=None;deadline=time.monotonic()+60
+            while time.monotonic()<deadline:
+                match=re.search(r'WEB ATLAS / .*?(http://127\.0\.0\.1:[0-9]+/)',(output/'web-stdout.log').read_text(encoding='utf-8',errors='replace'))
+                if match:
+                    address=match.group(1);break
+                if process.poll() is not None:break
+                time.sleep(.05)
+            if not address:
+                process.terminate();process.wait(timeout=10)
+                raise ValueError('Browser entry failed: '+(output/'web-stderr.log').read_text(encoding='utf-8',errors='replace'))
+            # One real request then a normal server exit: no orphan native
+            # process beneath the Windows BAT/cmd wrapper on successful tests.
+            with build_opener(ProxyHandler({})).open(address+'data/techs.json',timeout=10) as response:
+                web_data=json.load(response)
+            if process.wait(timeout=20):raise ValueError('Browser wrapper did not exit normally')
+        web_nodes={t['id']:t for t in web_data['technologies']}
+        if web_nodes['TotallyNewNativeProbe']['prerequisites']!=['FreshParent'] or not web_data['meta']['localViewer']:
+            raise ValueError('Browser data does not follow unlisted source changes')
+        if web_data['diagnostics']['liveSaveState'] is not False:raise ValueError('Browser must not pretend to read live game state')
+        if any(sha(p)!=h for p,h in web_protected.items()):raise ValueError('Browser entry changed source/launcher/planner files')
+        web_after={p for folder in (game,source,docs,embedded) for p in folder.rglob('*') if p.is_file()}
+        if web_after!=set(web_protected):raise ValueError('Browser entry added files to protected source or launcher folders')
     receipt = {'status': 'PASS', 'target': manifest['target'], 'sourceCommit': manifest['sourceCommit'],
                'archiveSha256': sha(archive), 'wrapperLaunchedNativeBinary': True,
                'externalPythonInChildPath': False, 'gameScriptGeneration': True,'generatedRuntimeAuthoredFixture':'PASS','gameRuntimeQa':'NOT RUN',
@@ -218,6 +256,10 @@ def check(archive, output):
                'sameModRerunChangedPrerequisite':True,
                'hostPlatform':__import__('platform').platform(),'hostMachine':__import__('platform').machine(),
                'nativeGameValidation': 'NOT RUN; authored fixture only'}
+    if manifest.get('webAtlas'):
+        receipt.update(embeddedWebEntrySingleEnter=True,webSourceAndLauncherUnchanged=True,
+                       webGameDetectedFromWorkshopLayout=True,webUnlistedPrerequisiteChange=True,
+                       webReadOnlyHttp=True,webNativeBrowserUi='NOT RUN; HTTP acceptance only')
     (output/'acceptance.json').write_text(json.dumps(receipt, indent=2)+'\n', encoding='utf-8')
     return receipt
 

@@ -30,6 +30,7 @@ mod sources;
 mod traditional;
 #[allow(dead_code)]
 mod view;
+mod web;
 mod wizard;
 mod workshop;
 
@@ -62,8 +63,13 @@ fn help() {
 Usage: tte-core --game PATH [--mod PATH ... | --documents PATH [--playset ID]] --output FILE
                 [--goal ID] [--owned ID ...] [--language english ...]
                 [--experimental-build NEW_DIRECTORY [--register-local DOCUMENTS]]
+                [--web]  Serve a read-only browser tree on 127.0.0.1
        tte-core --build-wizard [--game PATH] [--documents PATH] [--output-parent PATH]
        tte-core --workshop-wizard [--game PATH] [--documents PATH] [--output-parent PATH]
+       tte-core --web-wizard [--game PATH] [--documents PATH] [--output-parent PATH] [--no-open]
+
+--web-wizard previews the current playset, then Enter opens the local browser
+tree. It never changes the planner ZIP, launcher configuration or saves.
 
 --workshop-wizard is the included Workshop entry: updates only this Mod's own
 runtime ZIP after a verified backup; no new Local Mod. Close game/launcher first.
@@ -82,7 +88,8 @@ No mod ID allowlist. --mod accepts a directory or root-descriptor ZIP.
 Supports ordered overlays/replace_path, inline scripts,
 scripted numbers, AND/OR prerequisites, source diagnostics and localised names.
 Unsupported/ambiguous conditions remain explicit. Use a NEW output filename.
-Source roots are read-only. No network, memory access or mod-code execution.
+Source roots are read-only. No remote network, memory access or mod-code execution.
+--web starts a read-only loopback server; open the printed URL, Ctrl+C to stop.
 "#
     );
 }
@@ -102,6 +109,9 @@ struct Args {
     selection_guard: dbsnapshot::InputHashes,
     previewed_mods: Option<Vec<PathBuf>>,
     workshop: Option<workshop::Target>,
+    web: bool,
+    open_browser: bool,
+    web_request_limit: Option<usize>,
 }
 
 fn ask(label: &str) -> Result<String> {
@@ -143,6 +153,8 @@ fn parse_args() -> Result<Option<Args>> {
     let wizard = env::args_os().len() == 1;
     let mut build_wizard = false;
     let mut workshop_wizard = false;
+    let mut web_wizard = false;
+    let mut no_open = false;
     let mut wizard_parent = None;
     let mut input = env::args_os().skip(1);
     while let Some(flag_os) = input.next() {
@@ -163,6 +175,18 @@ fn parse_args() -> Result<Option<Args>> {
             workshop_wizard = true;
             continue;
         }
+        if flag == "--web" {
+            args.web = true;
+            continue;
+        }
+        if flag == "--web-wizard" {
+            web_wizard = true;
+            continue;
+        }
+        if flag == "--no-open" {
+            no_open = true;
+            continue;
+        }
         let value = input
             .next()
             .ok_or_else(|| format!("Missing value for {flag}"))?;
@@ -179,6 +203,17 @@ fn parse_args() -> Result<Option<Args>> {
                 )
             }
             "--output" => args.output = Some(value.into()),
+            "--web-request-limit" => {
+                let limit = value
+                    .to_str()
+                    .ok_or("Request limit must be UTF-8")?
+                    .parse::<usize>()
+                    .map_err(|_| "Invalid request limit")?;
+                if !(1..=10000).contains(&limit) {
+                    return Err("Request limit must be 1..10000".into());
+                }
+                args.web_request_limit = Some(limit);
+            }
             "--experimental-build" => args.build = Some(value.into()),
             "--register-local" => args.register = Some(value.into()),
             "--goal" => args.goal = Some(value.into_string().map_err(|_| "Goal ID must be UTF-8")?),
@@ -192,8 +227,13 @@ fn parse_args() -> Result<Option<Args>> {
             _ => return Err(format!("Unknown option: {flag}")),
         }
     }
-    if build_wizard || workshop_wizard {
-        if build_wizard && workshop_wizard {
+    if build_wizard || workshop_wizard || web_wizard {
+        if [build_wizard, workshop_wizard, web_wizard]
+            .into_iter()
+            .filter(|v| *v)
+            .count()
+            != 1
+        {
             return Err("Choose one wizard mode".into());
         }
         if !args.mods.is_empty()
@@ -204,8 +244,25 @@ fn parse_args() -> Result<Option<Args>> {
             || args.goal.is_some()
             || !args.owned.is_empty()
             || !args.languages.is_empty()
+            || args.web
         {
             return Err("Build wizard accepts only optional --game, --documents and --output-parent defaults".into());
+        }
+        if web_wizard {
+            let mut result = wizard::web_run(
+                args.game.as_deref(),
+                args.docs.as_deref(),
+                wizard_parent.as_deref(),
+                !no_open,
+            )?;
+            result.web_request_limit = args.web_request_limit;
+            return Ok(Some(result));
+        }
+        if args.web_request_limit.is_some() {
+            return Err("Request limit requires a web mode".into());
+        }
+        if no_open {
+            return Err("--no-open requires --web-wizard".into());
         }
         return wizard::run(
             args.game.as_deref(),
@@ -214,6 +271,12 @@ fn parse_args() -> Result<Option<Args>> {
             workshop_wizard,
         )
         .map(Some);
+    }
+    if no_open {
+        return Err("--no-open requires --web-wizard".into());
+    }
+    if args.web_request_limit.is_some() && !args.web {
+        return Err("Request limit requires --web or --web-wizard".into());
     }
     if wizard_parent.is_some() {
         return Err("--output-parent requires --build-wizard".into());
@@ -226,6 +289,9 @@ fn parse_args() -> Result<Option<Args>> {
     }
     if args.register.is_some() && args.build.is_none() {
         return Err("--register-local requires --experimental-build".into());
+    }
+    if args.web && (args.build.is_some() || args.register.is_some()) {
+        return Err("--web is read-only; do not combine it with planner generation".into());
     }
     if args.game.is_none() {
         if wizard {
@@ -349,10 +415,17 @@ fn run(args: Args) -> Result<()> {
             }
         }
     }
-    let mut sources = sources::Sources::load(&game, &mods, languages, build.is_some())?;
+    if args.web {
+        for language in ["english", "simp_chinese"] {
+            if !languages.iter().any(|s| s == language) {
+                languages.push(language.into());
+            }
+        }
+    }
+    let mut sources = sources::Sources::load(&game, &mods, languages, build.is_some() || args.web)?;
     eprintln!("[3/4] Parse technology graph / 解析科技与前置关系");
     let mut report = catalog::collect(&mut sources)?;
-    if build.is_some() {
+    if build.is_some() || args.web {
         metadata::enrich(&mut sources, &mut report)?;
     }
     report["selection"] = selection;
@@ -409,8 +482,16 @@ fn run(args: Args) -> Result<()> {
     } else if build.is_some() {
         println!("LOCAL CANDIDATE GENERATED. Native game QA pending; no public upload. / 本地候选已生成，仍需游戏内验收，未公开上传。");
         println!("Restart the launcher. Enable the generated local planner AFTER its source mods; disable other planner versions. / 重开启动器，把新生成的本地规划器排在来源 Mod 后面，关闭其他版本的规划器。");
-    } else {
+    } else if !args.web {
         println!("Native source/graph prototype only. No game Mod generated. / 原生采集核心原型，尚未生成游戏 Mod。");
+    }
+    if args.web {
+        let payload = web::payload(&report, &sources)?;
+        // Collection and verification have finished. Do not retain all parsed
+        // source text while serving the much smaller browser representation.
+        drop(sources);
+        drop(report);
+        web::serve(payload, args.open_browser, args.web_request_limit)?;
     }
     Ok(())
 }

@@ -1411,6 +1411,53 @@ fn automatic_wizard_eof_cancel_and_source_output_leave_no_candidate() {
 }
 
 #[test]
+fn browser_wizard_cancel_eof_and_source_output_are_read_only() {
+    use std::process::Stdio;
+    let f = Fixture::new();
+    let before_db = fs::read(f.docs.join("launcher-v2.sqlite")).unwrap();
+    for (index, input) in [b"".as_slice(), b"q\n".as_slice()].into_iter().enumerate() {
+        let output = f.root.join(format!("web-cancel-{index}"));
+        let mut child = Command::new(env!("CARGO_BIN_EXE_tte-core"))
+            .arg("--web-wizard")
+            .arg("--no-open")
+            .arg("--game")
+            .arg(&f.game)
+            .arg("--documents")
+            .arg(&f.docs)
+            .arg("--output-parent")
+            .arg(&output)
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .spawn()
+            .unwrap();
+        send_input(&mut child, input);
+        assert!(!child.wait_with_output().unwrap().status.success());
+        assert!(!output.exists());
+    }
+    let output = f.game.join("must-not-create-web-output");
+    let result = Command::new(env!("CARGO_BIN_EXE_tte-core"))
+        .arg("--web-wizard")
+        .arg("--no-open")
+        .arg("--game")
+        .arg(&f.game)
+        .arg("--documents")
+        .arg(&f.docs)
+        .arg("--output-parent")
+        .arg(&output)
+        .stdin(Stdio::null())
+        .output()
+        .unwrap();
+    assert!(!result.status.success());
+    assert!(!output.exists());
+    assert_eq!(
+        fs::read(f.docs.join("launcher-v2.sqlite")).unwrap(),
+        before_db
+    );
+    assert_eq!(fs::read_dir(f.docs.join("mod")).unwrap().count(), 0);
+}
+
+#[test]
 fn changing_playset_after_preview_requires_new_confirmation() {
     use std::io::{Read, Write};
     let f = Fixture::new();

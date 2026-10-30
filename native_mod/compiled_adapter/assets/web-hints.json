@@ -1,0 +1,13 @@
+{
+  "iconAtlas": {
+    "src": "assets/tech-icons.a3d201959e2f.webp",
+    "columns": 1,
+    "rows": 1,
+    "tileSize": 64,
+    "uniqueIcons": 0
+  },
+  "categories": {},
+  "icons": {},
+  "fieldIcons": {},
+  "searchPinyin": {}
+}

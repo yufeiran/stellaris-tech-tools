@@ -1,4 +1,5 @@
 **/target/
 **/__pycache__/
 *.pyc
+/native_mod/build/
 TTE-Research-Planner/

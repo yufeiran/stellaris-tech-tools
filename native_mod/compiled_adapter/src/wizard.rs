@@ -473,6 +473,157 @@ pub fn run(
         workshop,
     )
 }
+/// Read-only counterpart of the adapter preview. No Target/install/register path.
+pub fn web_automatic(
+    input: &mut impl BufRead,
+    output: &mut impl Write,
+    guessed_game: Option<&Path>,
+    guessed_docs: Option<&Path>,
+    parent: &Path,
+    stamp: u128,
+    open_browser: bool,
+) -> script::Result<Args> {
+    writeln!(output, "Tech Tree & Research Planner — Browser tree / 浏览器科技树\nReads source definitions only; no save or planner changes. / 只读科技资料，不修改存档或游戏 Mod。")
+        .map_err(|e| e.to_string())?;
+    let game = match guessed_game {
+        Some(path) => path.to_owned(),
+        None => PathBuf::from(question(
+            input,
+            output,
+            "Stellaris game folder / 群星游戏目录",
+            None,
+        )?),
+    };
+    if !game.join("common/technology").is_dir() {
+        return Err("Game folder needs common/technology / 群星目录不正确".into());
+    }
+    let docs = match guessed_docs {
+        Some(path) => path.to_owned(),
+        None => PathBuf::from(question(
+            input,
+            output,
+            "Stellaris user-data folder / 群星用户目录",
+            None,
+        )?),
+    };
+    let (mods, selection, guard) = crate::sources::selection(&docs, None)?;
+    let id = selection["playsetId"]
+        .as_str()
+        .ok_or("Selected playset ID missing")?
+        .to_owned();
+    let ancestor = parent
+        .ancestors()
+        .find(|p| p.is_dir())
+        .ok_or("Output folder has no existing parent")?;
+    let suffix = parent.strip_prefix(ancestor).map_err(|e| e.to_string())?;
+    if suffix.components().any(|c| {
+        !matches!(
+            c,
+            std::path::Component::Normal(_) | std::path::Component::CurDir
+        )
+    }) {
+        return Err("Use an absolute output folder without parent traversal".into());
+    }
+    let parent = crate::sources::canonical(ancestor)?.join(suffix);
+    for source in std::iter::once(&game)
+        .chain(std::iter::once(&docs))
+        .chain(mods.iter())
+    {
+        if parent.starts_with(crate::sources::canonical(source)?) {
+            return Err("Browser working files must be outside source/user-data folders".into());
+        }
+    }
+    writeln!(
+        output,
+        "\nGame / 游戏：{}\nPlayset / 播放集：{}\nSource mods / 来源 Mod：{}",
+        crate::safe(&game.display().to_string()),
+        crate::safe(selection["playsetName"].as_str().unwrap_or(&id)),
+        mods.len()
+    )
+    .map_err(|e| e.to_string())?;
+    for source in &mods {
+        writeln!(output, "  {}", crate::safe(&source.display().to_string()))
+            .map_err(|e| e.to_string())?;
+    }
+    let answer = question(
+        input,
+        output,
+        "Enter = open tree; e = edit; q = cancel / 回车打开，e 修改，q 取消",
+        None,
+    )?;
+    if answer.eq_ignore_ascii_case("e") {
+        let game = PathBuf::from(question(
+            input,
+            output,
+            "Game folder / 游戏目录",
+            Some(&game),
+        )?);
+        let docs = PathBuf::from(question(
+            input,
+            output,
+            "User data / 用户目录",
+            Some(&docs),
+        )?);
+        return web_automatic(
+            input,
+            output,
+            Some(&game),
+            Some(&docs),
+            &parent,
+            stamp,
+            open_browser,
+        );
+    }
+    if !answer.is_empty() && !answer.eq_ignore_ascii_case("y") {
+        return Err("Cancelled; no browser server started / 已取消，未启动本地服务".into());
+    }
+    crate::dbsnapshot::verify(&guard)?;
+    std::fs::create_dir_all(&parent).map_err(|e| format!("Create browser working folder: {e}"))?;
+    Ok(Args {
+        game: Some(game),
+        docs: Some(docs),
+        playset: Some(id),
+        output: Some(parent.join(format!("TTE-Web-Atlas-{stamp}.json"))),
+        selection_guard: guard,
+        previewed_mods: Some(mods),
+        languages: vec!["english".into(), "simp_chinese".into()],
+        web: true,
+        open_browser,
+        ..Args::default()
+    })
+}
+
+pub fn web_run(
+    game: Option<&Path>,
+    docs: Option<&Path>,
+    parent: Option<&Path>,
+    open_browser: bool,
+) -> script::Result<Args> {
+    let game = game.map(Path::to_owned).or_else(game_guess);
+    let docs = docs.map(Path::to_owned).or_else(|| {
+        documents()
+            .map(|p| p.join("Paradox Interactive/Stellaris"))
+            .filter(|p| p.join("launcher-v2.sqlite").is_file())
+    });
+    let parent = parent
+        .map(Path::to_owned)
+        .or_else(|| home().map(|p| p.join("TTE-Research-Planner")))
+        .ok_or("Home/output folder not detected")?;
+    let stamp = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map_err(|e| e.to_string())?
+        .as_millis();
+    web_automatic(
+        &mut std::io::stdin().lock(),
+        &mut std::io::stderr(),
+        game.as_deref(),
+        docs.as_deref(),
+        &parent,
+        stamp,
+        open_browser,
+    )
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

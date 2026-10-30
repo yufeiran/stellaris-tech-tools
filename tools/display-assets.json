@@ -1,0 +1,17 @@
+{
+  "sourceBinarySha256": "2c6b9355dc2f82283625f148f630e5cd34ba27fb393c09026dd4a04b83735e20",
+  "files": [
+    {
+      "file": "native_mod/compiled_adapter/assets/web-hints.json",
+      "offset": 3832408,
+      "bytes": 452121,
+      "sha256": "a8fab4fbc24d4eed74c4ba955c542086370c477557c2753cd021bff65c3f802d"
+    },
+    {
+      "file": "dist/assets/tech-icons.a3d201959e2f.webp",
+      "offset": 3056298,
+      "bytes": 652184,
+      "sha256": "a3d201959e2f358174de07cd6c3fd6c27acc3ce7f3483c1813d14c8b5db29000"
+    }
+  ]
+}

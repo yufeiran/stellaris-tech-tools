@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#071018">
+  <meta name="description" content="从本地 Stellaris 4.5.1 游戏文件生成的中英双语互动科技树。">
+  <title>Stellaris 科技图谱 · Cygnus 4.5.1</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23071018'/%3E%3Cpath d='M32 8l5.8 17.2L56 32l-18.2 6.8L32 56l-5.8-17.2L8 32l18.2-6.8z' fill='%2359dfff'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23071018'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=6">
+</head>
+<body>
+  <div class="app" id="app" data-ready="false">
+    <header class="topbar">
+      <div class="brand" aria-label="Stellaris 科技图谱">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div class="brand-copy">
+          <strong>科技图谱</strong>
+          <span id="versionLabel">读取本地游戏数据…</span>
+        </div>
+      </div>
+
+      <div class="search-shell" id="searchShell">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.4-4.4m2.4-5.1a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/></svg>
+        <input id="searchInput" type="search" autocomplete="off" spellcheck="false"
+          placeholder="搜索科技、建筑、效果、拼音、ID…" aria-label="搜索科技" aria-expanded="false" aria-controls="searchResults">
+        <kbd>Ctrl K</kbd>
+        <div class="search-results" id="searchResults" role="listbox" hidden></div>
+      </div>
+
+      <div class="top-actions">
+        <div class="segmented language-switch" role="group" aria-label="显示语言">
+          <button type="button" data-language="zh">中</button>
+          <button type="button" data-language="bilingual" class="active">双语</button>
+          <button type="button" data-language="en">EN</button>
+        </div>
+        <button class="icon-button" id="helpButton" type="button" aria-label="使用说明" title="使用说明">?</button>
+      </div>
+    </header>
+
+    <nav class="area-tabs" id="areaTabs" aria-label="研究领域">
+      <button type="button" data-area="physics" class="active">
+        <span class="area-orb physics"></span><span>物理学</span><small>Physics</small><b data-count="physics">0</b>
+      </button>
+      <button type="button" data-area="society">
+        <span class="area-orb society"></span><span>社会学</span><small>Society</small><b data-count="society">0</b>
+      </button>
+      <button type="button" data-area="engineering">
+        <span class="area-orb engineering"></span><span>工程学</span><small>Engineering</small><b data-count="engineering">0</b>
+      </button>
+      <button type="button" data-area="all">
+        <span class="area-orb all"></span><span>全部</span><small>All fields</small><b data-count="all">0</b>
+      </button>
+    </nav>
+
+    <main class="workspace">
+      <aside class="filter-panel" id="filterPanel" aria-label="筛选器">
+        <div class="panel-heading">
+          <div><span>筛选</span><small id="resultCount">0 项科技</small></div>
+          <button class="text-button" id="resetFilters" type="button">重置</button>
+        </div>
+
+        <fieldset class="filter-group">
+          <legend id="tierFilterLegend">科技等级</legend>
+          <div class="tier-grid" id="tierFilters"></div>
+        </fieldset>
+
+        <fieldset class="filter-group">
+          <legend id="categoryFilterLegend">科技类别</legend>
+          <div class="select-wrap">
+            <select id="categoryFilter" aria-label="科技类别"><option value="all">全部类别</option></select>
+          </div>
+        </fieldset>
+
+        <fieldset class="filter-group">
+          <legend id="traitFilterLegend">特性</legend>
+          <label class="check-row"><input type="checkbox" data-flag="rare"><span class="check-ui"></span><span>稀有科技</span><i class="flag-dot rare"></i></label>
+          <label class="check-row"><input type="checkbox" data-flag="dangerous"><span class="check-ui"></span><span>危险科技</span><i class="flag-dot dangerous"></i></label>
+          <label class="check-row"><input type="checkbox" data-flag="repeatable"><span class="check-ui"></span><span>循环科技</span><i class="flag-dot repeatable"></i></label>
+          <label class="check-row"><input type="checkbox" data-flag="start"><span class="check-ui"></span><span>初始科技</span><i class="flag-dot start"></i></label>
+        </fieldset>
+
+        <fieldset class="filter-group dlc-group">
+          <legend>DLC · 扩展内容</legend>
+          <select id="dlcMode" aria-label="DLC 筛选模式">
+            <option value="all">全部 DLC</option>
+            <option value="owned">我选择的 DLC</option>
+            <option value="base">不启用 DLC</option>
+          </select>
+          <button type="button" id="excludeSeason10" class="dlc-preset">排除 Season 10</button>
+          <details id="dlcPicker"><summary><span class="picker-label">选择我拥有的 DLC</span> <span id="dlcSummary"></span></summary>
+            <div class="dlc-actions"><button type="button" id="dlcSelectAll">全选</button><button type="button" id="dlcSelectNone">全不选</button></div>
+            <div id="dlcChoices"></div>
+          </details>
+          <p class="filter-note">选择会记在此浏览器。安装文件 ≠ 已购买；联机时按房主 DLC。仍可能需要特定起源、帝国或事件。</p>
+        </fieldset>
+
+        <div class="legend">
+          <span><i class="line required"></i><span class="required-label">前置关系</span></span>
+          <span><i class="line active"></i><span class="active-label">当前链路</span></span>
+        </div>
+      </aside>
+
+      <section class="canvas-shell" id="canvasShell" aria-label="可缩放科技树画布">
+        <div class="canvas-status" id="canvasStatus">
+          <span class="pulse"></span><span>正在解析科技网络…</span>
+        </div>
+        <div class="viewport" id="viewport" tabindex="0">
+          <div class="world" id="world">
+            <canvas id="graphCanvas" class="graph-canvas" aria-hidden="true"></canvas>
+            <div id="nodes" class="nodes"></div>
+          </div>
+        </div>
+
+        <div class="field-jumps" id="fieldJumps" hidden aria-label="全部视图领域导航">
+          <button type="button" data-jump="physics">物理学</button>
+          <button type="button" data-jump="society">社会学</button>
+          <button type="button" data-jump="engineering">工程学</button>
+        </div>
+
+        <button class="mobile-filter" id="mobileFilter" type="button" aria-label="打开筛选器">筛选</button>
+
+        <div class="zoom-tools" aria-label="画布控制">
+          <button type="button" id="zoomIn" aria-label="放大" title="放大">+</button>
+          <button type="button" id="zoomOut" aria-label="缩小" title="缩小">−</button>
+          <button type="button" id="fitView" aria-label="适应画布" title="适应画布">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5m13 5h5v-5"/></svg>
+          </button>
+          <output id="zoomLabel">100%</output>
+        </div>
+
+        <div class="minimap-wrap" id="minimapWrap">
+          <canvas id="minimap" width="320" height="184" aria-label="科技树缩略图"></canvas>
+          <span>导航图</span>
+        </div>
+
+        <div class="gesture-hint" id="gestureHint">
+          <span><b>拖拽</b> 移动画布</span><span><b>滚轮</b> 缩放</span><span><b>双击</b> 聚焦</span><span>WASD / 方向键 移动</span>
+        </div>
+      </section>
+
+      <aside class="detail-panel" id="detailPanel" aria-label="科技详情" aria-hidden="true">
+        <button class="detail-close" id="detailClose" type="button" aria-label="关闭详情">×</button>
+        <div class="detail-hero">
+          <span id="detailIcon" class="tech-icon" aria-hidden="true"></span>
+          <div>
+            <div class="detail-eyebrow" id="detailEyebrow"></div>
+            <h1 id="detailTitle"></h1>
+            <p id="detailSubtitle"></p>
+          </div>
+        </div>
+        <div class="detail-badges" id="detailBadges"></div>
+        <div class="detail-metrics" id="detailMetrics"></div>
+        <section class="detail-section" id="descriptionSection">
+          <h2 data-heading="description">科技说明 <span>Description</span></h2>
+          <p id="detailDescriptionZh"></p>
+          <p class="english" id="detailDescriptionEn"></p>
+        </section>
+        <section class="detail-section" id="prereqSection">
+          <h2 data-heading="prerequisites">前置科技 <span>Prerequisites</span></h2>
+          <div class="relation-list" id="prereqList"></div>
+        </section>
+        <section class="detail-section" id="unlockSection">
+          <h2 data-heading="successors">后续科技 <span>Leads to</span></h2>
+          <div class="relation-list" id="unlockList"></div>
+        </section>
+        <section class="detail-section" id="effectSection">
+          <h2 data-heading="effects">直接效果 <span>Effects</span></h2>
+          <div class="effect-list" id="effectList"></div>
+        </section>
+        <section class="detail-section dlc-requirements" id="dlcSection" hidden>
+          <h2 data-heading="dlcConditions">DLC 条件 <span>DLC conditions</span></h2>
+          <div id="detailDlc" class="dlc-check-list"></div>
+          <p id="detailDlcRule" class="dlc-rule"></p>
+          <p class="filter-note"></p>
+        </section>
+        <footer class="detail-source"><span id="detailId"></span><span id="detailSource"></span></footer>
+      </aside>
+    </main>
+
+    <div class="help-popover" id="helpPopover" hidden>
+      <strong>在科技网络中导航</strong>
+      <p>拖动画布移动；滚轮以指针位置为中心缩放。选择节点会高亮完整的前置与后续链路。</p>
+      <dl><div><dt>Ctrl K</dt><dd>搜索</dd></div><div><dt>F</dt><dd>适应画布</dd></div><div><dt>Esc</dt><dd>关闭面板</dd></div><div><dt>WASD / ↑↓←→</dt><dd>移动画布</dd></div></dl>
+    </div>
+
+    <div class="scrim" id="scrim"></div>
+    <div class="fatal-error" id="fatalError" hidden>
+      <strong>科技数据未能载入</strong>
+      <p>请通过本项目的启动脚本打开页面，或重新生成本地数据。</p>
+    </div>
+  </div>
+
+  <template id="techNodeTemplate">
+    <button class="tech-node" type="button">
+      <span class="node-icon-wrap"><span class="node-icon tech-icon" aria-hidden="true"></span><i></i></span>
+      <span class="node-copy"><strong></strong><em></em><small></small></span>
+      <span class="node-tier"></span>
+      <span class="node-flags"></span>
+    </button>
+  </template>
+
+  <script src="i18n.js?v=7"></script>
+  <script src="keyboard-pan.js?v=5"></script>
+  <script src="dlc-filter.js?v=5"></script>
+  <script src="viewport-renderer.js?v=5"></script>
+  <script src="search.js?v=7"></script>
+  <script src="app.js?v=7"></script>
+</body>
+</html>

@@ -116,6 +116,7 @@ def package(binary, target, output, source_commit):
     # Same root installer bytes travel with every accepted native kit, so the
     # final Workshop combiner never substitutes unreviewed working-tree scripts.
     entries.extend(['INSTALL-TECH-ADAPTER.bat','INSTALL-TECH-ADAPTER.sh','INSTALL-TECH-ADAPTER.command','ADAPTER-README.txt'])
+    entries.extend(['OPEN-TECH-TREE.bat','OPEN-TECH-TREE.sh','OPEN-TECH-TREE.command','WEB-ATLAS-README.txt'])
     for entry in entries:
         shutil.copyfile(crate/'launchers'/entry, root/entry)
         (root/entry).chmod(0o755)
@@ -166,7 +167,7 @@ def package(binary, target, output, source_commit):
     shutil.copyfile(rust_docs/'COPYRIGHT-library.html', notices/'rust-standard-library/COPYRIGHT-library.html')
     manifest = {'schema': 1, 'kind': 'experimental-native-adapter', 'target': target,
                 'sourceCommit': source_commit, 'cargoLockSha256': sha(crate/'Cargo.lock'),
-                'runtimePython': False, 'gameScriptGeneration': True, 'nativeGenerationAcceptance': 'PENDING', 'linkage': link,
+                'runtimePython': False, 'gameScriptGeneration': True, 'webAtlas': True, 'nativeGenerationAcceptance': 'PENDING', 'linkage': link,
                 'files': {p.relative_to(root).as_posix(): {'bytes': p.stat().st_size, 'sha256': sha(p)}
                           for p in sorted(root.rglob('*')) if p.is_file()}}
     (root/'manifest.json').write_text(json.dumps(manifest, indent=2)+'\n', encoding='utf-8')

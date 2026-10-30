@@ -5,3 +5,4 @@
 *.command text eol=lf
 *.bat text eol=lf
 *.webp binary
+workshop-1.3.0/* -text
