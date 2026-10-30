@@ -1,0 +1,523 @@
+{
+  "topics": [
+    {
+      "key": "resources",
+      "zh": "资源生产",
+      "en": "Resource production",
+      "groups": [
+        "energy",
+        "minerals",
+        "food",
+        "alloys",
+        "consumer",
+        "strategic",
+        "trade"
+      ]
+    },
+    {
+      "key": "ships",
+      "zh": "舰船与恒星基地",
+      "en": "Ships and starbases",
+      "groups": [
+        "hulls",
+        "defenses",
+        "mobility",
+        "naval"
+      ]
+    },
+    {
+      "key": "weapons",
+      "zh": "武器与军队",
+      "en": "Weapons and armies",
+      "groups": [
+        "energy_weapons",
+        "kinetic_weapons",
+        "missiles",
+        "strike_craft",
+        "armies"
+      ]
+    },
+    {
+      "key": "colonies",
+      "zh": "殖民与人口",
+      "en": "Colonies and population",
+      "groups": [
+        "colonization",
+        "population",
+        "robots",
+        "terraforming",
+        "housing"
+      ]
+    },
+    {
+      "key": "empire",
+      "zh": "科研与帝国发展",
+      "en": "Research and empire",
+      "groups": [
+        "research",
+        "unity",
+        "diplomacy",
+        "administration"
+      ]
+    },
+    {
+      "key": "advanced",
+      "zh": "巨构、飞升与特殊科技",
+      "en": "Megastructures, ascension and special tech",
+      "groups": [
+        "megastructures",
+        "ascension",
+        "psionics",
+        "archaeology"
+      ]
+    },
+    {
+      "key": "other",
+      "zh": "其他科技",
+      "en": "Other technologies",
+      "groups": [
+        "other"
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "key": "energy",
+      "zh": "能源生产",
+      "en": "Energy production",
+      "needles": [
+        "energy_produces",
+        "global_energy",
+        "power_hub",
+        "power_plant",
+        "technician"
+      ]
+    },
+    {
+      "key": "minerals",
+      "zh": "矿物与采矿",
+      "en": "Minerals and mining",
+      "needles": [
+        "asteroid_mining",
+        "global_mineral",
+        "miner_",
+        "mineral_processing",
+        "minerals_produces",
+        "mining_network"
+      ]
+    },
+    {
+      "key": "food",
+      "zh": "食物与农业",
+      "en": "Food and agriculture",
+      "needles": [
+        "agri",
+        "farmer",
+        "food_processing",
+        "food_produces",
+        "global_food",
+        "hydroponic"
+      ]
+    },
+    {
+      "key": "alloys",
+      "zh": "合金与冶金",
+      "en": "Alloys and metallurgy",
+      "needles": [
+        "alloy",
+        "alloys_produces",
+        "foundr",
+        "metallurg"
+      ]
+    },
+    {
+      "key": "consumer",
+      "zh": "消费品与民用工业",
+      "en": "Consumer goods and civilian industry",
+      "needles": [
+        "artisan",
+        "civilian_industry",
+        "consumer_goods",
+        "luxur"
+      ]
+    },
+    {
+      "key": "strategic",
+      "zh": "易爆微粒 / 化工厂（化学厂）、气体与水晶",
+      "en": "Volatile motes / chemical plants, gases and crystals",
+      "needles": [
+        "chemical_digest",
+        "chemical_plant",
+        "crystal_mine",
+        "crystal_plant",
+        "exotic_gas",
+        "gas_extract",
+        "gas_refin",
+        "mote",
+        "rare_crystal",
+        "refinery",
+        "strategic_resource",
+        "volatile"
+      ]
+    },
+    {
+      "key": "trade",
+      "zh": "贸易与经济",
+      "en": "Trade and economy",
+      "needles": [
+        "commercial",
+        "economic",
+        "market",
+        "merchant",
+        "trade_"
+      ]
+    },
+    {
+      "key": "hulls",
+      "zh": "舰船类型与船体",
+      "en": "Ship classes and hulls",
+      "needles": [
+        "battleship",
+        "behemoth",
+        "colossus",
+        "corvette",
+        "cruiser",
+        "destroyer",
+        "frigate",
+        "juggernaut",
+        "ship_hull",
+        "shipyard",
+        "spaceport",
+        "starbase_0",
+        "starbase_1",
+        "starbase_2",
+        "starbase_3",
+        "starbase_4",
+        "starbase_5",
+        "starbase_6",
+        "starbase_7",
+        "starbase_8",
+        "starbase_9",
+        "titan"
+      ]
+    },
+    {
+      "key": "defenses",
+      "zh": "装甲、护盾与舰船防御",
+      "en": "Armor, shields and ship defenses",
+      "needles": [
+        "armor",
+        "armour",
+        "defense_platform",
+        "flak",
+        "hull_add",
+        "hull_mult",
+        "hull_regen",
+        "point_defen",
+        "shield"
+      ]
+    },
+    {
+      "key": "mobility",
+      "zh": "推进、跃迁与探索",
+      "en": "Propulsion, FTL and exploration",
+      "needles": [
+        "gateway",
+        "hyper_drive",
+        "hyper_relay",
+        "hyperdrive",
+        "jump_drive",
+        "sensor",
+        "sublight",
+        "survey",
+        "thruster",
+        "warp_drive",
+        "wormhole"
+      ]
+    },
+    {
+      "key": "naval",
+      "zh": "舰队、指挥与基地容量",
+      "en": "Fleet, command and starbase capacity",
+      "needles": [
+        "admiral",
+        "anchorag",
+        "command_limit",
+        "fleet_command",
+        "fleet_size",
+        "naval_capacity",
+        "starbase_capacity"
+      ]
+    },
+    {
+      "key": "energy_weapons",
+      "zh": "激光、等离子与能量武器",
+      "en": "Lasers, plasma and energy weapons",
+      "needles": [
+        "arc_emitter",
+        "disruptor",
+        "energy_lance",
+        "energy_weapon",
+        "laser",
+        "particle_lance",
+        "plasma",
+        "tachyon"
+      ]
+    },
+    {
+      "key": "kinetic_weapons",
+      "zh": "动能、磁轨与火炮",
+      "en": "Kinetic weapons, railguns and artillery",
+      "needles": [
+        "artillery",
+        "autocannon",
+        "gauss",
+        "kinetic",
+        "mass_driver",
+        "railgun"
+      ]
+    },
+    {
+      "key": "missiles",
+      "zh": "导弹与鱼雷",
+      "en": "Missiles and torpedoes",
+      "needles": [
+        "missile",
+        "swarmer",
+        "torpedo"
+      ]
+    },
+    {
+      "key": "strike_craft",
+      "zh": "舰载机与机库",
+      "en": "Strike craft and hangars",
+      "needles": [
+        "bomber",
+        "fighter",
+        "hangar",
+        "strike_craft"
+      ]
+    },
+    {
+      "key": "armies",
+      "zh": "陆军与战争",
+      "en": "Armies and warfare",
+      "needles": [
+        "armies",
+        "army_",
+        "assault_army",
+        "combat_training",
+        "fortress",
+        "ground_defen",
+        "orbital_bombard"
+      ]
+    },
+    {
+      "key": "colonization",
+      "zh": "殖民、适居性与行星开发",
+      "en": "Colonization, habitability and development",
+      "needles": [
+        "blocker",
+        "clearing_",
+        "colonial",
+        "coloniz",
+        "habitability",
+        "habitat",
+        "planetary_capital",
+        "planetary_unification",
+        "tile_clear"
+      ]
+    },
+    {
+      "key": "population",
+      "zh": "人口、基因与生物科技",
+      "en": "Population, genetics and biology",
+      "needles": [
+        "bio_",
+        "biodiversity",
+        "clone",
+        "cloning",
+        "epigenetic",
+        "gene_",
+        "genetic",
+        "genome",
+        "pop_assembly",
+        "pop_growth"
+      ]
+    },
+    {
+      "key": "robots",
+      "zh": "机器人、合成人与人工智能",
+      "en": "Robots, synthetics and AI",
+      "needles": [
+        "artificial",
+        "droid",
+        "machine_",
+        "positronic",
+        "robot",
+        "sentient_ai",
+        "synthetic"
+      ]
+    },
+    {
+      "key": "terraforming",
+      "zh": "地貌改造与环境",
+      "en": "Terraforming and environment",
+      "needles": [
+        "atmospheric",
+        "climate_restoration",
+        "ecological",
+        "terraform"
+      ]
+    },
+    {
+      "key": "housing",
+      "zh": "住房、宜居与基础设施",
+      "en": "Housing, amenities and infrastructure",
+      "needles": [
+        "amenities",
+        "arcology",
+        "city_district",
+        "housing",
+        "infrastructure",
+        "urban"
+      ]
+    },
+    {
+      "key": "research",
+      "zh": "科研与实验室",
+      "en": "Research and laboratories",
+      "needles": [
+        "computing",
+        "engineering_produces",
+        "laboratory",
+        "physics_produces",
+        "research",
+        "science_lab",
+        "scientific",
+        "society_produces"
+      ]
+    },
+    {
+      "key": "unity",
+      "zh": "凝聚力、传统与文化",
+      "en": "Unity, traditions and culture",
+      "needles": [
+        "culture",
+        "heritage",
+        "holographic",
+        "monument",
+        "tradition",
+        "unity"
+      ]
+    },
+    {
+      "key": "diplomacy",
+      "zh": "外交、间谍与影响力",
+      "en": "Diplomacy, espionage and influence",
+      "needles": [
+        "decryption",
+        "diploma",
+        "encryption",
+        "envoy",
+        "espionage",
+        "federation",
+        "influence"
+      ]
+    },
+    {
+      "key": "administration",
+      "zh": "行政、领袖与帝国管理",
+      "en": "Administration, leaders and government",
+      "needles": [
+        "administr",
+        "bureaucr",
+        "capital",
+        "edict",
+        "empire_size",
+        "govern",
+        "leader"
+      ]
+    },
+    {
+      "key": "megastructures",
+      "zh": "巨型结构与大型工程",
+      "en": "Megastructures and large-scale engineering",
+      "needles": [
+        "dyson",
+        "matter_decompress",
+        "mega_",
+        "megastruct",
+        "nanite_factory",
+        "orbital_ring",
+        "ring_world",
+        "science_nexus",
+        "sentry_array",
+        "strategic_coordination"
+      ]
+    },
+    {
+      "key": "ascension",
+      "zh": "飞升与进化路线",
+      "en": "Ascension and evolution paths",
+      "needles": [
+        "ascension",
+        "cybernetic",
+        "evolution",
+        "gene_tailor",
+        "synthetic",
+        "transcend"
+      ]
+    },
+    {
+      "key": "psionics",
+      "zh": "灵能与虚境",
+      "en": "Psionics and the Shroud",
+      "needles": [
+        "covenant",
+        "precogn",
+        "psionic",
+        "psionics",
+        "shroud",
+        "telepath"
+      ]
+    },
+    {
+      "key": "archaeology",
+      "zh": "考古、先驱与古代技术",
+      "en": "Archaeology, precursors and ancient technology",
+      "needles": [
+        "ancient",
+        "archaeo",
+        "archaeostudies",
+        "dark_matter",
+        "fallen_empire",
+        "precursor"
+      ]
+    },
+    {
+      "key": "other",
+      "zh": "未分类 / 全名称索引仍可查找",
+      "en": "Unclassified / also available in the name index",
+      "needles": []
+    }
+  ],
+  "modifierAliases": {
+    "all_technology_research_speed": "MOD_COUNTRY_ALL_TECH_RESEARCH_SPEED",
+    "envoys_add": "MOD_COUNTRY_ENVOYS_ADD",
+    "ascension_perks_add": "MOD_COUNTRY_ASCENSION_PERKS_ADD",
+    "ship_anomaly_research_speed_mult": "MOD_SHIP_ANOMALY_RESEARCH_SPEED",
+    "science_ship_survey_speed": "MOD_SHIP_SCIENCE_SURVEY_SPEED",
+    "external_leader_pool_add": "MOD_COUNTRY_EXTERNAL_LEADER_POOL_SIZE",
+    "mutation_slots_add": "MOD_COUNTRY_MUTATION_SLOTS_ADD",
+    "species_leader_exp_gain": "MOD_LEADER_SPECIES_EXP_GAIN",
+    "councilor_exp_gain": "MOD_LEADER_COUNCILOR_EXP_GAIN",
+    "num_tech_alternatives_add": "MOD_COUNTRY_NUM_TECH_ALTERNATIVES_ADD"
+  },
+  "percentModifiers": [
+    "all_technology_research_speed",
+    "councilor_exp_gain",
+    "science_ship_survey_speed",
+    "species_leader_exp_gain"
+  ]
+}

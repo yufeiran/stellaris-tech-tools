@@ -1,0 +1,174 @@
+{
+  "languages": [
+    "japanese",
+    "korean",
+    "russian",
+    "french",
+    "german",
+    "spanish",
+    "polish",
+    "braz_por"
+  ],
+  "phrases": {
+    "; tier requirement is determined by the game.": [
+      "; ティア要件はゲームによって決定されます。",
+      "; 티어 요구 사항은 게임에서 결정됩니다.",
+      "; требование к уровню определяется игрой.",
+      "; l'exigence de niveau est déterminée par le jeu.",
+      "; die Stufenanforderung wird vom Spiel bestimmt.",
+      "; el requisito de nivel lo determina el juego.",
+      "; wymóg poziomu określa gra.",
+      "; o requisito de nível é determinado pelo jogo."
+    ],
+    "Browse by purpose, field, category, English or pinyin initial. Click a technology to inspect its prerequisites, then choose whether to track it.": [
+      "用途、分野、カテゴリー、英語またはピンインの頭文字で閲覧できます。技術をクリックして前提条件を確認し、追跡するかどうかを選択してください。",
+      "용도, 분야, 범주, 영어 또는 병음 첫 글자로 탐색하세요. 기술을 클릭하여 선행 조건을 확인한 다음 추적 여부를 선택하세요.",
+      "Просматривайте по назначению, области, категории, начальной букве на английском или пиньине. Нажмите на технологию, чтобы просмотреть её предварительные требования, затем решите, отслеживать ли её.",
+      "Parcourez par objectif, domaine, catégorie, initiale anglaise ou pinyin. Cliquez sur une technologie pour examiner ses prérequis, puis choisissez de la suivre ou non.",
+      "Nach Zweck, Fachgebiet, Kategorie, englischem oder Pinyin-Anfangsbuchstaben durchsuchen. Klicke auf eine Technologie, um ihre Voraussetzungen zu prüfen, und entscheide dann, ob du sie verfolgen willst.",
+      "Explora por propósito, campo, categoría, inicial en inglés o pinyin. Haz clic en una tecnología para examinar sus requisitos previos y luego elige si quieres seguirla.",
+      "Przeglądaj według przeznaczenia, dziedziny, kategorii, początkowej litery angielskiej lub pinyin. Kliknij technologię, aby sprawdzić jej wymagania wstępne, a następnie zdecyduj, czy ją śledzić.",
+      "Navegue por finalidade, área, categoria, inicial em inglês ou pinyin. Clique em uma tecnologia para examinar seus pré-requisitos e, em seguida, escolha se deseja acompanhá-la."
+    ],
+    "Clear recently viewed history": [
+      "最近表示した履歴を消去",
+      "최근 본 기록 지우기",
+      "Очистить историю недавних просмотров",
+      "Effacer l'historique des consultations récentes",
+      "Verlauf der zuletzt angesehenen Einträge löschen",
+      "Borrar historial de vistos recientemente",
+      "Wyczyść historię ostatnio przeglądanych",
+      "Limpar histórico de visualizações recentes"
+    ],
+    "Clear route highlight": [
+      "ルートのハイライトを消去",
+      "경로 강조 표시 지우기",
+      "Убрать подсветку маршрута",
+      "Effacer la mise en évidence du parcours",
+      "Pfadhervorhebung aufheben",
+      "Quitar resaltado de ruta",
+      "Wyczyść podświetlenie ścieżki",
+      "Limpar destaque da rota"
+    ],
+    "Click a card to highlight prerequisites; hover for details, then track it using the buttons on the right.": [
+      "カードをクリックすると前提条件がハイライトされます。ホバーで詳細を表示し、右側のボタンで追跡できます。",
+      "카드를 클릭하면 선행 조건이 강조 표시됩니다. 마우스를 올려 세부 정보를 확인한 다음 오른쪽 버튼으로 추적하세요.",
+      "Нажмите на карточку, чтобы подсветить предварительные требования; наведите курсор для подробностей, затем отслеживайте её кнопками справа.",
+      "Cliquez sur une carte pour mettre en évidence les prérequis ; survolez-la pour les détails, puis suivez-la à l'aide des boutons à droite.",
+      "Klicke auf eine Karte, um Voraussetzungen hervorzuheben; fahre mit der Maus darüber für Details und verfolge sie dann mit den Schaltflächen rechts.",
+      "Haz clic en una tarjeta para resaltar los requisitos previos; pasa el cursor para ver detalles y luego síguela con los botones de la derecha.",
+      "Kliknij kartę, aby podświetlić wymagania wstępne; najedź kursorem, aby zobaczyć szczegóły, a następnie śledź ją przyciskami po prawej.",
+      "Clique em um cartão para destacar os pré-requisitos; passe o cursor para ver detalhes e, em seguida, acompanhe-a usando os botões à direita."
+    ],
+    "Help": [
+      "ヘルプ",
+      "도움말",
+      "Справка",
+      "Aide",
+      "Hilfe",
+      "Ayuda",
+      "Pomoc",
+      "Ajuda"
+    ],
+    "Inspect selected technology": [
+      "選択した技術を確認",
+      "선택한 기술 살펴보기",
+      "Просмотреть выбранную технологию",
+      "Examiner la technologie sélectionnée",
+      "Ausgewählte Technologie ansehen",
+      "Examinar tecnología seleccionada",
+      "Sprawdź wybraną technologię",
+      "Examinar tecnologia selecionada"
+    ],
+    "Manual: gears off; choose freely with advice.": [
+      "手動：歯車オフ。助言を参考に自由に選択。",
+      "수동: 톱니바퀴 꺼짐; 조언을 참고해 자유롭게 선택.",
+      "Вручную: шестерёнки выкл.; выбирайте свободно с подсказками.",
+      "Manuel : engrenages désactivés ; choisissez librement avec des conseils.",
+      "Manuell: Zahnräder aus; frei wählen mit Empfehlungen.",
+      "Manual: engranajes desactivados; elige libremente con consejos.",
+      "Ręcznie: zębatki wyłączone; wybieraj swobodnie z poradami.",
+      "Manual: engrenagens desligadas; escolha livremente com sugestões."
+    ],
+    "Open Research Planner": [
+      "研究プランナーを開く",
+      "연구 플래너 열기",
+      "Открыть планировщик исследований",
+      "Ouvrir le planificateur de recherche",
+      "Forschungsplaner öffnen",
+      "Abrir planificador de investigación",
+      "Otwórz planer badań",
+      "Abrir planejador de pesquisa"
+    ],
+    "Special events, settings and custom conditions may be unknown; the game determines eligibility.": [
+      "特殊イベント、設定、カスタム条件は不明な場合があります。対象となるかはゲームが判定します。",
+      "특수 이벤트, 설정 및 사용자 지정 조건은 알 수 없을 수 있습니다. 자격 여부는 게임이 결정합니다.",
+      "Особые события, настройки и пользовательские условия могут быть неизвестны; доступность определяет игра.",
+      "Les événements spéciaux, paramètres et conditions personnalisées peuvent être inconnus ; le jeu détermine l'éligibilité.",
+      "Spezielle Ereignisse, Einstellungen und benutzerdefinierte Bedingungen können unbekannt sein; das Spiel bestimmt die Verfügbarkeit.",
+      "Los eventos especiales, la configuración y las condiciones personalizadas pueden ser desconocidos; el juego determina la elegibilidad.",
+      "Specjalne wydarzenia, ustawienia i warunki niestandardowe mogą być nieznane; o dostępności decyduje gra.",
+      "Eventos especiais, configurações e condições personalizadas podem ser desconhecidos; o jogo determina a elegibilidade."
+    ],
+    "This local planner was generated for this playset. Enable only one planner, after the source mods. Rerun the adapter when their technologies or the source combination change.": [
+      "このローカルプランナーはこのプレイセット用に生成されました。プランナーは1つだけ、ソースMODの後に有効にしてください。それらの技術やソースの組み合わせが変わった場合は、アダプターを再実行してください。",
+      "이 로컬 플래너는 이 플레이셋용으로 생성되었습니다. 플래너는 하나만, 원본 모드 뒤에 활성화하세요. 원본 모드의 기술이나 원본 조합이 바뀌면 어댑터를 다시 실행하세요.",
+      "Этот локальный планировщик создан для данного набора модов. Включите только один планировщик, после исходных модов. Перезапустите адаптер, если изменятся их технологии или сочетание исходных модов.",
+      "Ce planificateur local a été généré pour cette liste de mods. N'activez qu'un seul planificateur, après les mods sources. Relancez l'adaptateur lorsque leurs technologies ou la combinaison de sources changent.",
+      "Dieser lokale Planer wurde für dieses Playset erstellt. Aktiviere nur einen Planer, nach den Quellmods. Führe den Adapter erneut aus, wenn sich deren Technologien oder die Quellkombination ändern.",
+      "Este planificador local se generó para este playset. Activa solo un planificador, después de los mods de origen. Vuelve a ejecutar el adaptador cuando cambien sus tecnologías o la combinación de origen.",
+      "Ten lokalny planer został wygenerowany dla tego zestawu modów. Włącz tylko jeden planer, po modach źródłowych. Uruchom adapter ponownie, gdy zmienią się ich technologie lub kombinacja źródeł.",
+      "Este planejador local foi gerado para este playset. Ative apenas um planejador, após os mods de origem. Execute o adaptador novamente quando as tecnologias deles ou a combinação de origem mudarem."
+    ],
+    "Track selected technology": [
+      "選択した技術を追跡",
+      "선택한 기술 추적",
+      "Отслеживать выбранную технологию",
+      "Suivre la technologie sélectionnée",
+      "Ausgewählte Technologie verfolgen",
+      "Seguir tecnología seleccionada",
+      "Śledź wybraną technologię",
+      "Acompanhar tecnologia selecionada"
+    ],
+    "Untrack selected technology": [
+      "選択した技術の追跡を解除",
+      "선택한 기술 추적 해제",
+      "Прекратить отслеживание выбранной технологии",
+      "Ne plus suivre la technologie sélectionnée",
+      "Verfolgung der ausgewählten Technologie beenden",
+      "Dejar de seguir tecnología seleccionada",
+      "Przestań śledzić wybraną technologię",
+      "Deixar de acompanhar tecnologia selecionada"
+    ],
+    "One OR branch suffices.": [
+      "選択肢は1つ満たせば十分.",
+      "대안 중 하나만 충족하면 됩니다.",
+      "Достаточно одной альтернативы.",
+      "Une alternative suffit.",
+      "Eine Alternative genügt.",
+      "Basta una alternativa.",
+      "Wystarczy jedna alternatywa.",
+      "Uma alternativa basta."
+    ],
+    "Direct effects": [
+      "直接効果",
+      "직접 효과",
+      "Прямые эффекты",
+      "Effets directs",
+      "Direkte Effekte",
+      "Efectos directos",
+      "Efekty bezpośrednie",
+      "Efeitos diretos"
+    ],
+    "Green: researched / Blue: researching / Yellow: offered · > Prerequisites for the selected technology (one alternative suffices) · Scroll to browse": [
+      "緑：研究済み / 青：研究中 / 黄：提示中 · > 選択した技術の前提条件（いずれか1つで可） · スクロールで閲覧",
+      "녹색: 연구 완료 / 파란색: 연구 중 / 노란색: 제안됨 · > 선택한 기술의 선행 조건(대안 중 하나면 충분) · 스크롤하여 탐색",
+      "Зелёный: изучено / Синий: изучается / Жёлтый: предложено · > Предварительные требования для выбранной технологии (достаточно одной из альтернатив) · Прокрутите для просмотра",
+      "Vert : recherchée / Bleu : en recherche / Jaune : proposée · > Prérequis de la technologie sélectionnée (une seule alternative suffit) · Faites défiler pour parcourir",
+      "Grün: erforscht / Blau: wird erforscht / Gelb: angeboten · > Voraussetzungen für die ausgewählte Technologie (eine Alternative genügt) · Scrollen zum Durchsuchen",
+      "Verde: investigada / Azul: en investigación / Amarillo: ofrecida · > Requisitos previos de la tecnología seleccionada (basta con una alternativa) · Desplázate para explorar",
+      "Zielony: zbadane / Niebieski: w trakcie badań / Żółty: oferowane · > Wymagania wstępne wybranej technologii (wystarczy jedna alternatywa) · Przewiń, aby przeglądać",
+      "Verde: pesquisada / Azul: em pesquisa / Amarelo: oferecida · > Pré-requisitos da tecnologia selecionada (basta uma alternativa) · Role para navegar"
+    ]
+  }
+}

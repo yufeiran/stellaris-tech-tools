@@ -1,0 +1,7 @@
+OpenCC Simplified-to-Traditional dictionary data (STCharacters, STPhrases).
+Copyright OpenCC contributors. Licensed under Apache License 2.0; see LICENSE.txt.
+Upstream: https://github.com/BYVoid/OpenCC
+This snapshot was obtained from the already installed opencc-python-reimplemented
+0.1.7 data package. Only dictionary data is embedded; no Python code/runtime is
+included. The native converter uses deterministic longest dictionary matches,
+protecting game substitutions. It is not a claim of full OpenCC API parity.

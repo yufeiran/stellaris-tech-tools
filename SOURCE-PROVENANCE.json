@@ -1,0 +1,33 @@
+{
+  "scope": "Public external tools only; no private repository history, game installation, saves or source-Mod files",
+  "snapshot": "adapter-1.2.0",
+  "runtimeSourceFiles": {
+    "native_mod/compiled_adapter/Cargo.lock": "7e2cc7389437b66365cd4fe8652dde219b2d0d6960e37a0ab97c1b785daa80e2",
+    "native_mod/compiled_adapter/src/advice.rs": "2066c83e6650b4cf7068353c5636e12eda29e9caa56077d90deb2abd334d6cd5",
+    "native_mod/compiled_adapter/src/archive.rs": "6020dbe3044ac12570c640a6d69dd7309830db98b7e4841fb8033f4146052c31",
+    "native_mod/compiled_adapter/src/atomic_report.rs": "da041fb5db8990bffcdb86b25ac79fc4ae2ba3bf39c17563eafb29ab557ee0ef",
+    "native_mod/compiled_adapter/src/catalog.rs": "720893907b899899c8012b3532cd613f89c94a1d74ec2187de1d09388834c538",
+    "native_mod/compiled_adapter/src/dbsnapshot.rs": "805dcfa27eb9d2d663dbfa15d484ab0f628d78d7a444523eb3bff841493bdc5f",
+    "native_mod/compiled_adapter/src/diagnostics.rs": "a1a5d7aca52c75f774c8a7307e812f924d960caa3f8cdc2045814a20a7da99d3",
+    "native_mod/compiled_adapter/src/emitter.rs": "ca71ed68b4e238247b8df4993f8c6327c5f66987ee106c1a3203b0975682f69f",
+    "native_mod/compiled_adapter/src/gui.rs": "9f9e7dd2e5a23c7c4fea3f55480668817cc1294b030c689b5150b6d078b26a5e",
+    "native_mod/compiled_adapter/src/history.rs": "2e02db0ebe43ac8f6a758489b29b5c37976f9909c30be23d6a5206882b569057",
+    "native_mod/compiled_adapter/src/languages.rs": "678e22ddab8bc62f6e511558742a858492e204c7931e6ab533feab9769835573",
+    "native_mod/compiled_adapter/src/main.rs": "5bf8fb525ba7dce8609f86377779e2595018cf6b10ce4719afc46664fafc7b15",
+    "native_mod/compiled_adapter/src/metadata.rs": "fff1293d112b8fba1e28c7e5b2ee398a866646aacbaf03819df6ccd6282b419d",
+    "native_mod/compiled_adapter/src/partition.rs": "33b578ad6339f89460755e126eb951bfd04b1d7d9bd780136865fd74a63e9338",
+    "native_mod/compiled_adapter/src/planner_emit.rs": "8d9b02b996d96ddecc33212d39186c3e717b85b3d0fd69f14368c518123f9859",
+    "native_mod/compiled_adapter/src/planning.rs": "f20e805163a57a1708328e13d4e157a5926901287da32267c1d5396cb132726b",
+    "native_mod/compiled_adapter/src/references.rs": "2bb1324125d1cd59cc2bd35bfd5678d61c6f7d1795b5e80f27a5a98590cc5cb9",
+    "native_mod/compiled_adapter/src/runtime.rs": "aee8328d06941b08fe08fcb058e98ddcdd7059776e125ace18c4f547865efa90",
+    "native_mod/compiled_adapter/src/script.rs": "273c82592dc5c5de306acb8c95127c9807ad5955846ccc5953cb8014cf92cfd7",
+    "native_mod/compiled_adapter/src/selection.rs": "9af9e6e659356781b50787175029bfd0c452e21121e4d840baa98a40334a8ef8",
+    "native_mod/compiled_adapter/src/sources.rs": "0f116142e701379a4dcd07c44ac82fcef3141a8a2099117f1ddefb82cb26891d",
+    "native_mod/compiled_adapter/src/traditional.rs": "5882bd0fc0414ae5856a3c4fcafe2363ce4b04234eccf80a2fe43180891f92e3",
+    "native_mod/compiled_adapter/src/view.rs": "eb85d410959b32a89c2758e1a2d8940ade092f887cd37502b0ff4477017fb2a0",
+    "native_mod/compiled_adapter/src/wizard.rs": "3c43d0828703dd2e814c9c36dbba1cea75ea66bcc1333604e3cb12af14f529a7",
+    "native_mod/compiled_adapter/src/workshop.rs": "35f43bfdbcb158d78efbbd1b1028c543a2eeebe47a32bdaf45cb7a79510fadab"
+  },
+  "sourceEdits": "Cargo license metadata changed to MIT by the author; runtime Rust source unchanged",
+  "displayAssets": "No browser assets in this adapter snapshot"
+}

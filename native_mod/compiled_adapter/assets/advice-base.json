@@ -1,0 +1,95 @@
+{
+  "effects": [
+    "tte_refresh_advice = {\nremove_country_flag = tte_advice_has_physics\nremove_country_flag = tte_advice_role_goal_physics\nremove_country_flag = tte_advice_role_route_physics\nremove_country_flag = tte_advice_role_filler_physics\nclear_variable = tte_advice_slot_physics\nremove_country_flag = tte_advice_has_society\nremove_country_flag = tte_advice_role_goal_society\nremove_country_flag = tte_advice_role_route_society\nremove_country_flag = tte_advice_role_filler_society\nclear_variable = tte_advice_slot_society\nremove_country_flag = tte_advice_has_engineering\nremove_country_flag = tte_advice_role_goal_engineering\nremove_country_flag = tte_advice_role_route_engineering\nremove_country_flag = tte_advice_role_filler_engineering\nclear_variable = tte_advice_slot_engineering\n}"
+  ],
+  "buttons": [
+    "tte_advice_refresh = { potential = { from = { is_ai = no } } allow = { from = { is_ai = no } } effect = { from = { hidden_effect = { tte_refresh = yes } } } }",
+    "tte_advice_empty_physics = { potential = { from = { is_ai = no NOT = { tte_advice_live_physics = yes } } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_empty_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+    "tte_advice_empty_society = { potential = { from = { is_ai = no NOT = { tte_advice_live_society = yes } } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_empty_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+    "tte_advice_empty_engineering = { potential = { from = { is_ai = no NOT = { tte_advice_live_engineering = yes } } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_empty_tip from = { hidden_effect = { tte_refresh = yes } } } }"
+  ],
+  "gui": "containerWindowType = { name = tte_advice_panel position = { x = 498 y = 0 } size = { width = 356 height = 450 } moveable = no clipping = no background = { name = tte_advice_background quadTextureSprite = GFX_tile_outliner_bg_solid }\ninstantTextBoxType = { name = tte_advice_heading text = tte_advice_heading font = \"cg_16b\" position = { x = 8 y = 12 } maxWidth = 235 maxHeight = 24 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_refresh position = { x = 228 y = 10 } size = { x = 108 y = 24 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_refresh_label effect = tte_advice_refresh }\ninstantTextBoxType = { name = tte_advice_help text = tte_advice_help font = \"cg_16b\" position = { x = 8 y = 340 } maxWidth = 335 maxHeight = 100 alwaysTransparent = yes }\ninstantTextBoxType = { name = tte_advice_field_physics text = tte_area_physics font = \"cg_16b\" position = { x = 8 y = 44 } maxWidth = 335 maxHeight = 20 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_empty_physics position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_wait multiline = yes effect = tte_advice_empty_physics }\ninstantTextBoxType = { name = tte_advice_field_society text = tte_area_society font = \"cg_16b\" position = { x = 8 y = 142 } maxWidth = 335 maxHeight = 20 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_empty_society position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_wait multiline = yes effect = tte_advice_empty_society }\ninstantTextBoxType = { name = tte_advice_field_engineering text = tte_area_engineering font = \"cg_16b\" position = { x = 8 y = 240 } maxWidth = 335 maxHeight = 20 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_empty_engineering position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_wait multiline = yes effect = tte_advice_empty_engineering }\n}",
+  "getters": [
+    "defined_text = { name = GetTTEAdviceGoal_physics random = no text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 1 } } localization_key = tte_advice_goal_slot_1 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 2 } } localization_key = tte_advice_goal_slot_2 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 3 } } localization_key = tte_advice_goal_slot_3 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 4 } } localization_key = tte_advice_goal_slot_4 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 5 } } localization_key = tte_advice_goal_slot_5 } default = tte_plan_no_goal }",
+    "defined_text = { name = GetTTEAdviceGoal_society random = no text = { trigger = { check_variable = { which = tte_advice_slot_society value = 1 } } localization_key = tte_advice_goal_slot_1 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 2 } } localization_key = tte_advice_goal_slot_2 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 3 } } localization_key = tte_advice_goal_slot_3 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 4 } } localization_key = tte_advice_goal_slot_4 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 5 } } localization_key = tte_advice_goal_slot_5 } default = tte_plan_no_goal }",
+    "defined_text = { name = GetTTEAdviceGoal_engineering random = no text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 1 } } localization_key = tte_advice_goal_slot_1 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 2 } } localization_key = tte_advice_goal_slot_2 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 3 } } localization_key = tte_advice_goal_slot_3 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 4 } } localization_key = tte_advice_goal_slot_4 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 5 } } localization_key = tte_advice_goal_slot_5 } default = tte_plan_no_goal }"
+  ],
+  "triggers": [
+    "tte_advice_live_physics = { is_ai = no has_country_flag = tte_automation OR = {  } }",
+    "tte_advice_live_society = { is_ai = no has_country_flag = tte_automation OR = {  } }",
+    "tte_advice_live_engineering = { is_ai = no has_country_flag = tte_automation OR = {  } }"
+  ],
+  "localisation": {
+    "english": {
+      "tte_advice_heading": "Goal research advice",
+      "tte_advice_help": "Advice only · click to refresh, hover for reasons\nChoose any card. Auto-research requires the native gear.",
+      "tte_advice_wait": "No current suggestion\nClick to recheck",
+      "tte_advice_role_goal": "Goal technology",
+      "tte_advice_role_route": "Prerequisite",
+      "tte_advice_role_filler": "Tier filler",
+      "tte_advice_empty_tip": "No current valid suggestion, or goal priority is paused. Choose freely. Click to recheck; this does not start research.",
+      "tte_advice_goal_slot_1": "Goal 1 · [From.GetTTEGoal1]",
+      "tte_advice_goal_slot_2": "Goal 2 · [From.GetTTEGoal2]",
+      "tte_advice_goal_slot_3": "Goal 3 · [From.GetTTEGoal3]",
+      "tte_advice_goal_slot_4": "Goal 4 · [From.GetTTEGoal4]",
+      "tte_advice_goal_slot_5": "Goal 5 · [From.GetTTEGoal5]"
+    },
+    "simp_chinese": {
+      "tte_advice_heading": "目标科研建议",
+      "tte_advice_help": "仅供参考 · 点击建议刷新，悬停查看理由\n手动选卡不受限制；齿轮开启后才会自动科研。",
+      "tte_advice_wait": "暂无当前建议\n点击重新检查",
+      "tte_advice_role_goal": "目标科技",
+      "tte_advice_role_route": "前置科技",
+      "tte_advice_role_filler": "补足等级",
+      "tte_advice_empty_tip": "没有当前有效的建议，或目标优先已暂停。可自由手选；点击重新检查，不会开始科研。",
+      "tte_advice_goal_slot_1": "目标 1 · [From.GetTTEGoal1]",
+      "tte_advice_goal_slot_2": "目标 2 · [From.GetTTEGoal2]",
+      "tte_advice_goal_slot_3": "目标 3 · [From.GetTTEGoal3]",
+      "tte_advice_goal_slot_4": "目标 4 · [From.GetTTEGoal4]",
+      "tte_advice_goal_slot_5": "目标 5 · [From.GetTTEGoal5]"
+    }
+  },
+  "roleLocalisation": {
+    "goal": {
+      "english": {
+        "label": "§Y$@key@$§!\n$tte_advice_role_goal$",
+        "tip": "§H$@key@$§!\n[From.GetTTEAdviceGoal_@area@]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left."
+      },
+      "simp_chinese": {
+        "label": "§Y$@key@$§!\n$tte_advice_role_goal$",
+        "tip": "§H$@key@$§!\n[From.GetTTEAdviceGoal_@area@]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。"
+      }
+    },
+    "route": {
+      "english": {
+        "label": "§Y$@key@$§!\n$tte_advice_role_route$",
+        "tip": "§H$@key@$§!\n[From.GetTTEAdviceGoal_@area@]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left."
+      },
+      "simp_chinese": {
+        "label": "§Y$@key@$§!\n$tte_advice_role_route$",
+        "tip": "§H$@key@$§!\n[From.GetTTEAdviceGoal_@area@]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。"
+      }
+    },
+    "filler": {
+      "english": {
+        "label": "§Y$@key@$§!\n$tte_advice_role_filler$",
+        "tip": "§H$@key@$§!\n[From.GetTTEAdviceGoal_@area@]\nThe goal route needs a higher tier. Research one T@tier@ technology toward unlocking T@next@.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left."
+      },
+      "simp_chinese": {
+        "label": "§Y$@key@$§!\n$tte_advice_role_filler$",
+        "tip": "§H$@key@$§!\n[From.GetTTEAdviceGoal_@area@]\n目标路线需要更高等级；研究一项 T@tier@ 科技，推进 T@next@ 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。"
+      }
+    },
+    "repeat": {
+      "english": {
+        "label": "§Y$@key@$§!\n$tte_advice_role_goal$",
+        "tip": "§H$@key@$§!\n[From.GetTTEAdviceGoal_@area@]\nContinuous goal: research the next level when offered, until you cancel or pause.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left."
+      },
+      "simp_chinese": {
+        "label": "§Y$@key@$§!\n$tte_advice_role_goal$",
+        "tip": "§H$@key@$§!\n[From.GetTTEAdviceGoal_@area@]\n持续研究目标：推荐下一轮；只在抽到时优先，直到你取消或暂停。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。"
+      }
+    }
+  },
+  "scope": "Owned fixed UI templates; parameterized at native build time, no game/third-party data"
+}

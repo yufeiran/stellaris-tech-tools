@@ -1,0 +1,2174 @@
+{
+  "languages": [
+    "japanese",
+    "korean",
+    "russian",
+    "french",
+    "german",
+    "spanish",
+    "polish",
+    "braz_por"
+  ],
+  "phrases": {
+    "Continuous research": [
+      "継続研究",
+      "계속 연구",
+      "Непрерывное исследование",
+      "Recherche continue",
+      "Fortlaufende Forschung",
+      "Investigación continua",
+      "Badanie ciągłe",
+      "Pesquisa contínua"
+    ],
+    "until stopped": [
+      "停止するまで",
+      "중지할 때까지",
+      "до остановки",
+      "jusqu’à l’arrêt",
+      "bis zum Stoppen",
+      "hasta detenerla",
+      "do zatrzymania",
+      "até parar"
+    ],
+    "Continuous goal: research the next level when offered, until you cancel or pause.": [
+      "継続目標：候補に出たら次のレベルを研究し、追跡解除または一時停止まで続けます。",
+      "지속 목표: 후보에 등장하면 취소하거나 일시 정지할 때까지 다음 단계를 연구합니다.",
+      "Постоянная цель: исследовать следующий уровень при появлении среди вариантов, до отмены или паузы.",
+      "Objectif continu : rechercher le niveau suivant lorsqu’il est proposé, jusqu’à annulation ou pause.",
+      "Fortlaufendes Ziel: die nächste Stufe bei Verfügbarkeit erforschen, bis zur Entfernung oder Pause.",
+      "Objetivo continuo: investigar el siguiente nivel cuando aparezca, hasta cancelar o pausar.",
+      "Cel ciągły: badaj następny poziom, gdy się pojawi, do anulowania lub pauzy.",
+      "Meta contínua: pesquisar o próximo nível quando aparecer, até cancelar ou pausar."
+    ],
+    "Repeatable goals stay tracked after each level. Auto-research prioritizes offered cards; manual mode only advises. No forced choice when absent or capped. Cancel tracking or pause to stop prioritizing.": [
+      "反復技術は各レベルの完了後も追跡されます。自動研究は候補にある技術を優先し、手動モードは提案のみです。候補がない場合や上限では強制しません。追跡解除または一時停止で優先を止められます。",
+      "반복 기술은 각 단계 완료 후에도 추적됩니다. 자동 연구는 후보로 나온 카드를 우선하고 수동 모드는 추천만 합니다. 후보가 없거나 최대 단계이면 강제 선택하지 않습니다. 추적 취소나 일시 정지로 우선을 중단합니다.",
+      "Повторяемые цели остаются после каждого уровня. Автоисследование предпочитает доступные варианты, ручной режим только советует. Без принудительного выбора при отсутствии варианта или достижении предела. Отмените отслеживание или включите паузу для остановки приоритета.",
+      "Les objectifs répétables restent suivis après chaque niveau. La recherche automatique privilégie les choix proposés ; le mode manuel conseille uniquement. Aucun choix forcé si absent ou au niveau maximal. Annulez le suivi ou mettez en pause pour arrêter la priorité.",
+      "Wiederholbare Ziele bleiben nach jeder Stufe vorgemerkt. Automatische Forschung bevorzugt angebotene Optionen, der manuelle Modus gibt nur Hinweise. Kein erzwungener Entscheid bei fehlender Option oder Stufenlimit. Nachverfolgung beenden oder pausieren, um die Priorität zu stoppen.",
+      "Los objetivos repetibles se mantienen tras cada nivel. La investigación automática prioriza las opciones ofrecidas; el modo manual solo aconseja. No se fuerza la elección si falta la opción o se alcanza el límite. Cancela el seguimiento o pausa para detener la prioridad.",
+      "Cele powtarzalne pozostają śledzone po każdym poziomie. Automatyczne badania preferują dostępne karty; tryb ręczny tylko doradza. Brak wymuszonego wyboru bez karty lub po osiągnięciu limitu. Anuluj śledzenie lub wstrzymaj priorytet.",
+      "Metas repetíveis continuam sendo acompanhadas após cada nível. A pesquisa automática prioriza as cartas oferecidas; o modo manual apenas aconselha. Sem escolha forçada quando ausentes ou no limite. Cancele o acompanhamento ou pause para interromper a prioridade."
+    ],
+    "Tech Tree & Research Planner": [
+      "技術ツリーと研究計画",
+      "기술 트리와 연구 계획",
+      "Дерево технологий и план исследований",
+      "Arbre technologique et plan de recherche",
+      "Technologiebaum und Forschungsplan",
+      "Árbol tecnológico y plan de investigación",
+      "Drzewo technologii i plan badań",
+      "Árvore tecnológica e plano de pesquisa"
+    ],
+    "Tech Tree": [
+      "技術ツリー",
+      "기술 트리",
+      "Дерево технологий",
+      "Arbre technologique",
+      "Technologiebaum",
+      "Árbol tecnológico",
+      "Drzewo technologii",
+      "Árvore tecnológica"
+    ],
+    "All Technologies": [
+      "全技術",
+      "모든 기술",
+      "Все технологии",
+      "Toutes les technologies",
+      "Alle Technologien",
+      "Todas las tecnologías",
+      "Wszystkie technologie",
+      "Todas as tecnologias"
+    ],
+    "Choose research goals": [
+      "研究目標を選択",
+      "연구 목표 선택",
+      "Выбрать цели исследований",
+      "Choisir les objectifs",
+      "Forschungsziele wählen",
+      "Elegir objetivos",
+      "Wybierz cele badań",
+      "Escolher objetivos"
+    ],
+    "Choose a technology": [
+      "技術を選択",
+      "기술 선택",
+      "Выбрать технологию",
+      "Choisir une technologie",
+      "Technologie wählen",
+      "Elegir tecnología",
+      "Wybierz technologię",
+      "Escolher tecnologia"
+    ],
+    "Track and prioritize this technology": [
+      "この技術を追跡して優先研究",
+      "이 기술 추적 및 우선 연구",
+      "Отслеживать и исследовать в приоритете",
+      "Suivre et prioriser cette technologie",
+      "Technologie verfolgen und priorisieren",
+      "Seguir y priorizar esta tecnología",
+      "Śledź i nadaj priorytet",
+      "Acompanhar e priorizar esta tecnologia"
+    ],
+    "Stop tracking this technology": [
+      "この技術の追跡を解除",
+      "이 기술 추적 해제",
+      "Перестать отслеживать",
+      "Ne plus suivre cette technologie",
+      "Technologie nicht mehr verfolgen",
+      "Dejar de seguir esta tecnología",
+      "Przestań śledzić technologię",
+      "Parar de acompanhar esta tecnologia"
+    ],
+    "Five goals tracked; remove one to add another": [
+      "目標は5件までです。先に1件解除してください",
+      "목표가 5개입니다. 먼저 하나를 해제하세요",
+      "Уже 5 целей. Сначала удалите одну",
+      "Cinq objectifs suivis : retirez-en un",
+      "Fünf Ziele aktiv; zuerst eines entfernen",
+      "Ya hay cinco objetivos; elimina uno",
+      "Śledzisz pięć celów; najpierw usuń jeden",
+      "Cinco objetivos; remova um primeiro"
+    ],
+    "Pause goal priority": [
+      "目標の優先研究を一時停止",
+      "목표 우선 연구 일시 정지",
+      "Приостановить приоритет целей",
+      "Suspendre la priorité des objectifs",
+      "Zielpriorität pausieren",
+      "Pausar prioridad de objetivos",
+      "Wstrzymaj priorytet celów",
+      "Pausar prioridade dos objetivos"
+    ],
+    "Resume goal priority": [
+      "目標の優先研究を再開",
+      "목표 우선 연구 재개",
+      "Возобновить приоритет целей",
+      "Reprendre la priorité des objectifs",
+      "Zielpriorität fortsetzen",
+      "Reanudar prioridad de objetivos",
+      "Wznów priorytet celów",
+      "Retomar prioridade dos objetivos"
+    ],
+    "Clear all research goals": [
+      "すべての研究目標を解除",
+      "모든 연구 목표 해제",
+      "Удалить все цели исследований",
+      "Effacer tous les objectifs",
+      "Alle Forschungsziele entfernen",
+      "Borrar todos los objetivos",
+      "Usuń wszystkie cele badań",
+      "Limpar todos os objetivos"
+    ],
+    "Refresh status": [
+      "状態を更新",
+      "상태 새로고침",
+      "Обновить",
+      "Actualiser",
+      "Neu laden",
+      "Actualizar",
+      "Odśwież",
+      "Atualizar"
+    ],
+    "Back to menu": [
+      "メニューに戻る",
+      "메뉴로 돌아가기",
+      "Вернуться в меню",
+      "Retour au menu",
+      "Zurück zum Menü",
+      "Volver al menú",
+      "Wróć do menu",
+      "Voltar ao menu"
+    ],
+    "Back to choosing a technology": [
+      "技術選択に戻る",
+      "기술 선택으로 돌아가기",
+      "Назад к выбору технологий",
+      "Retour au choix de technologie",
+      "Zurück zur Technologieauswahl",
+      "Volver a elegir tecnología",
+      "Wróć do wyboru technologii",
+      "Voltar à seleção de tecnologia"
+    ],
+    "Previous page": [
+      "前のページ",
+      "이전 페이지",
+      "Предыдущая страница",
+      "Page précédente",
+      "Vorherige Seite",
+      "Página anterior",
+      "Poprzednia strona",
+      "Página anterior"
+    ],
+    "Next page": [
+      "次のページ",
+      "다음 페이지",
+      "Следующая страница",
+      "Page suivante",
+      "Nächste Seite",
+      "Página siguiente",
+      "Następna strona",
+      "Próxima página"
+    ],
+    "Close": [
+      "閉じる",
+      "닫기",
+      "Закрыть",
+      "Fermer",
+      "Schließen",
+      "Cerrar",
+      "Zamknij",
+      "Fechar"
+    ],
+    "Back": [
+      "戻る",
+      "뒤로",
+      "Назад",
+      "Retour",
+      "Zurück",
+      "Volver",
+      "Wstecz",
+      "Voltar"
+    ],
+    "None": [
+      "なし",
+      "없음",
+      "Нет",
+      "Aucun",
+      "Keine",
+      "Ninguno",
+      "Brak",
+      "Nenhum"
+    ],
+    "Other technologies": [
+      "その他の技術",
+      "기타 기술",
+      "Другие технологии",
+      "Autres technologies",
+      "Sonstige Technologien",
+      "Otras tecnologías",
+      "Inne technologie",
+      "Outras tecnologias"
+    ],
+    "Other": [
+      "その他",
+      "기타",
+      "Прочее",
+      "Autres",
+      "Sonstige",
+      "Otros",
+      "Inne",
+      "Outras"
+    ],
+    "Large cards": [
+      "大きいカード",
+      "큰 카드",
+      "Крупные карточки",
+      "Grandes cartes",
+      "Große Karten",
+      "Tarjetas grandes",
+      "Duże karty",
+      "Cartões grandes"
+    ],
+    "Compact view": [
+      "コンパクト表示",
+      "간략 보기",
+      "Компактный вид",
+      "Vue compacte",
+      "Kompaktansicht",
+      "Vista compacta",
+      "Widok kompaktowy",
+      "Visualização compacta"
+    ],
+    "Tracked goals (up to five)": [
+      "追跡中の目標（最大5件）",
+      "추적 목표 (최대 5개)",
+      "Отслеживаемые цели (до пяти)",
+      "Objectifs suivis (cinq maximum)",
+      "Verfolgte Ziele (bis zu fünf)",
+      "Objetivos seguidos (hasta cinco)",
+      "Śledzone cele (do pięciu)",
+      "Objetivos acompanhados (até cinco)"
+    ],
+    "Tracked goals": [
+      "追跡中の目標",
+      "추적 목표",
+      "Отслеживаемые цели",
+      "Objectifs suivis",
+      "Verfolgte Ziele",
+      "Objetivos seguidos",
+      "Śledzone cele",
+      "Objetivos acompanhados"
+    ],
+    "Research goals and help": [
+      "研究目標とヘルプ",
+      "연구 목표 및 도움말",
+      "Цели исследований и справка",
+      "Objectifs et aide",
+      "Forschungsziele und Hilfe",
+      "Objetivos y ayuda",
+      "Cele badań i pomoc",
+      "Objetivos e ajuda"
+    ],
+    "Research goals · top first": [
+      "研究目標 · 上から優先",
+      "연구 목표 · 위부터 우선",
+      "Цели исследований · сверху вниз",
+      "Objectifs · priorité de haut en bas",
+      "Forschungsziele · oberste zuerst",
+      "Objetivos · prioridad de arriba abajo",
+      "Cele badań · od góry",
+      "Objetivos · prioridade de cima para baixo"
+    ],
+    "Goal priority: ON": [
+      "目標優先：有効",
+      "목표 우선: 켜짐",
+      "Приоритет целей: включён",
+      "Priorité des objectifs : active",
+      "Zielpriorität: aktiv",
+      "Prioridad de objetivos: activa",
+      "Priorytet celów: włączony",
+      "Prioridade dos objetivos: ativa"
+    ],
+    "Goal priority: paused": [
+      "目標優先：一時停止",
+      "목표 우선: 일시 정지",
+      "Приоритет целей: пауза",
+      "Priorité des objectifs : suspendue",
+      "Zielpriorität: pausiert",
+      "Prioridad de objetivos: pausada",
+      "Priorytet celów: wstrzymany",
+      "Prioridade dos objetivos: pausada"
+    ],
+    "Manual: gears off; advice beside the choices. Choose freely.": [
+      "手動：歯車をオフにし、候補横の提案を参考に自由に選択。",
+      "수동: 톱니바퀴를 끄고 후보 옆 추천을 참고해 자유롭게 선택하세요.",
+      "Вручную: выключите шестерёнки. Подсказки рядом с вариантами; выбор за вами.",
+      "Manuel : engrenages désactivés. Consultez le conseil, puis choisissez librement.",
+      "Manuell: Zahnräder aus. Hinweise neben den Optionen; freie Auswahl.",
+      "Manual: engranajes desactivados. Consulta el consejo y elige libremente.",
+      "Ręcznie: wyłącz koła zębate. Korzystaj z porad i wybieraj dowolnie.",
+      "Manual: engrenagens desligadas. Veja a sugestão e escolha livremente."
+    ],
+    "Auto: gears on for the fields you want automated.": [
+      "自動：任せたい分野の歯車をオンにしてください。",
+      "자동: 맡길 분야의 톱니바퀴를 켜세요.",
+      "Автоматически: включите шестерёнки нужных областей.",
+      "Auto : activez l'engrenage des domaines à automatiser.",
+      "Automatisch: Zahnräder für die gewünschten Bereiche einschalten.",
+      "Automático: activa los engranajes de las áreas deseadas.",
+      "Automatycznie: włącz koła zębate wybranych dziedzin.",
+      "Automático: ligue as engrenagens das áreas desejadas."
+    ],
+    "Researched": [
+      "研究済み",
+      "연구 완료",
+      "Исследовано",
+      "Recherchée",
+      "Erforscht",
+      "Investigada",
+      "Zbadana",
+      "Pesquisada"
+    ],
+    "Researching": [
+      "研究中",
+      "연구 중",
+      "Исследуется",
+      "En cours",
+      "In Forschung",
+      "En investigación",
+      "W trakcie badań",
+      "Em pesquisa"
+    ],
+    "Offered": [
+      "現在の候補",
+      "현재 후보",
+      "Доступный вариант",
+      "Proposée",
+      "Angeboten",
+      "Disponible",
+      "Dostępna",
+      "Oferecida"
+    ],
+    "Unresearched / not currently offered": [
+      "未研究 / 現在の候補にはない",
+      "미연구 / 현재 후보 아님",
+      "Не исследовано / сейчас не предложено",
+      "Non recherchée / non proposée",
+      "Nicht erforscht / nicht angeboten",
+      "Sin investigar / no disponible ahora",
+      "Niezbadana / obecnie niedostępna",
+      "Não pesquisada / não oferecida agora"
+    ],
+    "Requirements not met": [
+      "条件を満たしていない",
+      "조건 미충족",
+      "Условия не выполнены",
+      "Conditions non remplies",
+      "Voraussetzungen nicht erfüllt",
+      "Requisitos no cumplidos",
+      "Warunki niespełnione",
+      "Requisitos não atendidos"
+    ],
+    "Needs prerequisites": [
+      "前提技術が必要",
+      "선행 기술 필요",
+      "Нужны предшествующие технологии",
+      "Prérequis nécessaires",
+      "Vorgängertechnologien benötigt",
+      "Faltan requisitos tecnológicos",
+      "Wymagane poprzednie technologie",
+      "Pré-requisitos necessários"
+    ],
+    "Build or repair a megastructure": [
+      "巨大構造物の建造か修復が必要",
+      "거대구조물 건설 또는 복구 필요",
+      "Постройте или восстановите мегасооружение",
+      "Construire ou réparer une mégastructure",
+      "Megastruktur bauen oder reparieren",
+      "Construye o repara una megaestructura",
+      "Zbuduj lub napraw megastrukturę",
+      "Construa ou repare uma megaestrutura"
+    ],
+    "Needs Galactic Wonders": [
+      "銀河の驚異が必要",
+      "은하의 불가사의 필요",
+      "Нужны Галактические чудеса",
+      "Merveilles galactiques nécessaires",
+      "Galaktische Wunder benötigt",
+      "Requiere Maravillas galácticas",
+      "Wymagane Galaktyczne cuda",
+      "Requer Maravilhas Galácticas"
+    ],
+    "Tier not unlocked": [
+      "技術階層が未解放",
+      "기술 단계 미해금",
+      "Уровень технологий не открыт",
+      "Palier non débloqué",
+      "Stufe nicht freigeschaltet",
+      "Nivel no desbloqueado",
+      "Poziom nieodblokowany",
+      "Nível não desbloqueado"
+    ],
+    "Needs a special unlock": [
+      "特殊な解放条件が必要",
+      "특수 해금 필요",
+      "Нужно особое условие открытия",
+      "Déblocage spécial nécessaire",
+      "Besondere Freischaltung benötigt",
+      "Requiere desbloqueo especial",
+      "Wymagane specjalne odblokowanie",
+      "Requer desbloqueio especial"
+    ],
+    "Awaiting draw or other conditions": [
+      "抽選または別の条件待ち",
+      "추첨 또는 다른 조건 대기",
+      "Ожидание предложения или других условий",
+      "En attente du tirage ou d'autres conditions",
+      "Warten auf Angebot oder andere Bedingungen",
+      "Esperando sorteo u otras condiciones",
+      "Oczekiwanie na losowanie lub inne warunki",
+      "Aguardando sorteio ou outras condições"
+    ],
+    "Tier definition not loaded; planning suspended": [
+      "階層定義が未読込のため計画を停止",
+      "단계 정의 미로드; 계획 중단",
+      "Определение уровня не загружено; план приостановлен",
+      "Palier non chargé ; plan suspendu",
+      "Stufendefinition fehlt; Planung pausiert",
+      "Falta la definición del nivel; plan pausado",
+      "Brak definicji poziomu; plan wstrzymany",
+      "Definição do nível ausente; plano pausado"
+    ],
+    "Unreachable in current setup; skipped by plan": [
+      "現在の構成では取得不可；計画から除外",
+      "현재 구성에서 획득 불가; 계획에서 제외",
+      "Недоступно в текущей конфигурации; план пропускает",
+      "Inaccessible avec cette configuration ; ignorée",
+      "In aktueller Konfiguration unerreichbar; übersprungen",
+      "Inalcanzable con esta configuración; omitida",
+      "Nieosiągalna w tej konfiguracji; pominięta",
+      "Inalcançável nesta configuração; ignorada"
+    ],
+    "Physics": [
+      "物理学",
+      "물리학",
+      "Физика",
+      "Physique",
+      "Physik",
+      "Física",
+      "Fizyka",
+      "Física"
+    ],
+    "Society": [
+      "社会学",
+      "사회학",
+      "Общество",
+      "Société",
+      "Gesellschaft",
+      "Sociedad",
+      "Socjologia",
+      "Sociedade"
+    ],
+    "Engineering": [
+      "工学",
+      "공학",
+      "Инженерия",
+      "Ingénierie",
+      "Ingenieurswesen",
+      "Ingeniería",
+      "Inżynieria",
+      "Engenharia"
+    ],
+    "Jump": [
+      "移動",
+      "이동",
+      "Перейти",
+      "Aller à",
+      "Springen zu",
+      "Ir a",
+      "Przejdź",
+      "Ir para"
+    ],
+    "Cross": [
+      "分野間",
+      "교차",
+      "Меж.",
+      "Inter.",
+      "Quer",
+      "Cruce",
+      "Między",
+      "Entre"
+    ],
+    "Scroll to browse": [
+      "スクロールで閲覧",
+      "스크롤하여 보기",
+      "Просмотр прокруткой",
+      "Défiler pour parcourir",
+      "Zum Durchsuchen scrollen",
+      "Desplázate para explorar",
+      "Przewijaj, aby przeglądać",
+      "Role para explorar"
+    ],
+    "Prerequisites": [
+      "前提技術",
+      "선행 기술",
+      "Предшествующие технологии",
+      "Prérequis",
+      "Voraussetzungen",
+      "Requisitos",
+      "Poprzednie technologie",
+      "Pré-requisitos"
+    ],
+    "Prerequisites (including alternatives):": [
+      "前提技術（選択肢を含む）：",
+      "선행 기술 (대안 포함):",
+      "Предшествующие технологии (включая альтернативы):",
+      "Prérequis (alternatives incluses) :",
+      "Voraussetzungen (einschließlich Alternativen):",
+      "Requisitos (incluidas alternativas):",
+      "Poprzednie technologie (z alternatywami):",
+      "Pré-requisitos (incluindo alternativas):"
+    ],
+    "Prerequisites from other fields": [
+      "他分野の前提技術",
+      "다른 분야의 선행 기술",
+      "Предшествующие технологии из других областей",
+      "Prérequis d'autres domaines",
+      "Voraussetzungen aus anderen Bereichen",
+      "Requisitos de otras áreas",
+      "Poprzednie technologie z innych dziedzin",
+      "Pré-requisitos de outras áreas"
+    ],
+    "Click to view all prerequisites, then choose whether to track.": [
+      "クリックして全前提技術を確認し、追跡するか選択。",
+      "클릭해 전체 선행 기술을 확인한 뒤 추적 여부를 선택하세요.",
+      "Нажмите для просмотра всех требований, затем решите, отслеживать ли цель.",
+      "Cliquez pour voir les prérequis, puis choisissez de suivre ou non.",
+      "Alle Voraussetzungen ansehen, dann über das Verfolgen entscheiden.",
+      "Haz clic para ver los requisitos y decidir si seguirla.",
+      "Kliknij, aby zobaczyć wymagania i zdecydować o śledzeniu.",
+      "Clique para ver os pré-requisitos e decidir se deseja acompanhar."
+    ],
+    "Click to view all prerequisites. Normal unlock rules still apply.": [
+      "クリックして全前提技術を確認。通常の解放条件に従います。",
+      "클릭해 전체 선행 기술 확인. 정상 해금 규칙이 적용됩니다.",
+      "Нажмите для просмотра требований. Обычные правила открытия сохраняются.",
+      "Cliquez pour les prérequis. Les règles normales s'appliquent.",
+      "Für alle Voraussetzungen klicken. Normale Freischaltregeln gelten.",
+      "Haz clic para ver requisitos. Se mantienen las reglas normales.",
+      "Kliknij, aby zobaczyć wymagania. Obowiązują zwykłe zasady.",
+      "Clique para ver os pré-requisitos. As regras normais continuam valendo."
+    ],
+    "Click to add a goal (up to five). This does not grant the technology.": [
+      "クリックして目標を追加（最大5件）。技術は付与されません。",
+      "클릭하여 목표 추가 (최대 5개). 기술을 즉시 얻지는 않습니다.",
+      "Нажмите, чтобы добавить цель (до пяти). Технология не выдаётся.",
+      "Cliquez pour ajouter un objectif (cinq maximum). La technologie n'est pas accordée.",
+      "Klicken, um ein Ziel hinzuzufügen (bis zu fünf). Gewährt keine Technologie.",
+      "Haz clic para añadir un objetivo (hasta cinco). No otorga la tecnología.",
+      "Kliknij, aby dodać cel (do pięciu). Nie przyznaje to technologii.",
+      "Clique para adicionar um objetivo (até cinco). Isso não concede a tecnologia."
+    ],
+    "Green: researched / Blue: researching / Yellow: offered": [
+      "緑：研究済み / 青：研究中 / 黄：候補",
+      "초록: 연구 완료 / 파랑: 연구 중 / 노랑: 후보",
+      "Зелёный: изучено / синий: изучается / жёлтый: предложено",
+      "Vert : recherchée / bleu : en cours / jaune : proposée",
+      "Grün: erforscht / Blau: in Forschung / Gelb: angeboten",
+      "Verde: investigada / azul: en curso / amarillo: disponible",
+      "Zielony: zbadana / niebieski: w trakcie / żółty: dostępna",
+      "Verde: pesquisada / azul: em pesquisa / amarelo: oferecida"
+    ],
+    "Gold: selected technology": [
+      "金枠：選択中の技術",
+      "금색: 선택한 기술",
+      "Золотой: выбранная технология",
+      "Or : technologie sélectionnée",
+      "Gold: ausgewählte Technologie",
+      "Dorado: tecnología seleccionada",
+      "Złoty: wybrana technologia",
+      "Dourado: tecnologia selecionada"
+    ],
+    "Bright lines: cross-field": [
+      "明線：分野間の前提",
+      "밝은 선: 분야 간 연결",
+      "Яркие линии: между областями",
+      "Lignes claires : entre domaines",
+      "Helle Linien: fachübergreifend",
+      "Líneas claras: entre áreas",
+      "Jasne linie: między dziedzinami",
+      "Linhas claras: entre áreas"
+    ],
+    "One alternative is enough": [
+      "選択肢は1つ満たせば十分",
+      "대안 중 하나만 충족하면 됩니다",
+      "Достаточно одной альтернативы",
+      "Une alternative suffit",
+      "Eine Alternative genügt",
+      "Basta una alternativa",
+      "Wystarczy jedna alternatywa",
+      "Uma alternativa basta"
+    ],
+    "Click to track; hover for details": [
+      "クリックで追跡、ホバーで詳細",
+      "클릭하여 추적; 마우스를 올려 상세 보기",
+      "Нажмите для отслеживания; наведите для деталей",
+      "Cliquez pour suivre ; survolez pour les détails",
+      "Zum Verfolgen klicken; Details beim Überfahren",
+      "Haz clic para seguir; pasa el cursor para detalles",
+      "Kliknij, aby śledzić; najedź po szczegóły",
+      "Clique para acompanhar; passe o cursor para detalhes"
+    ],
+    "Click to track": [
+      "クリックで追跡",
+      "클릭하여 추적",
+      "Нажмите для отслеживания",
+      "Cliquez pour suivre",
+      "Zum Verfolgen klicken",
+      "Haz clic para seguir",
+      "Kliknij, aby śledzić",
+      "Clique para acompanhar"
+    ],
+    "Lines connect prerequisites": [
+      "線は前提技術を結びます",
+      "선은 선행 기술을 연결합니다",
+      "Линии связывают требования",
+      "Les lignes relient les prérequis",
+      "Linien verbinden Voraussetzungen",
+      "Las líneas conectan requisitos",
+      "Linie łączą wymagania",
+      "As linhas conectam pré-requisitos"
+    ],
+    "Switch fields on the right": [
+      "右側で分野を切り替え",
+      "오른쪽에서 분야 전환",
+      "Смена области справа",
+      "Changez de domaine à droite",
+      "Bereich rechts wechseln",
+      "Cambia de área a la derecha",
+      "Zmień dziedzinę po prawej",
+      "Troque de área à direita"
+    ],
+    "Click for prerequisites": [
+      "クリックして前提技術を確認",
+      "클릭하여 선행 기술 보기",
+      "Нажмите для просмотра требований",
+      "Cliquez pour les prérequis",
+      "Für Voraussetzungen klicken",
+      "Haz clic para ver requisitos",
+      "Kliknij, aby zobaczyć wymagania",
+      "Clique para ver pré-requisitos"
+    ],
+    "Goal research advice": [
+      "目標に向けた研究提案",
+      "목표 연구 추천",
+      "Совет по исследованию цели",
+      "Conseil de recherche ciblée",
+      "Zielbezogene Forschungstipps",
+      "Consejo para el objetivo",
+      "Porady dotyczące celów badań",
+      "Sugestão de pesquisa por objetivo"
+    ],
+    "Advice only · click to refresh, hover for reasons": [
+      "提案のみ · クリックで更新、ホバーで理由",
+      "추천만 표시 · 클릭하여 갱신, 마우스를 올려 이유 확인",
+      "Только совет · нажмите для обновления, наведите для причин",
+      "Conseil uniquement · cliquez pour actualiser, survolez pour la raison",
+      "Nur Empfehlung · klicken zum Aktualisieren, überfahren für Gründe",
+      "Solo consejo · clic para actualizar, cursor para ver motivos",
+      "Tylko porada · kliknij, aby odświeżyć, najedź po uzasadnienie",
+      "Apenas sugestão · clique para atualizar, cursor para ver motivos"
+    ],
+    "Choose any card. Auto-research requires the native gear.": [
+      "どの候補でも選べます。自動研究には通常の歯車が必要。",
+      "어떤 후보든 선택 가능. 자동 연구에는 기본 톱니바퀴가 필요합니다.",
+      "Можно выбрать любую карточку. Автоисследование требует обычной шестерёнки.",
+      "Choisissez n'importe quelle carte. L'auto-recherche nécessite l'engrenage du jeu.",
+      "Jede Karte ist wählbar. Automatische Forschung benötigt das normale Zahnrad.",
+      "Elige cualquier tarjeta. La investigación automática requiere el engranaje del juego.",
+      "Wybierz dowolną kartę. Automatyczne badania wymagają koła zębatego gry.",
+      "Escolha qualquer cartão. A pesquisa automática requer a engrenagem do jogo."
+    ],
+    "No current suggestion": [
+      "現在の提案なし",
+      "현재 추천 없음",
+      "Сейчас нет рекомендации",
+      "Aucune suggestion actuelle",
+      "Aktuell keine Empfehlung",
+      "Sin sugerencia actual",
+      "Brak bieżącej sugestii",
+      "Sem sugestão no momento"
+    ],
+    "Click to recheck": [
+      "クリックで再確認",
+      "클릭하여 다시 확인",
+      "Нажмите для повторной проверки",
+      "Cliquez pour revérifier",
+      "Klicken zum erneuten Prüfen",
+      "Haz clic para comprobar",
+      "Kliknij, aby sprawdzić ponownie",
+      "Clique para verificar novamente"
+    ],
+    "No current valid suggestion, or goal priority is paused. Choose freely. Click to recheck; this does not start research.": [
+      "有効な提案がないか、目標優先が停止中です。自由に選択できます。クリックは再確認のみで研究を開始しません。",
+      "유효한 추천이 없거나 목표 우선이 일시 정지되었습니다. 자유롭게 선택하세요. 클릭은 다시 확인만 하며 연구를 시작하지 않습니다.",
+      "Нет подходящей рекомендации или приоритет целей приостановлен. Выбор свободный. Нажатие лишь проверяет совет и не запускает исследование.",
+      "Aucune suggestion valide, ou priorité suspendue. Choisissez librement. Le clic revérifie, sans lancer de recherche.",
+      "Keine gültige Empfehlung oder Zielpriorität pausiert. Freie Auswahl. Klicken prüft erneut, startet aber keine Forschung.",
+      "No hay sugerencia válida o la prioridad está pausada. Elige libremente. El clic comprueba; no inicia investigación.",
+      "Brak poprawnej sugestii lub priorytet jest wstrzymany. Wybieraj dowolnie. Kliknięcie tylko sprawdza, nie rozpoczyna badań.",
+      "Sem sugestão válida ou prioridade pausada. Escolha livremente. O clique verifica, mas não inicia pesquisa."
+    ],
+    "Goal technology": [
+      "目標技術",
+      "목표 기술",
+      "Целевая технология",
+      "Technologie cible",
+      "Zieltechnologie",
+      "Tecnología objetivo",
+      "Technologia docelowa",
+      "Tecnologia alvo"
+    ],
+    "Prerequisite": [
+      "前提技術",
+      "선행 기술",
+      "Предшествующая технология",
+      "Prérequis",
+      "Voraussetzung",
+      "Requisito",
+      "Poprzednia technologia",
+      "Pré-requisito"
+    ],
+    "Tier filler": [
+      "階層解放の補充",
+      "단계 보충",
+      "Открытие следующего уровня",
+      "Complément de palier",
+      "Stufenauffüllung",
+      "Completar nivel",
+      "Uzupełnienie poziomu",
+      "Completar nível"
+    ],
+    "Goal": [
+      "目標",
+      "목표",
+      "Цель",
+      "Objectif",
+      "Ziel",
+      "Objetivo",
+      "Cel",
+      "Objetivo"
+    ],
+    "Research plan details": [
+      "研究計画の詳細",
+      "연구 계획 상세",
+      "Подробности плана исследований",
+      "Détails du plan de recherche",
+      "Details zum Forschungsplan",
+      "Detalles del plan de investigación",
+      "Szczegóły planu badań",
+      "Detalhes do plano de pesquisa"
+    ],
+    "No research in progress": [
+      "研究中の技術なし",
+      "진행 중인 연구 없음",
+      "Исследование не ведётся",
+      "Aucune recherche en cours",
+      "Keine Forschung aktiv",
+      "Sin investigación en curso",
+      "Brak badań w toku",
+      "Nenhuma pesquisa em andamento"
+    ],
+    "No current goal being advanced": [
+      "現在進行中の目標なし",
+      "현재 진행 중인 목표 없음",
+      "Сейчас ни одна цель не продвигается",
+      "Aucun objectif en progression",
+      "Aktuell kein Ziel in Bearbeitung",
+      "Sin objetivo en progreso",
+      "Żaden cel nie jest obecnie realizowany",
+      "Nenhum objetivo sendo avançado"
+    ],
+    "Goal priority is paused; vanilla or manual choices remain.": [
+      "目標優先は停止中；通常または手動の選択を維持。",
+      "목표 우선 일시 정지; 기본 또는 수동 선택 유지.",
+      "Приоритет целей приостановлен; обычный или ручной выбор сохранён.",
+      "Priorité suspendue ; choix du jeu ou manuels conservés.",
+      "Zielpriorität pausiert; normale oder manuelle Auswahl bleibt.",
+      "Prioridad pausada; se mantienen las decisiones normales o manuales.",
+      "Priorytet wstrzymany; pozostaje wybór zwykły lub ręczny.",
+      "Prioridade pausada; escolhas normais ou manuais mantidas."
+    ],
+    "This is a tracked goal.": [
+      "これは追跡中の目標です。",
+      "추적 중인 목표입니다.",
+      "Это отслеживаемая цель.",
+      "Il s'agit d'un objectif suivi.",
+      "Dies ist ein verfolgtes Ziel.",
+      "Es un objetivo seguido.",
+      "To śledzony cel.",
+      "Este é um objetivo acompanhado."
+    ],
+    "This is a prerequisite on a goal route.": [
+      "目標ルート上の前提技術です。",
+      "목표 경로의 선행 기술입니다.",
+      "Это требование на пути к цели.",
+      "Il s'agit d'un prérequis sur le chemin d'un objectif.",
+      "Dies ist eine Voraussetzung auf einer Zielroute.",
+      "Es un requisito en la ruta al objetivo.",
+      "To wymagana technologia na drodze do celu.",
+      "Este é um pré-requisito na rota de um objetivo."
+    ],
+    "Not on the current plan; vanilla or manual selection may apply.": [
+      "現在の計画外；通常または手動の選択が適用されます。",
+      "현재 계획에 없음; 기본 또는 수동 선택이 적용될 수 있습니다.",
+      "Не входит в текущий план; возможен обычный или ручной выбор.",
+      "Hors du plan actuel ; choix du jeu ou manuel possible.",
+      "Nicht im aktuellen Plan; normale oder manuelle Auswahl möglich.",
+      "Fuera del plan actual; puede ser una elección normal o manual.",
+      "Poza bieżącym planem; możliwy wybór zwykły lub ręczny.",
+      "Fora do plano atual; pode ser uma escolha normal ou manual."
+    ],
+    " toward T": [
+      " を補充してT",
+      " 보충 → T",
+      " для открытия T",
+      " pour accéder à T",
+      " auffüllen für T",
+      " para acceder a T",
+      " do odblokowania T",
+      " para desbloquear T"
+    ],
+    "; counted ": [
+      "；完了 ",
+      "; 완료 ",
+      "; выполнено ",
+      " ; obtenues ",
+      "; erforscht ",
+      "; completadas ",
+      "; zbadano ",
+      "; concluídas "
+    ],
+    "This is the currently prioritized goal, ready to research.": [
+      "現在最優先の目標です。研究可能です。",
+      "현재 최우선 목표이며 연구할 수 있습니다.",
+      "Это текущая приоритетная цель, готовая к исследованию.",
+      "C'est l'objectif prioritaire actuel, prêt à être recherché.",
+      "Aktuelles priorisiertes Ziel, bereit zur Erforschung.",
+      "Es el objetivo prioritario actual, listo para investigar.",
+      "To obecny cel priorytetowy, gotowy do zbadania.",
+      "Este é o objetivo prioritário atual, pronto para pesquisar."
+    ],
+    "This is an unfinished prerequisite on the prioritized goal route.": [
+      "優先目標ルート上の未完了の前提技術です。",
+      "우선 목표 경로의 미완료 선행 기술입니다.",
+      "Это ещё не выполненное требование на пути к приоритетной цели.",
+      "Prérequis non terminé sur la route de l'objectif prioritaire.",
+      "Unerforschte Voraussetzung auf der priorisierten Zielroute.",
+      "Es un requisito pendiente en la ruta al objetivo prioritario.",
+      "To niezbadana technologia wymagana przez cel priorytetowy.",
+      "É um pré-requisito pendente na rota do objetivo prioritário."
+    ],
+    "The goal route needs a higher tier. Research one T": [
+      "目標ルートには上位階層が必要です。T",
+      "목표 경로에 상위 단계가 필요합니다. T",
+      "Для пути к цели нужен более высокий уровень. Исследуйте одну технологию T",
+      "La route nécessite un palier supérieur. Recherchez une technologie T",
+      "Die Zielroute benötigt eine höhere Stufe. Eine Technologie T",
+      "La ruta requiere un nivel superior. Investiga una tecnología T",
+      "Droga do celu wymaga wyższego poziomu. Zbadaj jedną technologię T",
+      "A rota exige um nível superior. Pesquise uma tecnologia T"
+    ],
+    " technology toward unlocking T": [
+      " の技術を1件研究してT",
+      " 기술 하나 연구 → T",
+      " для открытия T",
+      " pour débloquer T",
+      " erforschen, um T",
+      " para desbloquear T",
+      " do odblokowania T",
+      " para desbloquear T"
+    ],
+    "Only eligible offered cards are compared. Lower base cost breaks equal-priority ties.": [
+      "条件を満たす候補のみ比較します。同優先度なら基本コストの低い技術を提案。",
+      "조건에 맞는 후보만 비교합니다. 우선순위가 같으면 기본 비용이 낮은 기술을 추천합니다.",
+      "Сравниваются только доступные предложенные карточки. При равном приоритете выбирается меньшая базовая стоимость.",
+      "Seules les cartes proposées admissibles sont comparées. À priorité égale, le coût de base le plus faible est préféré.",
+      "Nur zulässige angebotene Karten werden verglichen. Bei gleichem Rang entscheidet der geringere Grundpreis.",
+      "Solo se comparan tarjetas disponibles válidas. A igual prioridad se prefiere el menor coste base.",
+      "Porównywane są tylko dostępne, dozwolone karty. Przy równym priorytecie decyduje niższy koszt bazowy.",
+      "Só cartões oferecidos e elegíveis são comparados. Em empate de prioridade, prefere-se o menor custo base."
+    ],
+    "Click only refreshes advice; select research on the native card to the left.": [
+      "クリックは提案の更新のみ。研究は左側の通常のカードから選択してください。",
+      "클릭은 추천 갱신만 합니다. 연구는 왼쪽 기본 카드에서 선택하세요.",
+      "Нажатие лишь обновляет совет. Выберите исследование на обычной карточке слева.",
+      "Le clic actualise seulement le conseil. Choisissez la recherche sur la carte du jeu à gauche.",
+      "Klicken aktualisiert nur den Hinweis. Forschung auf der normalen Karte links auswählen.",
+      "El clic solo actualiza el consejo. Elige la investigación en la tarjeta normal de la izquierda.",
+      "Kliknięcie tylko odświeża poradę. Wybierz badanie na zwykłej karcie po lewej.",
+      "O clique só atualiza a sugestão. Selecione a pesquisa no cartão do jogo à esquerda."
+    ],
+    "Browse by purpose": [
+      "用途から探す",
+      "용도별 보기",
+      "По назначению",
+      "Parcourir par usage",
+      "Nach Zweck durchsuchen",
+      "Buscar por utilidad",
+      "Według zastosowania",
+      "Explorar por finalidade"
+    ],
+    "Browse by name": [
+      "名前から探す",
+      "이름별 보기",
+      "По названию",
+      "Parcourir par nom",
+      "Nach Namen durchsuchen",
+      "Buscar por nombre",
+      "Według nazwy",
+      "Explorar por nome"
+    ],
+    "Quick access": [
+      "クイックアクセス",
+      "빠른 선택",
+      "Быстрый доступ",
+      "Accès rapide",
+      "Schnellzugriff",
+      "Acceso rápido",
+      "Szybki dostęp",
+      "Acesso rápido"
+    ],
+    "Current research options (including active research)": [
+      "現在の研究候補（研究中も含む）",
+      "현재 연구 후보 (진행 중 포함)",
+      "Текущие варианты (включая активное исследование)",
+      "Choix actuels (recherche en cours incluse)",
+      "Aktuelle Optionen (einschließlich laufender Forschung)",
+      "Opciones actuales (incluida investigación activa)",
+      "Bieżące opcje (w tym trwające badania)",
+      "Opções atuais (incluindo pesquisa ativa)"
+    ],
+    "Recently viewed (up to eight)": [
+      "最近見た技術（最大8件）",
+      "최근 확인 (최대 8개)",
+      "Недавно просмотренные (до восьми)",
+      "Vues récemment (huit maximum)",
+      "Zuletzt angesehen (bis zu acht)",
+      "Vistas recientemente (hasta ocho)",
+      "Ostatnio oglądane (do ośmiu)",
+      "Vistas recentemente (até oito)"
+    ],
+    "Clear viewing history (keep research goals)": [
+      "閲覧履歴を消去（研究目標は保持）",
+      "확인 기록 삭제 (연구 목표 유지)",
+      "Очистить историю (сохранить цели)",
+      "Effacer l'historique (garder les objectifs)",
+      "Verlauf löschen (Ziele behalten)",
+      "Borrar historial (conservar objetivos)",
+      "Wyczyść historię (zachowaj cele)",
+      "Limpar histórico (manter objetivos)"
+    ],
+    "Chinese names · pinyin initials": [
+      "中国語名 · ピンイン順",
+      "중국어 이름 · 병음 첫 글자",
+      "Китайские названия · пиньинь",
+      "Noms chinois · initiales pinyin",
+      "Chinesische Namen · Pinyin",
+      "Nombres chinos · iniciales pinyin",
+      "Chińskie nazwy · inicjały pinyin",
+      "Nomes chineses · iniciais pinyin"
+    ],
+    "English names · A–Z": [
+      "英語名の索引 · A–Z",
+      "영어 이름 색인 · A–Z",
+      "По английскому названию · A–Z",
+      "Index des noms anglais · A–Z",
+      "Englischer Namensindex · A–Z",
+      "Índice de nombres ingleses · A–Z",
+      "Indeks nazw angielskich · A–Z",
+      "Índice de nomes em inglês · A–Z"
+    ],
+    "Browse by purpose or technology name.": [
+      "用途や技術名から探せます。",
+      "용도나 기술 이름으로 찾으세요.",
+      "Ищите по назначению или названию технологии.",
+      "Parcourez par usage ou nom de technologie.",
+      "Nach Zweck oder Technologiename durchsuchen.",
+      "Busca por utilidad o nombre de tecnología.",
+      "Przeglądaj według zastosowania lub nazwy.",
+      "Explore por finalidade ou nome de tecnologia."
+    ],
+    "Preview prerequisites, then choose whether to track.": [
+      "前提技術を確認し、追跡するか選択。",
+      "선행 기술을 확인한 뒤 추적 여부를 선택하세요.",
+      "Посмотрите требования и решите, отслеживать ли цель.",
+      "Consultez les prérequis, puis décidez de suivre.",
+      "Voraussetzungen ansehen, dann über Verfolgung entscheiden.",
+      "Consulta los requisitos y decide si seguirla.",
+      "Sprawdź wymagania i zdecyduj o śledzeniu.",
+      "Veja os pré-requisitos e decida se deseja acompanhar."
+    ],
+    "Unlocks still require the right empire, DLC and event conditions.": [
+      "解放には対応する帝国、DLC、イベント条件が必要です。",
+      "해금에는 올바른 제국, DLC, 이벤트 조건이 필요합니다.",
+      "Для открытия по-прежнему нужны соответствующие условия империи, DLC и событий.",
+      "Les conditions d'empire, de DLC et d'événements restent nécessaires.",
+      "Freischaltungen benötigen weiterhin passende Reichs-, DLC- und Ereignisbedingungen.",
+      "Siguen siendo necesarias las condiciones de imperio, DLC y eventos.",
+      "Nadal wymagane są właściwe warunki imperium, DLC i wydarzeń.",
+      "Condições de império, DLC e eventos continuam necessárias."
+    ],
+    "Browse names by initial; typing a search is not supported.": [
+      "索引は英語名または中国語ピンイン順です。文字入力検索には未対応。",
+      "색인은 영어 이름 또는 중국어 병음 순서입니다. 입력식 검색은 지원하지 않습니다.",
+      "Индекс использует английские названия или китайский пиньинь. Ввод поискового текста не поддерживается.",
+      "Index par noms anglais ou pinyin chinois. La recherche saisie n'est pas disponible.",
+      "Index nach englischen Namen oder chinesischem Pinyin. Keine Texteingabesuche.",
+      "Índice por nombres ingleses o pinyin chino. No admite búsqueda escrita.",
+      "Indeks według nazw angielskich lub chińskiego pinyin. Brak wyszukiwania przez wpisywanie.",
+      "Índice por nomes em inglês ou pinyin chinês. Não há busca digitada."
+    ],
+    "Resource production": [
+      "資源生産",
+      "자원 생산",
+      "Производство ресурсов",
+      "Production de ressources",
+      "Ressourcenproduktion",
+      "Producción de recursos",
+      "Produkcja zasobów",
+      "Produção de recursos"
+    ],
+    "Ships and starbases": [
+      "艦船と星系基地",
+      "함선과 항성기지",
+      "Корабли и звёздные базы",
+      "Vaisseaux et bases stellaires",
+      "Schiffe und Sternenbasen",
+      "Naves y bases estelares",
+      "Statki i bazy gwiezdne",
+      "Naves e bases estelares"
+    ],
+    "Weapons and armies": [
+      "兵器と地上軍",
+      "무기와 지상군",
+      "Оружие и армии",
+      "Armes et armées",
+      "Waffen und Armeen",
+      "Armas y ejércitos",
+      "Broń i armie",
+      "Armas e exércitos"
+    ],
+    "Colonies and population": [
+      "植民地と人口",
+      "식민지와 인구",
+      "Колонии и население",
+      "Colonies et population",
+      "Kolonien und Bevölkerung",
+      "Colonias y población",
+      "Kolonie i populacja",
+      "Colônias e população"
+    ],
+    "Research and empire": [
+      "研究と帝国発展",
+      "연구와 제국 발전",
+      "Исследования и развитие империи",
+      "Recherche et empire",
+      "Forschung und Reich",
+      "Investigación e imperio",
+      "Badania i rozwój imperium",
+      "Pesquisa e império"
+    ],
+    "Megastructures, ascension and special tech": [
+      "巨大構造物・アセンション・特殊技術",
+      "거대구조물, 승격 및 특수 기술",
+      "Мегасооружения, вознесение и особые технологии",
+      "Mégastructures, ascension et technologies spéciales",
+      "Megastrukturen, Aufstieg und Spezialtechnologien",
+      "Megaestructuras, ascensión y tecnologías especiales",
+      "Megastruktury, wyniesienie i specjalne technologie",
+      "Megaestruturas, ascensão e tecnologias especiais"
+    ],
+    "Energy production": [
+      "エネルギー生産",
+      "에너지 생산",
+      "Производство энергии",
+      "Production d'énergie",
+      "Energieproduktion",
+      "Producción de energía",
+      "Produkcja energii",
+      "Produção de energia"
+    ],
+    "Minerals and mining": [
+      "鉱物と採鉱",
+      "광물과 채굴",
+      "Минералы и добыча",
+      "Minéraux et extraction",
+      "Mineralien und Bergbau",
+      "Minerales y minería",
+      "Minerały i górnictwo",
+      "Minerais e mineração"
+    ],
+    "Food and agriculture": [
+      "食料と農業",
+      "식량과 농업",
+      "Пища и сельское хозяйство",
+      "Nourriture et agriculture",
+      "Nahrung und Landwirtschaft",
+      "Alimentos y agricultura",
+      "Żywność i rolnictwo",
+      "Alimentos e agricultura"
+    ],
+    "Alloys and metallurgy": [
+      "合金と冶金",
+      "합금과 야금",
+      "Сплавы и металлургия",
+      "Alliages et métallurgie",
+      "Legierungen und Metallurgie",
+      "Aleaciones y metalurgia",
+      "Stopy i metalurgia",
+      "Ligas e metalurgia"
+    ],
+    "Consumer goods and civilian industry": [
+      "消費財と民間産業",
+      "소비재와 민간 산업",
+      "Товары массового спроса и гражданская промышленность",
+      "Biens de consommation et industrie civile",
+      "Konsumgüter und zivile Industrie",
+      "Bienes de consumo e industria civil",
+      "Dobra konsumpcyjne i przemysł cywilny",
+      "Bens de consumo e indústria civil"
+    ],
+    "Volatile motes / chemical plants, gases and crystals": [
+      "揮発性粉末・化学工場・ガス・クリスタル",
+      "휘발성 분말 / 화학 공장, 가스와 결정",
+      "Летучие пылинки / химзаводы, газы и кристаллы",
+      "Particules volatiles / usines chimiques, gaz et cristaux",
+      "Flüchtige Partikel / Chemiewerke, Gase und Kristalle",
+      "Motas volátiles / plantas químicas, gases y cristales",
+      "Lotne drobinki / zakłady chemiczne, gazy i kryształy",
+      "Partículas voláteis / fábricas químicas, gases e cristais"
+    ],
+    "Trade and economy": [
+      "交易と経済",
+      "무역과 경제",
+      "Торговля и экономика",
+      "Commerce et économie",
+      "Handel und Wirtschaft",
+      "Comercio y economía",
+      "Handel i gospodarka",
+      "Comércio e economia"
+    ],
+    "Ship classes and hulls": [
+      "艦種と船体",
+      "함선 종류와 선체",
+      "Классы кораблей и корпуса",
+      "Classes et coques de vaisseaux",
+      "Schiffsklassen und Rümpfe",
+      "Clases y cascos de naves",
+      "Klasy statków i kadłuby",
+      "Classes e cascos de naves"
+    ],
+    "Armor, shields and ship defenses": [
+      "装甲・シールド・艦船防御",
+      "장갑, 보호막 및 함선 방어",
+      "Броня, щиты и защита кораблей",
+      "Blindage, boucliers et défense des vaisseaux",
+      "Panzerung, Schilde und Schiffsverteidigung",
+      "Blindaje, escudos y defensa de naves",
+      "Pancerz, osłony i obrona statków",
+      "Blindagem, escudos e defesa de naves"
+    ],
+    "Propulsion, FTL and exploration": [
+      "推進・超光速航行・探索",
+      "추진, 초광속 및 탐사",
+      "Двигатели, сверхсветовые перелёты и разведка",
+      "Propulsion, PRL et exploration",
+      "Antrieb, ÜL und Erkundung",
+      "Propulsión, MRL y exploración",
+      "Napęd, FTL i eksploracja",
+      "Propulsão, MRL e exploração"
+    ],
+    "Fleet, command and starbase capacity": [
+      "艦隊・指揮・星系基地の許容量",
+      "함대, 지휘 및 항성기지 수용력",
+      "Вместимость флота, командования и баз",
+      "Capacité navale, de commandement et de bases",
+      "Flotten-, Kommando- und Basenkapazität",
+      "Capacidad naval, de mando y de bases",
+      "Limit floty, dowodzenia i baz",
+      "Capacidade naval, de comando e de bases"
+    ],
+    "Lasers, plasma and energy weapons": [
+      "レーザー・プラズマ・エネルギー兵器",
+      "레이저, 플라스마 및 에너지 무기",
+      "Лазеры, плазма и энергетическое оружие",
+      "Lasers, plasma et armes énergétiques",
+      "Laser, Plasma und Energiewaffen",
+      "Láseres, plasma y armas de energía",
+      "Lasery, plazma i broń energetyczna",
+      "Lasers, plasma e armas de energia"
+    ],
+    "Kinetic weapons, railguns and artillery": [
+      "実体弾・レールガン・砲撃",
+      "실탄 무기, 레일건 및 포",
+      "Кинетическое оружие, рельсотроны и артиллерия",
+      "Armes cinétiques, canons électromagnétiques et artillerie",
+      "Kinetik, Railguns und Artillerie",
+      "Armas cinéticas, cañones de riel y artillería",
+      "Broń kinetyczna, działa magnetyczne i artyleria",
+      "Armas cinéticas, canhões eletromagnéticos e artilharia"
+    ],
+    "Missiles and torpedoes": [
+      "ミサイルと魚雷",
+      "미사일과 어뢰",
+      "Ракеты и торпеды",
+      "Missiles et torpilles",
+      "Raketen und Torpedos",
+      "Misiles y torpedos",
+      "Rakiety i torpedy",
+      "Mísseis e torpedos"
+    ],
+    "Strike craft and hangars": [
+      "軍用機とハンガー",
+      "타격기와 격납고",
+      "Ударная авиация и ангары",
+      "Chasseurs et hangars",
+      "Trägergeschwader und Hangars",
+      "Naves de ataque y hangares",
+      "Myśliwce i hangary",
+      "Naves de ataque e hangares"
+    ],
+    "Armies and warfare": [
+      "地上軍と戦争",
+      "지상군과 전쟁",
+      "Армии и война",
+      "Armées et guerre",
+      "Armeen und Krieg",
+      "Ejércitos y guerra",
+      "Armie i wojna",
+      "Exércitos e guerra"
+    ],
+    "Colonization, habitability and development": [
+      "植民・居住性・開発",
+      "개척, 거주 적합성 및 개발",
+      "Колонизация, пригодность и развитие",
+      "Colonisation, habitabilité et développement",
+      "Kolonisierung, Bewohnbarkeit und Entwicklung",
+      "Colonización, habitabilidad y desarrollo",
+      "Kolonizacja, przystosowanie i rozwój",
+      "Colonização, habitabilidade e desenvolvimento"
+    ],
+    "Population, genetics and biology": [
+      "人口・遺伝子・生物学",
+      "인구, 유전 및 생물학",
+      "Население, генетика и биология",
+      "Population, génétique et biologie",
+      "Bevölkerung, Genetik und Biologie",
+      "Población, genética y biología",
+      "Populacja, genetyka i biologia",
+      "População, genética e biologia"
+    ],
+    "Robots, synthetics and AI": [
+      "ロボット・人工生命・人工知能",
+      "로봇, 합성체 및 인공지능",
+      "Роботы, синтетики и ИИ",
+      "Robots, synthétiques et IA",
+      "Roboter, Synthetische und KI",
+      "Robots, sintéticos e IA",
+      "Roboty, syntetyki i SI",
+      "Robôs, sintéticos e IA"
+    ],
+    "Terraforming and environment": [
+      "テラフォーミングと環境",
+      "테라포밍과 환경",
+      "Терраформирование и окружающая среда",
+      "Terraformation et environnement",
+      "Terraforming und Umwelt",
+      "Terraformación y medio ambiente",
+      "Terraformowanie i środowisko",
+      "Terraformação e ambiente"
+    ],
+    "Housing, amenities and infrastructure": [
+      "住居・快適度・インフラ",
+      "주거, 편의 및 기반 시설",
+      "Жильё, благоустройство и инфраструктура",
+      "Logement, services et infrastructure",
+      "Wohnraum, Annehmlichkeiten und Infrastruktur",
+      "Vivienda, servicios e infraestructura",
+      "Mieszkania, udogodnienia i infrastruktura",
+      "Moradia, amenidades e infraestrutura"
+    ],
+    "Research and laboratories": [
+      "研究と研究所",
+      "연구와 연구소",
+      "Исследования и лаборатории",
+      "Recherche et laboratoires",
+      "Forschung und Labore",
+      "Investigación y laboratorios",
+      "Badania i laboratoria",
+      "Pesquisa e laboratórios"
+    ],
+    "Unity, traditions and culture": [
+      "統合力・伝統・文化",
+      "통합, 전통 및 문화",
+      "Единство, традиции и культура",
+      "Unité, traditions et culture",
+      "Einigkeit, Traditionen und Kultur",
+      "Unidad, tradiciones y cultura",
+      "Jedność, tradycje i kultura",
+      "Unidade, tradições e cultura"
+    ],
+    "Diplomacy, espionage and influence": [
+      "外交・諜報・影響力",
+      "외교, 첩보 및 영향력",
+      "Дипломатия, шпионаж и влияние",
+      "Diplomatie, espionnage et influence",
+      "Diplomatie, Spionage und Einfluss",
+      "Diplomacia, espionaje e influencia",
+      "Dyplomacja, szpiegostwo i wpływy",
+      "Diplomacia, espionagem e influência"
+    ],
+    "Administration, leaders and government": [
+      "行政・リーダー・統治",
+      "행정, 지도자 및 정부",
+      "Управление, лидеры и правительство",
+      "Administration, dirigeants et gouvernement",
+      "Verwaltung, Anführer und Regierung",
+      "Administración, líderes y gobierno",
+      "Administracja, przywódcy i rząd",
+      "Administração, líderes e governo"
+    ],
+    "Megastructures and large-scale engineering": [
+      "巨大構造物と大規模工学",
+      "거대구조물과 대규모 공학",
+      "Мегасооружения и крупное строительство",
+      "Mégastructures et grands travaux",
+      "Megastrukturen und Großprojekte",
+      "Megaestructuras e ingeniería a gran escala",
+      "Megastruktury i inżynieria wielkoskalowa",
+      "Megaestruturas e engenharia de grande escala"
+    ],
+    "Ascension and evolution paths": [
+      "アセンションと進化ルート",
+      "승격과 진화 경로",
+      "Вознесение и пути эволюции",
+      "Ascension et voies d'évolution",
+      "Aufstiegs- und Evolutionspfade",
+      "Ascensión y rutas evolutivas",
+      "Wyniesienie i ścieżki ewolucji",
+      "Ascensão e caminhos evolutivos"
+    ],
+    "Psionics and the Shroud": [
+      "サイオニクスとシュラウド",
+      "사이오닉과 장막",
+      "Псионика и Покров",
+      "Psionique et Linceul",
+      "Psionik und Schleier",
+      "Psiónica y Velo",
+      "Psionika i Całun",
+      "Psiônica e Véu"
+    ],
+    "Archaeology, precursors and ancient technology": [
+      "考古学・先駆者・古代技術",
+      "고고학, 선구자 및 고대 기술",
+      "Археология, предтечи и древние технологии",
+      "Archéologie, précurseurs et technologies anciennes",
+      "Archäologie, Vorläufer und antike Technologien",
+      "Arqueología, precursores y tecnología antigua",
+      "Archeologia, prekursorzy i starożytne technologie",
+      "Arqueologia, precursores e tecnologias antigas"
+    ],
+    "Unclassified / also available in the name index": [
+      "未分類 / 名前索引でも探せます",
+      "미분류 / 이름 색인에서도 확인 가능",
+      "Без категории / доступны также в индексе названий",
+      "Non classées / disponibles dans l'index",
+      "Nicht zugeordnet / auch im Namensindex",
+      "Sin clasificar / disponibles en el índice",
+      "Bez kategorii / także w indeksie nazw",
+      "Sem categoria / também no índice de nomes"
+    ],
+    "technologies": [
+      "技術",
+      "기술",
+      "техн.",
+      "technologies",
+      "Technologien",
+      "tecnologías",
+      "techn.",
+      "tecnologias"
+    ],
+    "Page": [
+      "ページ",
+      "페이지",
+      "Страница",
+      "Page",
+      "Seite",
+      "Página",
+      "Strona",
+      "Página"
+    ],
+    "Unlocks: ": [
+      "解放内容：",
+      "해금: ",
+      "Открывает: ",
+      "Débloque : ",
+      "Schaltet frei: ",
+      "Desbloquea: ",
+      "Odblokowuje: ",
+      "Desbloqueia: "
+    ],
+    "Unlocks": [
+      "解放内容",
+      "해금",
+      "Открывает",
+      "Débloque",
+      "Freischaltungen",
+      "Desbloquea",
+      "Odblokowuje",
+      "Desbloqueia"
+    ],
+    "Open prerequisites and game description": [
+      "前提技術とゲームの説明を開く",
+      "선행 기술과 게임 설명 열기",
+      "Открыть требования и описание",
+      "Ouvrir les prérequis et la description",
+      "Voraussetzungen und Spielbeschreibung öffnen",
+      "Abrir requisitos y descripción",
+      "Otwórz wymagania i opis",
+      "Abrir pré-requisitos e descrição"
+    ],
+    "Gigas mod support": [
+      "Gigas対応設定",
+      "Gigas 지원 설정",
+      "Поддержка Gigas",
+      "Compatibilité Gigas",
+      "Gigas-Unterstützung",
+      "Compatibilidad con Gigas",
+      "Obsługa Gigas",
+      "Suporte a Gigas"
+    ],
+    "Halo mod support": [
+      "Halo対応設定",
+      "Halo 지원 설정",
+      "Поддержка Halo",
+      "Compatibilité Halo",
+      "Halo-Unterstützung",
+      "Compatibilidad con Halo",
+      "Obsługa Halo",
+      "Suporte a Halo"
+    ],
+    "Gigas detected.": [
+      "Gigasを検出しました。",
+      "Gigas 감지됨.",
+      "Gigas обнаружен.",
+      "Gigas détecté.",
+      "Gigas erkannt.",
+      "Gigas detectado.",
+      "Wykryto Gigas.",
+      "Gigas detectado."
+    ],
+    "Display and planning: ": [
+      "表示・計画：",
+      "표시 및 계획: ",
+      "Отображение и планирование: ",
+      "Affichage et planification : ",
+      "Anzeige und Planung: ",
+      "Visualización y planificación: ",
+      "Wyświetlanie i planowanie: ",
+      "Exibição e planejamento: "
+    ],
+    "Halo loaded in this campaign: ": [
+      "このキャンペーンでHaloを使用：",
+      "이번 캠페인에 Halo 로드: ",
+      "Halo загружен в этой кампании: ",
+      "Halo chargé dans cette campagne : ",
+      "Halo in dieser Kampagne geladen: ",
+      "Halo cargado en esta campaña: ",
+      "Halo wczytane w tej kampanii: ",
+      "Halo carregado nesta campanha: "
+    ],
+    "Halo display and planning: ": [
+      "Halo表示・計画：",
+      "Halo 표시 및 계획: ",
+      "Отображение и планирование Halo: ",
+      "Affichage et planification Halo : ",
+      "Halo-Anzeige und -Planung: ",
+      "Visualización y planificación de Halo: ",
+      "Wyświetlanie i planowanie Halo: ",
+      "Exibição e planejamento de Halo: "
+    ],
+    "Enable Gigas display and planning": [
+      "Gigasの表示・計画を有効化",
+      "Gigas 표시 및 계획 켜기",
+      "Включить отображение и планирование Gigas",
+      "Activer l'affichage et la planification Gigas",
+      "Gigas-Anzeige und -Planung aktivieren",
+      "Activar visualización y planificación de Gigas",
+      "Włącz wyświetlanie i planowanie Gigas",
+      "Ativar exibição e planejamento de Gigas"
+    ],
+    "Enable Halo display and planning": [
+      "Haloの表示・計画を有効化",
+      "Halo 표시 및 계획 켜기",
+      "Включить отображение и планирование Halo",
+      "Activer l'affichage et la planification Halo",
+      "Halo-Anzeige und -Planung aktivieren",
+      "Activar visualización y planificación de Halo",
+      "Włącz wyświetlanie i planowanie Halo",
+      "Ativar exibição e planejamento de Halo"
+    ],
+    "Pause Gigas display and planning (keep goals)": [
+      "Gigasの表示・計画を停止（目標保持）",
+      "Gigas 표시 및 계획 정지 (목표 유지)",
+      "Приостановить поддержку Gigas (сохранить цели)",
+      "Suspendre Gigas (garder les objectifs)",
+      "Gigas pausieren (Ziele behalten)",
+      "Pausar Gigas (conservar objetivos)",
+      "Wstrzymaj Gigas (zachowaj cele)",
+      "Pausar Gigas (manter objetivos)"
+    ],
+    "Pause Halo display and planning (keep goals)": [
+      "Haloの表示・計画を停止（目標保持）",
+      "Halo 표시 및 계획 정지 (목표 유지)",
+      "Приостановить поддержку Halo (сохранить цели)",
+      "Suspendre Halo (garder les objectifs)",
+      "Halo pausieren (Ziele behalten)",
+      "Pausar Halo (conservar objetivos)",
+      "Wstrzymaj Halo (zachowaj cele)",
+      "Pausar Halo (manter objetivos)"
+    ],
+    "Gigas display and planning paused; target kept": [
+      "Gigas表示・計画は停止中；目標保持",
+      "Gigas 표시 및 계획 정지; 목표 유지",
+      "Поддержка Gigas приостановлена; цель сохранена",
+      "Gigas suspendu ; objectif conservé",
+      "Gigas pausiert; Ziel behalten",
+      "Gigas pausado; objetivo conservado",
+      "Gigas wstrzymane; cel zachowany",
+      "Gigas pausado; objetivo mantido"
+    ],
+    "Halo display and planning paused; target kept": [
+      "Halo表示・計画は停止中；目標保持",
+      "Halo 표시 및 계획 정지; 목표 유지",
+      "Поддержка Halo приостановлена; цель сохранена",
+      "Halo suspendu ; objectif conservé",
+      "Halo pausiert; Ziel behalten",
+      "Halo pausado; objetivo conservado",
+      "Halo wstrzymane; cel zachowany",
+      "Halo pausado; objetivo mantido"
+    ],
+    "Not declared": [
+      "未確認",
+      "미선언",
+      "Не указано",
+      "Non déclaré",
+      "Nicht angegeben",
+      "Sin declarar",
+      "Nie określono",
+      "Não declarado"
+    ],
+    "Yes": [
+      "はい",
+      "예",
+      "Да",
+      "Oui",
+      "Ja",
+      "Sí",
+      "Tak",
+      "Sim"
+    ],
+    "No": [
+      "いいえ",
+      "아니오",
+      "Нет",
+      "Non",
+      "Nein",
+      "No",
+      "Nie",
+      "Não"
+    ],
+    "On": [
+      "有効",
+      "켜짐",
+      "Включено",
+      "Actif",
+      "Aktiv",
+      "Activo",
+      "Włączone",
+      "Ativo"
+    ],
+    "Paused": [
+      "停止中",
+      "일시 정지",
+      "Приостановлено",
+      "Suspendu",
+      "Pausiert",
+      "Pausado",
+      "Wstrzymane",
+      "Pausado"
+    ],
+    "YES, Halo is enabled in this campaign playset": [
+      "はい：このキャンペーンでHaloを使用",
+      "예: 이번 캠페인에 Halo 활성화됨",
+      "ДА, Halo включён в наборе этой кампании",
+      "OUI, Halo est activé pour cette campagne",
+      "JA, Halo ist in diesem Spielset aktiviert",
+      "SÍ, Halo está activo en esta campaña",
+      "TAK, Halo jest włączone w tej kampanii",
+      "SIM, Halo está ativo nesta campanha"
+    ],
+    "NO, Halo is not enabled in this campaign playset": [
+      "いいえ：このキャンペーンではHaloを不使用",
+      "아니오: 이번 캠페인에 Halo 비활성화됨",
+      "НЕТ, Halo не включён в наборе этой кампании",
+      "NON, Halo n'est pas activé pour cette campagne",
+      "NEIN, Halo ist in diesem Spielset nicht aktiviert",
+      "NO, Halo no está activo en esta campaña",
+      "NIE, Halo nie jest włączone w tej kampanii",
+      "NÃO, Halo não está ativo nesta campanha"
+    ],
+    "Confirm: Halo is loaded": [
+      "確認：Haloを使用",
+      "확인: Halo 로드됨",
+      "Подтвердить: Halo загружен",
+      "Confirmer : Halo chargé",
+      "Bestätigen: Halo geladen",
+      "Confirmar: Halo cargado",
+      "Potwierdź: Halo wczytane",
+      "Confirmar: Halo carregado"
+    ],
+    "Confirm: Halo is not loaded": [
+      "確認：Haloを不使用",
+      "확인: Halo 미로드",
+      "Подтвердить: Halo не загружен",
+      "Confirmer : Halo non chargé",
+      "Bestätigen: Halo nicht geladen",
+      "Confirmar: Halo no cargado",
+      "Potwierdź: Halo niewczytane",
+      "Confirmar: Halo não carregado"
+    ],
+    "Enabled by default when detected; your later preference is retained. Pause hides Gigas-only browsing entries and pauses their goal planning without clearing saved goals.": [
+      "検出時は標準で有効になり、その後の設定は保持されます。一時停止するとGigas専用項目を非表示にし、保存済み目標を保持したままその計画を停止します。",
+      "감지 시 기본 활성화되며 이후 설정은 유지됩니다. 일시 정지하면 Gigas 전용 항목을 숨기고 저장된 목표를 지우지 않은 채 계획을 멈춥니다.",
+      "При обнаружении включается по умолчанию; дальнейший выбор сохраняется. Пауза скрывает технологии Gigas и останавливает их планирование, не удаляя цели.",
+      "Activé par défaut à la détection ; vos préférences sont ensuite conservées. La pause masque les entrées Gigas et suspend leur planification sans effacer les objectifs.",
+      "Bei Erkennung standardmäßig aktiv; spätere Einstellungen bleiben erhalten. Pausieren blendet Gigas-Einträge aus und stoppt deren Planung, ohne Ziele zu löschen.",
+      "Activo al detectarlo; después se conserva tu preferencia. La pausa oculta las entradas de Gigas y detiene su planificación sin borrar objetivos.",
+      "Domyślnie włączone po wykryciu; późniejszy wybór jest zachowywany. Pauza ukrywa technologie Gigas i wstrzymuje ich planowanie bez usuwania celów.",
+      "Ativo por padrão ao detectar; sua preferência posterior é mantida. A pausa oculta entradas de Gigas e suspende seu planejamento sem apagar objetivos."
+    ],
+    "This does not disable Gigas research or change technology costs, draws or prerequisites.": [
+      "Gigasの研究自体は停止せず、コスト・抽選・前提条件も変更しません。",
+      "Gigas 연구 자체를 막지 않으며 기술 비용, 추첨, 선행 조건을 바꾸지 않습니다.",
+      "Это не отключает исследования Gigas и не меняет стоимость, предложения или требования технологий.",
+      "Cela ne désactive pas la recherche Gigas et ne modifie ni coûts, ni tirages, ni prérequis.",
+      "Dies deaktiviert Gigas-Forschung nicht und ändert weder Kosten noch Angebote oder Voraussetzungen.",
+      "No desactiva la investigación de Gigas ni cambia costes, sorteos o requisitos.",
+      "Nie wyłącza badań Gigas ani nie zmienia kosztów, losowań czy wymagań.",
+      "Não desativa a pesquisa de Gigas nem altera custos, sorteios ou pré-requisitos."
+    ],
+    "Keep the mod combination fixed for this save.": [
+      "このセーブではModの組み合わせを変更しないでください。",
+      "이 저장에서는 모드 조합을 유지하세요.",
+      "Сохраняйте тот же набор модов для этого сохранения.",
+      "Conservez la même combinaison de mods pour cette sauvegarde.",
+      "Mod-Kombination für diesen Spielstand unverändert lassen.",
+      "Mantén la misma combinación de mods en esta partida.",
+      "Zachowaj ten sam zestaw modów dla tego zapisu.",
+      "Mantenha a mesma combinação de mods neste jogo salvo."
+    ],
+    "Declare the actual playset, then choose whether to use Halo technology display, tracking and research advice. Turning support off does not disable Halo research.": [
+      "実際のプレイセットを申告してから、Halo技術の表示・追跡・研究提案を有効にするか選択してください。対応を停止してもHalo自体の研究は無効になりません。",
+      "실제 플레이세트를 선언한 뒤 Halo 기술 표시, 추적, 연구 추천 사용 여부를 선택하세요. 지원을 꺼도 Halo 연구 자체는 차단되지 않습니다.",
+      "Укажите фактический набор модов, затем выберите отображение, отслеживание и советы для Halo. Отключение поддержки не отключает исследования Halo.",
+      "Déclarez le playset réel, puis choisissez l'affichage, le suivi et les conseils Halo. Désactiver la compatibilité ne désactive pas la recherche Halo.",
+      "Das tatsächliche Spielset angeben, dann Halo-Anzeige, Zielverfolgung und Hinweise wählen. Deaktivieren der Unterstützung stoppt Halo-Forschung nicht.",
+      "Declara el conjunto real y decide si usar visualización, seguimiento y consejos de Halo. Desactivar la compatibilidad no desactiva su investigación.",
+      "Określ rzeczywisty zestaw modów, potem wybierz wyświetlanie, śledzenie i porady Halo. Wyłączenie obsługi nie blokuje badań Halo.",
+      "Declare o conjunto real e escolha exibição, acompanhamento e sugestões de Halo. Desativar o suporte não desativa sua pesquisa."
+    ],
+    "Keep Halo enabled/disabled for the entire save. The declaration MUST match the playset. A wrong choice may block Halo draws or expose technologies that do not belong in this campaign. Stay paused until confirmed.": [
+      "セーブの途中でHaloの有効・無効を変えないでください。申告は実際のプレイセットと必ず一致させてください。誤ると抽選が妨げられたり、本来存在しない技術が表示されます。確認まではゲームを一時停止してください。",
+      "이 저장 동안 Halo 활성화 여부를 바꾸지 마세요. 선언은 실제 플레이세트와 반드시 일치해야 합니다. 잘못 선택하면 추첨이 막히거나 이 캠페인에 없는 기술이 표시될 수 있습니다. 확인 전에는 일시 정지를 유지하세요.",
+      "Не меняйте включение Halo в течение сохранения. Указание ОБЯЗАНО совпадать с набором модов. Ошибка может блокировать предложения Halo или показывать технологии, которых нет в кампании. До подтверждения держите игру на паузе.",
+      "Ne changez pas l'activation de Halo pendant la sauvegarde. La déclaration DOIT correspondre au playset. Une erreur peut bloquer les tirages ou afficher du contenu absent. Restez en pause jusqu'à confirmation.",
+      "Halo während des Spielstands nicht aktivieren/deaktivieren. Die Angabe MUSS dem Spielset entsprechen. Eine falsche Wahl kann Halo-Angebote blockieren oder fehlende Inhalte anzeigen. Bis zur Bestätigung pausiert bleiben.",
+      "No cambies la activación de Halo durante la partida. La declaración DEBE coincidir con el conjunto real. Un error puede bloquear sorteos o mostrar tecnologías ausentes. Mantén la pausa hasta confirmar.",
+      "Nie zmieniaj włączenia Halo w trakcie zapisu. Deklaracja MUSI odpowiadać zestawowi modów. Błąd może blokować losowania lub wyświetlać nieobecne technologie. Pozostań na pauzie do potwierdzenia.",
+      "Não altere a ativação de Halo durante este jogo salvo. A declaração DEVE corresponder ao conjunto real. Uma escolha errada pode bloquear sorteios ou mostrar tecnologias ausentes. Mantenha a pausa até confirmar."
+    ],
+    "Single-player support. Multiplayer has not been validated.": [
+      "シングルプレイ対応。マルチプレイは未検証です。",
+      "싱글 플레이 지원. 멀티플레이는 검증되지 않았습니다.",
+      "Поддерживается одиночная игра. Сетевая игра не проверена.",
+      "Prise en charge solo. Multijoueur non vérifié.",
+      "Einzelspieler unterstützt. Mehrspieler nicht geprüft.",
+      "Compatibilidad para un jugador. Multijugador no verificado.",
+      "Obsługa gry solo. Tryb wieloosobowy niezweryfikowany.",
+      "Suporte para um jogador. Multijogador não verificado."
+    ],
+    "This only declares your playset. It does not download or enable Halo.": [
+      "これはプレイセットの申告のみです。Haloをダウンロード・有効化しません。",
+      "플레이세트 선언만 합니다. Halo를 다운로드하거나 활성화하지 않습니다.",
+      "Это лишь указание набора модов. Halo не загружается и не включается.",
+      "Il s'agit uniquement d'une déclaration. Halo n'est ni téléchargé ni activé.",
+      "Dies gibt nur das Spielset an. Halo wird nicht heruntergeladen oder aktiviert.",
+      "Solo declara el conjunto. No descarga ni activa Halo.",
+      "To tylko deklaracja zestawu. Nie pobiera ani nie włącza Halo.",
+      "Isso apenas declara o conjunto. Não baixa nem ativa Halo."
+    ],
+    "YES: Halo is enabled in the launcher.": [
+      "はい：ランチャーでHaloが有効。",
+      "예: 런처에서 Halo 활성화됨.",
+      "ДА: Halo включён в лаунчере.",
+      "OUI : Halo activé dans le lanceur.",
+      "JA: Halo im Launcher aktiviert.",
+      "SÍ: Halo activo en el lanzador.",
+      "TAK: Halo włączone w programie startowym.",
+      "SIM: Halo ativo no inicializador."
+    ],
+    "NO: Halo is not enabled.": [
+      "いいえ：Haloは無効。",
+      "아니오: Halo 비활성화됨.",
+      "НЕТ: Halo не включён.",
+      "NON : Halo désactivé.",
+      "NEIN: Halo nicht aktiviert.",
+      "NO: Halo no está activo.",
+      "NIE: Halo niewłączone.",
+      "NÃO: Halo não está ativo."
+    ],
+    "Keep that mod combination for this save. Re-declare only to correct a mistaken choice.": [
+      "このセーブでは組み合わせを保持し、誤った申告の訂正時のみ再申告してください。",
+      "이 저장의 모드 조합을 유지하세요. 잘못 선택한 경우에만 다시 선언하세요.",
+      "Сохраняйте набор модов. Изменяйте указание только для исправления ошибки.",
+      "Conservez ce playset. Redéclarez uniquement pour corriger une erreur.",
+      "Mod-Kombination beibehalten. Angabe nur zur Korrektur eines Fehlers ändern.",
+      "Mantén ese conjunto. Declara de nuevo solo para corregir una elección errónea.",
+      "Zachowaj zestaw modów. Zmień deklarację tylko w celu poprawienia błędu.",
+      "Mantenha esse conjunto. Declare novamente apenas para corrigir um erro."
+    ],
+    "Confirm that Halo really is enabled in the current playset.": [
+      "現在のプレイセットでHaloが実際に有効であることを確認してください。",
+      "현재 플레이세트에서 Halo가 실제로 활성화되었는지 확인하세요.",
+      "Подтвердите, что Halo действительно включён в текущем наборе.",
+      "Confirmez que Halo est bien activé dans le playset actuel.",
+      "Bestätigen, dass Halo im aktuellen Spielset tatsächlich aktiviert ist.",
+      "Confirma que Halo está realmente activo en el conjunto actual.",
+      "Potwierdź, że Halo faktycznie jest włączone w bieżącym zestawie.",
+      "Confirme que Halo realmente está ativo no conjunto atual."
+    ],
+    "This allows imported Halo technologies under their original conditions. It does not install Halo. A wrong declaration can expose technologies whose content is missing.": [
+      "Haloの技術を元の条件で利用可能にします。Haloはインストールされません。申告を誤ると、内容の存在しない技術が表示されることがあります。",
+      "원래 조건에 따라 Halo 기술을 허용합니다. Halo를 설치하지 않습니다. 잘못 선언하면 콘텐츠가 없는 기술이 표시될 수 있습니다.",
+      "Разрешает технологии Halo с исходными условиями. Не устанавливает Halo. Неверное указание может показывать технологии с отсутствующим содержимым.",
+      "Autorise les technologies Halo selon leurs conditions d'origine. N'installe pas Halo. Une erreur peut afficher des technologies dont le contenu est absent.",
+      "Erlaubt Halo-Technologien unter Originalbedingungen. Installiert Halo nicht. Eine falsche Angabe kann Technologien mit fehlenden Inhalten anzeigen.",
+      "Permite tecnologías Halo con sus condiciones originales. No instala Halo. Una declaración errónea puede mostrar tecnologías con contenido ausente.",
+      "Dopuszcza technologie Halo na ich pierwotnych warunkach. Nie instaluje Halo. Błędna deklaracja może pokazać technologie bez zawartości.",
+      "Permite tecnologias Halo sob suas condições originais. Não instala Halo. Uma declaração errada pode exibir tecnologias com conteúdo ausente."
+    ],
+    "Confirm that Halo is NOT enabled in the current playset.": [
+      "現在のプレイセットでHaloが無効であることを確認してください。",
+      "현재 플레이세트에서 Halo가 비활성화되었는지 확인하세요.",
+      "Подтвердите, что Halo НЕ включён в текущем наборе.",
+      "Confirmez que Halo n'est PAS activé dans le playset actuel.",
+      "Bestätigen, dass Halo im aktuellen Spielset NICHT aktiviert ist.",
+      "Confirma que Halo NO está activo en el conjunto actual.",
+      "Potwierdź, że Halo NIE jest włączone w bieżącym zestawie.",
+      "Confirme que Halo NÃO está ativo no conjunto atual."
+    ],
+    "Imported Halo technologies will be unavailable. If Halo is actually enabled, choosing NO can block its technology draws. Researched technologies are never revoked.": [
+      "Haloの技術は利用不可になります。実際にはHaloが有効なのに「いいえ」を選ぶと抽選が妨げられます。研究済み技術は失われません。",
+      "Halo 기술이 비활성화됩니다. 실제로 Halo가 켜져 있는데 아니오를 선택하면 기술 추첨이 막힐 수 있습니다. 이미 연구한 기술은 회수하지 않습니다.",
+      "Технологии Halo будут недоступны. Если Halo включён, выбор НЕТ может блокировать его предложения. Уже изученные технологии не отнимаются.",
+      "Les technologies Halo seront indisponibles. Si Halo est activé, choisir NON peut bloquer ses tirages. Les technologies acquises ne sont jamais retirées.",
+      "Halo-Technologien sind nicht verfügbar. Ist Halo aktiv, kann NEIN dessen Angebote blockieren. Erforschte Technologien werden nie entzogen.",
+      "Las tecnologías Halo no estarán disponibles. Si Halo está activo, elegir NO puede bloquear sus sorteos. Nunca se retiran tecnologías investigadas.",
+      "Technologie Halo będą niedostępne. Jeśli Halo jest włączone, wybór NIE może blokować ich losowanie. Zbadane technologie nie są odbierane.",
+      "Tecnologias Halo ficarão indisponíveis. Se Halo estiver ativo, escolher NÃO pode bloquear seus sorteios. Tecnologias pesquisadas nunca são removidas."
+    ],
+    "Current roles in the plan, not engine decision logs; manual choices cannot be identified. Counts use installed tech definitions; the engine determines unlocks. Clear DLC, origin or exclusive-route blocks suspend that route. Events and changeable ethics are not labelled permanently unreachable.": [
+      "現在の計画上の役割を表示します。ゲームの選択履歴ではなく、手動選択かどうかも判定しません。件数は読み込んだ定義から計算し、解放はゲームが判定します。明確なDLC・起源・排他ルートの制限では計画を停止し、イベントや変更可能な志向は永久取得不可と扱いません。",
+      "현재 계획에서의 역할을 표시하며 게임의 선택 기록이 아닙니다. 수동 선택 여부는 구분하지 않습니다. 개수는 설치된 기술 정의를 사용하며 해금은 게임이 판단합니다. 명확한 DLC, 기원, 상호 배타 경로 제한은 계획을 중단합니다. 이벤트나 변경 가능한 윤리는 영구 획득 불가로 판단하지 않습니다.",
+      "Показаны текущие роли в плане, а не журнал решений игры; ручной выбор не определяется. Подсчёт использует установленные определения, открытие решает игра. Явные ограничения DLC, происхождения или взаимоисключающих путей приостанавливают маршрут. События и изменяемые принципы не считаются вечной недоступностью.",
+      "Affiche les rôles actuels, pas un journal des décisions ; les choix manuels ne sont pas identifiés. Les nombres viennent des définitions installées ; le jeu décide des déblocages. Les blocages explicites de DLC, d'origine ou de voies exclusives suspendent la route. Les événements et éthiques modifiables ne sont pas considérés comme définitivement inaccessibles.",
+      "Zeigt aktuelle Rollen, kein Entscheidungsprotokoll; manuelle Auswahl wird nicht erkannt. Zählung nach installierten Definitionen; Freischaltung entscheidet das Spiel. Eindeutige DLC-, Herkunfts- oder exklusive Pfadsperren pausieren die Route. Ereignisse und veränderbare Ethiken gelten nicht als dauerhaft unerreichbar.",
+      "Muestra funciones actuales, no un registro de decisiones; no identifica elecciones manuales. Los recuentos usan definiciones instaladas; el juego determina desbloqueos. Bloqueos claros de DLC, origen o rutas excluyentes pausan la ruta. Eventos y éticas modificables no se consideran inaccesibles para siempre.",
+      "Pokazuje bieżącą rolę w planie, nie dziennik decyzji; nie rozpoznaje wyboru ręcznego. Liczby pochodzą z zainstalowanych definicji, a gra rozstrzyga odblokowania. Jasne blokady DLC, pochodzenia lub wzajemnie wykluczających się ścieżek wstrzymują trasę. Wydarzenia i zmienne etyki nie są uznawane za trwałą nieosiągalność.",
+      "Mostra funções atuais, não um registro de decisões; escolhas manuais não são identificadas. Contagens usam definições instaladas; o jogo determina desbloqueios. Bloqueios claros de DLC, origem ou caminhos exclusivos pausam a rota. Eventos e éticas mutáveis não são considerados permanentemente inalcançáveis."
+    ],
+    "Research Mega-Engineering, build or repair a qualifying megastructure, then choose Galactic Wonders to unlock this research option. Tracking a goal does not perform these steps.": [
+      "メガエンジニアリングを研究し、条件を満たす巨大構造物を建造か修復してから銀河の驚異を選ぶと候補が解放されます。目標追跡はこれらを代行しません。",
+      "거대 공학 연구 후 조건에 맞는 거대구조물을 건설 또는 복구하고 은하의 불가사의를 선택해야 후보가 해금됩니다. 목표 추적이 이 단계를 대신하지는 않습니다.",
+      "Исследуйте Мегаинженерию, постройте или восстановите подходящее мегасооружение, затем выберите Галактические чудеса. Отслеживание цели не выполняет эти действия.",
+      "Recherchez la méga-ingénierie, construisez ou réparez une mégastructure admissible, puis choisissez Merveilles galactiques. Le suivi ne réalise pas ces étapes.",
+      "Mega-Konstruktion erforschen, geeignete Megastruktur bauen oder reparieren und Galaktische Wunder wählen. Zielverfolgung erledigt diese Schritte nicht.",
+      "Investiga Megaingeniería, construye o repara una megaestructura válida y elige Maravillas galácticas. El seguimiento no realiza estos pasos.",
+      "Zbadaj megainżynierię, zbuduj lub napraw odpowiednią megastrukturę, a potem wybierz Galaktyczne cuda. Śledzenie celu nie wykonuje tych kroków.",
+      "Pesquise Megaengenharia, construa ou repare uma megaestrutura válida e escolha Maravilhas Galácticas. Acompanhar o objetivo não executa essas etapas."
+    ],
+    "Source: ": [
+      "出典：",
+      "출처: ",
+      "Источник: ",
+      "Source : ",
+      "Quelle: ",
+      "Origen: ",
+      "Źródło: ",
+      "Fonte: "
+    ],
+    "Special event/settings conditions may be unknown; the game decides eligibility.": [
+      "特殊イベントや設定条件は不明な場合があります。適格性はゲームが判定します。",
+      "특수 이벤트/설정 조건은 알 수 없을 수 있으며 자격은 게임이 판단합니다.",
+      "Особые условия событий/настроек могут быть неизвестны; доступность определяет игра.",
+      "Les conditions spéciales peuvent être inconnues ; le jeu détermine l'admissibilité.",
+      "Besondere Ereignis-/Einstellungsbedingungen können unbekannt sein; das Spiel entscheidet.",
+      "Algunas condiciones especiales pueden ser desconocidas; el juego determina la elegibilidad.",
+      "Szczególne warunki wydarzeń/ustawień mogą być nieznane; dostępność określa gra.",
+      "Condições especiais podem ser desconhecidas; o jogo decide a elegibilidade."
+    ],
+    "Missing external prerequisites: ": [
+      "外部の前提技術が不足：",
+      "외부 선행 기술 누락: ",
+      "Отсутствуют внешние требования: ",
+      "Prérequis externes manquants : ",
+      "Fehlende externe Voraussetzungen: ",
+      "Requisitos externos ausentes: ",
+      "Brakujące wymagania zewnętrzne: ",
+      "Pré-requisitos externos ausentes: "
+    ],
+    "Those branches are unavailable.": [
+      "該当の分岐は利用できません。",
+      "해당 분기는 사용할 수 없습니다.",
+      "Эти ветви недоступны.",
+      "Ces branches sont indisponibles.",
+      "Diese Zweige sind nicht verfügbar.",
+      "Esas ramas no están disponibles.",
+      "Te gałęzie są niedostępne.",
+      "Esses ramos estão indisponíveis."
+    ],
+    "Settings": [
+      "設定",
+      "설정",
+      "Настройки",
+      "Paramètres",
+      "Einstellungen",
+      "Ajustes",
+      "Ustawienia",
+      "Configurações"
+    ],
+    "Language and optional mod support. These settings do not install other mods.": [
+      "言語と追加MODへの対応を設定します。他のMODをインストールする機能ではありません。",
+      "언어 및 추가 모드 지원 설정입니다. 다른 모드를 설치하는 기능은 아닙니다.",
+      "Язык и поддержка дополнительных модов. Эти настройки не устанавливают другие моды.",
+      "Langue et prise en charge des mods optionnels. Ces paramètres n’installent pas d’autres mods.",
+      "Sprache und Unterstützung optionaler Mods. Diese Einstellungen installieren keine anderen Mods.",
+      "Idioma y compatibilidad con mods opcionales. Estos ajustes no instalan otros mods.",
+      "Język i obsługa dodatkowych modów. Te ustawienia nie instalują innych modów.",
+      "Idioma e suporte a mods opcionais. Estas configurações não instalam outros mods."
+    ],
+    "Back to settings": [
+      "設定に戻る",
+      "설정으로 돌아가기",
+      "Назад к настройкам",
+      "Retour aux paramètres",
+      "Zurück zu den Einstellungen",
+      "Volver a los ajustes",
+      "Wróć do ustawień",
+      "Voltar às configurações"
+    ],
+    "Language settings": [
+      "言語設定",
+      "언어 설정",
+      "Настройки языка",
+      "Paramètres de langue",
+      "Spracheinstellungen",
+      "Ajustes de idioma",
+      "Ustawienia języka",
+      "Configurações de idioma"
+    ],
+    "Chinese script: ": [
+      "中国語の字体：",
+      "중국어 문자: ",
+      "Китайское письмо: ",
+      "Écriture chinoise : ",
+      "Chinesische Schrift: ",
+      "Escritura china: ",
+      "Pismo chińskie: ",
+      "Escrita chinesa: "
+    ],
+    "Simplified Chinese": [
+      "簡体字中国語",
+      "중국어 간체",
+      "Упрощённое китайское",
+      "Chinois simplifié",
+      "Vereinfachtes Chinesisch",
+      "Chino simplificado",
+      "Chiński uproszczony",
+      "Chinês simplificado"
+    ],
+    "Traditional Chinese": [
+      "繁体字中国語",
+      "중국어 번체",
+      "Традиционное китайское",
+      "Chinois traditionnel",
+      "Traditionelles Chinesisch",
+      "Chino tradicional",
+      "Chiński tradycyjny",
+      "Chinês tradicional"
+    ],
+    "The interface follows your game language. For Traditional Chinese, set the game to Simplified Chinese and choose Traditional below. This changes this mod's panels, not the base game or your research goals.": [
+      "表示はゲームの言語に従います。繁体字を使うにはゲームを簡体字中国語に設定し、下で繁体字を選択してください。このModのパネルのみ変更し、基本ゲームや研究目標は変更しません。",
+      "인터페이스는 게임 언어를 따릅니다. 번체를 사용하려면 게임을 중국어 간체로 설정하고 아래에서 번체를 선택하세요. 이 모드의 패널만 바뀌며 기본 게임이나 연구 목표는 바뀌지 않습니다.",
+      "Интерфейс следует языку игры. Для традиционного китайского выберите в игре упрощённый китайский, а здесь — традиционный. Меняются только панели мода, не основная игра и не цели исследований.",
+      "L'interface suit la langue du jeu. Pour le chinois traditionnel, choisissez le chinois simplifié dans le jeu puis le traditionnel ci-dessous. Seuls les panneaux du mod changent, pas le jeu ni vos objectifs.",
+      "Die Oberfläche folgt der Spielsprache. Für traditionelles Chinesisch im Spiel vereinfachtes Chinesisch und unten traditionell wählen. Nur Mod-Fenster ändern sich, nicht das Spiel oder Forschungsziele.",
+      "La interfaz sigue el idioma del juego. Para chino tradicional, usa chino simplificado en el juego y elige tradicional abajo. Solo cambian los paneles del mod, no el juego ni tus objetivos.",
+      "Interfejs używa języka gry. Dla chińskiego tradycyjnego ustaw w grze chiński uproszczony, a niżej wybierz tradycyjny. Zmieniają się tylko panele moda, nie gra ani cele badań.",
+      "A interface segue o idioma do jogo. Para chinês tradicional, configure chinês simplificado no jogo e escolha tradicional abaixo. Só os painéis do mod mudam, não o jogo nem seus objetivos."
+    ],
+    "Fill T{tier} toward T{next}; counted {count}/{limit}.": [
+      "T{tier}を補充してT{next}を解放；完了 {count}/{limit}。",
+      "T{tier} 보충으로 T{next} 해금; 완료 {count}/{limit}.",
+      "Заполнить T{tier} для открытия T{next}; выполнено {count}/{limit}.",
+      "Compléter T{tier} pour accéder à T{next} ; obtenues {count}/{limit}.",
+      "T{tier} auffüllen für T{next}; erforscht {count}/{limit}.",
+      "Completar T{tier} para acceder a T{next}; completadas {count}/{limit}.",
+      "Uzupełnij T{tier} do odblokowania T{next}; zbadano {count}/{limit}.",
+      "Completar T{tier} para desbloquear T{next}; concluídas {count}/{limit}."
+    ],
+    "The goal route needs a higher tier. Research one T{tier} technology toward unlocking T{next}.": [
+      "目標ルートには上位階層が必要です。T{tier}の技術を1件研究してT{next}を解放します。",
+      "목표 경로에 상위 단계가 필요합니다. T{tier} 기술 하나를 연구해 T{next} 해금에 기여합니다.",
+      "Для пути к цели нужен более высокий уровень. Исследуйте одну технологию T{tier} для открытия T{next}.",
+      "La route nécessite un palier supérieur. Recherchez une technologie T{tier} pour débloquer T{next}.",
+      "Die Zielroute benötigt eine höhere Stufe. Eine Technologie T{tier} erforschen, um T{next} freizuschalten.",
+      "La ruta requiere un nivel superior. Investiga una tecnología T{tier} para desbloquear T{next}.",
+      "Droga do celu wymaga wyższego poziomu. Zbadaj jedną technologię T{tier}, aby przybliżyć odblokowanie T{next}.",
+      "A rota exige um nível superior. Pesquise uma tecnologia T{tier} para desbloquear T{next}."
+    ],
+    "Fill T{tier} toward T{next}; counted {count}; tier requirement is determined by the game.": [
+      "T{tier}を研究してT{next}の解放を目指します。完了数 {count}。必要数はゲームが判定します。",
+      "T{next} 해금을 위해 T{tier} 기술을 연구합니다. 완료 {count}; 단계 요건은 게임에서 판정합니다.",
+      "Исследуйте T{tier} для открытия T{next}; учтено {count}; требования уровня определяет игра.",
+      "Compléter T{tier} pour accéder à T{next} ; obtenues {count} ; le jeu détermine le seuil requis.",
+      "T{tier} für T{next} erforschen; gezählt: {count}; die Stufenanforderung wird vom Spiel bestimmt.",
+      "Completar T{tier} para acceder a T{next}; contabilizadas {count}; el juego determina el requisito de nivel.",
+      "Uzupełnij T{tier}, aby odblokować T{next}; zliczono {count}; wymagania poziomu określa gra.",
+      "Completar T{tier} para desbloquear T{next}; contabilizadas {count}; o requisito de nível é determinado pelo jogo."
+    ],
+    "Fill T": [
+      "T",
+      "T",
+      "Заполнить T",
+      "Compléter T",
+      "T",
+      "Completar T",
+      "Uzupełnij T",
+      "Completar T"
+    ],
+    "; tier requirement is determined by the game.": [
+      "; ティア要件はゲームによって決定されます。",
+      "; 티어 요구 사항은 게임에서 결정됩니다.",
+      "; требование к уровню определяется игрой.",
+      "; l'exigence de niveau est déterminée par le jeu.",
+      "; die Stufenanforderung wird vom Spiel bestimmt.",
+      "; el requisito de nivel lo determina el juego.",
+      "; wymóg poziomu określa gra.",
+      "; o requisito de nível é determinado pelo jogo."
+    ],
+    "Browse by purpose, field, category, English or pinyin initial. Click a technology to inspect its prerequisites, then choose whether to track it.": [
+      "用途、分野、カテゴリー、英語またはピンインの頭文字で閲覧できます。技術をクリックして前提条件を確認し、追跡するかどうかを選択してください。",
+      "용도, 분야, 범주, 영어 또는 병음 첫 글자로 탐색하세요. 기술을 클릭하여 선행 조건을 확인한 다음 추적 여부를 선택하세요.",
+      "Просматривайте по назначению, области, категории, начальной букве на английском или пиньине. Нажмите на технологию, чтобы просмотреть её предварительные требования, затем решите, отслеживать ли её.",
+      "Parcourez par objectif, domaine, catégorie, initiale anglaise ou pinyin. Cliquez sur une technologie pour examiner ses prérequis, puis choisissez de la suivre ou non.",
+      "Nach Zweck, Fachgebiet, Kategorie, englischem oder Pinyin-Anfangsbuchstaben durchsuchen. Klicke auf eine Technologie, um ihre Voraussetzungen zu prüfen, und entscheide dann, ob du sie verfolgen willst.",
+      "Explora por propósito, campo, categoría, inicial en inglés o pinyin. Haz clic en una tecnología para examinar sus requisitos previos y luego elige si quieres seguirla.",
+      "Przeglądaj według przeznaczenia, dziedziny, kategorii, początkowej litery angielskiej lub pinyin. Kliknij technologię, aby sprawdzić jej wymagania wstępne, a następnie zdecyduj, czy ją śledzić.",
+      "Navegue por finalidade, área, categoria, inicial em inglês ou pinyin. Clique em uma tecnologia para examinar seus pré-requisitos e, em seguida, escolha se deseja acompanhá-la."
+    ],
+    "Clear recently viewed history": [
+      "最近表示した履歴を消去",
+      "최근 본 기록 지우기",
+      "Очистить историю недавних просмотров",
+      "Effacer l'historique des consultations récentes",
+      "Verlauf der zuletzt angesehenen Einträge löschen",
+      "Borrar historial de vistos recientemente",
+      "Wyczyść historię ostatnio przeglądanych",
+      "Limpar histórico de visualizações recentes"
+    ],
+    "Clear route highlight": [
+      "ルートのハイライトを消去",
+      "경로 강조 표시 지우기",
+      "Убрать подсветку маршрута",
+      "Effacer la mise en évidence du parcours",
+      "Pfadhervorhebung aufheben",
+      "Quitar resaltado de ruta",
+      "Wyczyść podświetlenie ścieżki",
+      "Limpar destaque da rota"
+    ],
+    "Click a card to highlight prerequisites; hover for details, then track it using the buttons on the right.": [
+      "カードをクリックすると前提条件がハイライトされます。ホバーで詳細を表示し、右側のボタンで追跡できます。",
+      "카드를 클릭하면 선행 조건이 강조 표시됩니다. 마우스를 올려 세부 정보를 확인한 다음 오른쪽 버튼으로 추적하세요.",
+      "Нажмите на карточку, чтобы подсветить предварительные требования; наведите курсор для подробностей, затем отслеживайте её кнопками справа.",
+      "Cliquez sur une carte pour mettre en évidence les prérequis ; survolez-la pour les détails, puis suivez-la à l'aide des boutons à droite.",
+      "Klicke auf eine Karte, um Voraussetzungen hervorzuheben; fahre mit der Maus darüber für Details und verfolge sie dann mit den Schaltflächen rechts.",
+      "Haz clic en una tarjeta para resaltar los requisitos previos; pasa el cursor para ver detalles y luego síguela con los botones de la derecha.",
+      "Kliknij kartę, aby podświetlić wymagania wstępne; najedź kursorem, aby zobaczyć szczegóły, a następnie śledź ją przyciskami po prawej.",
+      "Clique em um cartão para destacar os pré-requisitos; passe o cursor para ver detalhes e, em seguida, acompanhe-a usando os botões à direita."
+    ],
+    "Help": [
+      "ヘルプ",
+      "도움말",
+      "Справка",
+      "Aide",
+      "Hilfe",
+      "Ayuda",
+      "Pomoc",
+      "Ajuda"
+    ],
+    "Inspect selected technology": [
+      "選択した技術を確認",
+      "선택한 기술 살펴보기",
+      "Просмотреть выбранную технологию",
+      "Examiner la technologie sélectionnée",
+      "Ausgewählte Technologie ansehen",
+      "Examinar tecnología seleccionada",
+      "Sprawdź wybraną technologię",
+      "Examinar tecnologia selecionada"
+    ],
+    "Manual: gears off; choose freely with advice.": [
+      "手動：歯車オフ。助言を参考に自由に選択。",
+      "수동: 톱니바퀴 꺼짐; 조언을 참고해 자유롭게 선택.",
+      "Вручную: шестерёнки выкл.; выбирайте свободно с подсказками.",
+      "Manuel : engrenages désactivés ; choisissez librement avec des conseils.",
+      "Manuell: Zahnräder aus; frei wählen mit Empfehlungen.",
+      "Manual: engranajes desactivados; elige libremente con consejos.",
+      "Ręcznie: zębatki wyłączone; wybieraj swobodnie z poradami.",
+      "Manual: engrenagens desligadas; escolha livremente com sugestões."
+    ],
+    "Open Research Planner": [
+      "研究プランナーを開く",
+      "연구 플래너 열기",
+      "Открыть планировщик исследований",
+      "Ouvrir le planificateur de recherche",
+      "Forschungsplaner öffnen",
+      "Abrir planificador de investigación",
+      "Otwórz planer badań",
+      "Abrir planejador de pesquisa"
+    ],
+    "Special events, settings and custom conditions may be unknown; the game determines eligibility.": [
+      "特殊イベント、設定、カスタム条件は不明な場合があります。対象となるかはゲームが判定します。",
+      "특수 이벤트, 설정 및 사용자 지정 조건은 알 수 없을 수 있습니다. 자격 여부는 게임이 결정합니다.",
+      "Особые события, настройки и пользовательские условия могут быть неизвестны; доступность определяет игра.",
+      "Les événements spéciaux, paramètres et conditions personnalisées peuvent être inconnus ; le jeu détermine l'éligibilité.",
+      "Spezielle Ereignisse, Einstellungen und benutzerdefinierte Bedingungen können unbekannt sein; das Spiel bestimmt die Verfügbarkeit.",
+      "Los eventos especiales, la configuración y las condiciones personalizadas pueden ser desconocidos; el juego determina la elegibilidad.",
+      "Specjalne wydarzenia, ustawienia i warunki niestandardowe mogą być nieznane; o dostępności decyduje gra.",
+      "Eventos especiais, configurações e condições personalizadas podem ser desconhecidos; o jogo determina a elegibilidade."
+    ],
+    "This local planner was generated for this playset. Enable only one planner, after the source mods. Rerun the adapter when their technologies or the source combination change.": [
+      "このローカルプランナーはこのプレイセット用に生成されました。プランナーは1つだけ、ソースMODの後に有効にしてください。それらの技術やソースの組み合わせが変わった場合は、アダプターを再実行してください。",
+      "이 로컬 플래너는 이 플레이셋용으로 생성되었습니다. 플래너는 하나만, 원본 모드 뒤에 활성화하세요. 원본 모드의 기술이나 원본 조합이 바뀌면 어댑터를 다시 실행하세요.",
+      "Этот локальный планировщик создан для данного набора модов. Включите только один планировщик, после исходных модов. Перезапустите адаптер, если изменятся их технологии или сочетание исходных модов.",
+      "Ce planificateur local a été généré pour cette liste de mods. N'activez qu'un seul planificateur, après les mods sources. Relancez l'adaptateur lorsque leurs technologies ou la combinaison de sources changent.",
+      "Dieser lokale Planer wurde für dieses Playset erstellt. Aktiviere nur einen Planer, nach den Quellmods. Führe den Adapter erneut aus, wenn sich deren Technologien oder die Quellkombination ändern.",
+      "Este planificador local se generó para este playset. Activa solo un planificador, después de los mods de origen. Vuelve a ejecutar el adaptador cuando cambien sus tecnologías o la combinación de origen.",
+      "Ten lokalny planer został wygenerowany dla tego zestawu modów. Włącz tylko jeden planer, po modach źródłowych. Uruchom adapter ponownie, gdy zmienią się ich technologie lub kombinacja źródeł.",
+      "Este planejador local foi gerado para este playset. Ative apenas um planejador, após os mods de origem. Execute o adaptador novamente quando as tecnologias deles ou a combinação de origem mudarem."
+    ],
+    "Track selected technology": [
+      "選択した技術を追跡",
+      "선택한 기술 추적",
+      "Отслеживать выбранную технологию",
+      "Suivre la technologie sélectionnée",
+      "Ausgewählte Technologie verfolgen",
+      "Seguir tecnología seleccionada",
+      "Śledź wybraną technologię",
+      "Acompanhar tecnologia selecionada"
+    ],
+    "Untrack selected technology": [
+      "選択した技術の追跡を解除",
+      "선택한 기술 추적 해제",
+      "Прекратить отслеживание выбранной технологии",
+      "Ne plus suivre la technologie sélectionnée",
+      "Verfolgung der ausgewählten Technologie beenden",
+      "Dejar de seguir tecnología seleccionada",
+      "Przestań śledzić wybraną technologię",
+      "Deixar de acompanhar tecnologia selecionada"
+    ],
+    "One OR branch suffices.": [
+      "選択肢は1つ満たせば十分.",
+      "대안 중 하나만 충족하면 됩니다.",
+      "Достаточно одной альтернативы.",
+      "Une alternative suffit.",
+      "Eine Alternative genügt.",
+      "Basta una alternativa.",
+      "Wystarczy jedna alternatywa.",
+      "Uma alternativa basta."
+    ],
+    "Direct effects": [
+      "直接効果",
+      "직접 효과",
+      "Прямые эффекты",
+      "Effets directs",
+      "Direkte Effekte",
+      "Efectos directos",
+      "Efekty bezpośrednie",
+      "Efeitos diretos"
+    ],
+    "Green: researched / Blue: researching / Yellow: offered · > Prerequisites for the selected technology (one alternative suffices) · Scroll to browse": [
+      "緑：研究済み / 青：研究中 / 黄：提示中 · > 選択した技術の前提条件（いずれか1つで可） · スクロールで閲覧",
+      "녹색: 연구 완료 / 파란색: 연구 중 / 노란색: 제안됨 · > 선택한 기술의 선행 조건(대안 중 하나면 충분) · 스크롤하여 탐색",
+      "Зелёный: изучено / Синий: изучается / Жёлтый: предложено · > Предварительные требования для выбранной технологии (достаточно одной из альтернатив) · Прокрутите для просмотра",
+      "Vert : recherchée / Bleu : en recherche / Jaune : proposée · > Prérequis de la technologie sélectionnée (une seule alternative suffit) · Faites défiler pour parcourir",
+      "Grün: erforscht / Blau: wird erforscht / Gelb: angeboten · > Voraussetzungen für die ausgewählte Technologie (eine Alternative genügt) · Scrollen zum Durchsuchen",
+      "Verde: investigada / Azul: en investigación / Amarillo: ofrecida · > Requisitos previos de la tecnología seleccionada (basta con una alternativa) · Desplázate para explorar",
+      "Zielony: zbadane / Niebieski: w trakcie badań / Żółty: oferowane · > Wymagania wstępne wybranej technologii (wystarczy jedna alternatywa) · Przewiń, aby przeglądać",
+      "Verde: pesquisada / Azul: em pesquisa / Amarelo: oferecida · > Pré-requisitos da tecnologia selecionada (basta uma alternativa) · Role para navegar"
+    ]
+  }
+}

@@ -1,0 +1,1055 @@
+{
+  "scope": "Entirely authored fixtures",
+  "cases": {
+    "ordinary": {
+      "catalog": {
+        "technologies": {
+          "Root": {
+            "id": "Root",
+            "area": "physics",
+            "tier": 0,
+            "cost": 10.0,
+            "condition": true,
+            "repeatable": false,
+            "tierDefined": true,
+            "levels": 1,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "physics"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "0"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "advice": {
+        "effects": [
+          "tte_refresh_advice = {\nremove_country_flag = tte_advice_pick_Root\nremove_country_flag = tte_advice_has_physics\nremove_country_flag = tte_advice_role_goal_physics\nremove_country_flag = tte_advice_role_route_physics\nremove_country_flag = tte_advice_role_filler_physics\nclear_variable = tte_advice_slot_physics\nremove_country_flag = tte_advice_has_society\nremove_country_flag = tte_advice_role_goal_society\nremove_country_flag = tte_advice_role_route_society\nremove_country_flag = tte_advice_role_filler_society\nclear_variable = tte_advice_slot_society\nremove_country_flag = tte_advice_has_engineering\nremove_country_flag = tte_advice_role_goal_engineering\nremove_country_flag = tte_advice_role_route_engineering\nremove_country_flag = tte_advice_role_filler_engineering\nclear_variable = tte_advice_slot_engineering\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_physics } always = yes NOT = { is_researching_technology = Root } tte_offered_Root = yes OR = { tte_priority_Root = yes tte_gate_candidate_Root = yes } tte_admissible_Root = yes } set_country_flag = tte_advice_pick_Root set_country_flag = tte_advice_has_physics if = { limit = { OR = { AND = { tte_priority_Root = yes check_variable = { which = tte_route_rank_Root value = 1 } } AND = { tte_gate_candidate_Root = yes check_variable = { which = tte_fill_rank_physics_0 value = 1 } } } } set_variable = { which = tte_advice_slot_physics value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Root = yes check_variable = { which = tte_route_rank_Root value = 2 } } AND = { tte_gate_candidate_Root = yes check_variable = { which = tte_fill_rank_physics_0 value = 2 } } } } set_variable = { which = tte_advice_slot_physics value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Root = yes check_variable = { which = tte_route_rank_Root value = 3 } } AND = { tte_gate_candidate_Root = yes check_variable = { which = tte_fill_rank_physics_0 value = 3 } } } } set_variable = { which = tte_advice_slot_physics value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Root = yes check_variable = { which = tte_route_rank_Root value = 4 } } AND = { tte_gate_candidate_Root = yes check_variable = { which = tte_fill_rank_physics_0 value = 4 } } } } set_variable = { which = tte_advice_slot_physics value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Root = yes check_variable = { which = tte_route_rank_Root value = 5 } } AND = { tte_gate_candidate_Root = yes check_variable = { which = tte_fill_rank_physics_0 value = 5 } } } } set_variable = { which = tte_advice_slot_physics value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Root = yes check_variable = { which = tte_fill_rank_physics_0 value = 1 } NOT = { AND = { tte_priority_Root = yes OR = { check_variable = { which = tte_route_rank_Root value = 1 } } } } } AND = { tte_gate_candidate_Root = yes check_variable = { which = tte_fill_rank_physics_0 value = 2 } NOT = { AND = { tte_priority_Root = yes OR = { check_variable = { which = tte_route_rank_Root value = 1 } check_variable = { which = tte_route_rank_Root value = 2 } } } } } AND = { tte_gate_candidate_Root = yes check_variable = { which = tte_fill_rank_physics_0 value = 3 } NOT = { AND = { tte_priority_Root = yes OR = { check_variable = { which = tte_route_rank_Root value = 1 } check_variable = { which = tte_route_rank_Root value = 2 } check_variable = { which = tte_route_rank_Root value = 3 } } } } } AND = { tte_gate_candidate_Root = yes check_variable = { which = tte_fill_rank_physics_0 value = 4 } NOT = { AND = { tte_priority_Root = yes OR = { check_variable = { which = tte_route_rank_Root value = 1 } check_variable = { which = tte_route_rank_Root value = 2 } check_variable = { which = tte_route_rank_Root value = 3 } check_variable = { which = tte_route_rank_Root value = 4 } } } } } AND = { tte_gate_candidate_Root = yes check_variable = { which = tte_fill_rank_physics_0 value = 5 } NOT = { AND = { tte_priority_Root = yes OR = { check_variable = { which = tte_route_rank_Root value = 1 } check_variable = { which = tte_route_rank_Root value = 2 } check_variable = { which = tte_route_rank_Root value = 3 } check_variable = { which = tte_route_rank_Root value = 4 } check_variable = { which = tte_route_rank_Root value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_physics } else_if = { limit = { has_country_flag = tte_goal_Root } set_country_flag = tte_advice_role_goal_physics } else_if = { limit = { tte_priority_Root = yes } set_country_flag = tte_advice_role_route_physics } else = { set_country_flag = tte_advice_role_filler_physics } }\n}"
+        ],
+        "buttons": [
+          "tte_advice_refresh = { potential = { from = { is_ai = no } } allow = { from = { is_ai = no } } effect = { from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_empty_physics = { potential = { from = { is_ai = no NOT = { tte_advice_live_physics = yes } } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_empty_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_goal_Root = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Root has_country_flag = tte_advice_role_goal_physics always = yes NOT = { is_researching_technology = Root } tte_offered_Root = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_goal_Root_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_route_Root = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Root has_country_flag = tte_advice_role_route_physics always = yes NOT = { is_researching_technology = Root } tte_offered_Root = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_route_Root_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_filler_Root = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Root has_country_flag = tte_advice_role_filler_physics always = yes NOT = { is_researching_technology = Root } tte_offered_Root = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_filler_Root_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_empty_society = { potential = { from = { is_ai = no NOT = { tte_advice_live_society = yes } } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_empty_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_empty_engineering = { potential = { from = { is_ai = no NOT = { tte_advice_live_engineering = yes } } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_empty_tip from = { hidden_effect = { tte_refresh = yes } } } }"
+        ],
+        "gui": "containerWindowType = { name = tte_advice_panel position = { x = 498 y = 0 } size = { width = 356 height = 450 } moveable = no clipping = no background = { name = tte_advice_background quadTextureSprite = GFX_tile_outliner_bg_solid }\ninstantTextBoxType = { name = tte_advice_heading text = tte_advice_heading font = \"cg_16b\" position = { x = 8 y = 12 } maxWidth = 235 maxHeight = 24 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_refresh position = { x = 228 y = 10 } size = { x = 108 y = 24 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_refresh_label effect = tte_advice_refresh }\ninstantTextBoxType = { name = tte_advice_help text = tte_advice_help font = \"cg_16b\" position = { x = 8 y = 340 } maxWidth = 335 maxHeight = 100 alwaysTransparent = yes }\ninstantTextBoxType = { name = tte_advice_field_physics text = tte_area_physics font = \"cg_16b\" position = { x = 8 y = 44 } maxWidth = 335 maxHeight = 20 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_empty_physics position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_wait multiline = yes effect = tte_advice_empty_physics }\neffectbuttonType = { name = tte_advice_physics_goal_Root position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_goal_Root multiline = yes effect = tte_advice_physics_goal_Root }\neffectbuttonType = { name = tte_advice_physics_route_Root position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_route_Root multiline = yes effect = tte_advice_physics_route_Root }\neffectbuttonType = { name = tte_advice_physics_filler_Root position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_filler_Root multiline = yes effect = tte_advice_physics_filler_Root }\ninstantTextBoxType = { name = tte_advice_field_society text = tte_area_society font = \"cg_16b\" position = { x = 8 y = 142 } maxWidth = 335 maxHeight = 20 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_empty_society position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_wait multiline = yes effect = tte_advice_empty_society }\ninstantTextBoxType = { name = tte_advice_field_engineering text = tte_area_engineering font = \"cg_16b\" position = { x = 8 y = 240 } maxWidth = 335 maxHeight = 20 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_empty_engineering position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_wait multiline = yes effect = tte_advice_empty_engineering }\n}",
+        "getters": [
+          "defined_text = { name = GetTTEAdviceGoal_physics random = no text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 1 } } localization_key = tte_advice_goal_slot_1 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 2 } } localization_key = tte_advice_goal_slot_2 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 3 } } localization_key = tte_advice_goal_slot_3 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 4 } } localization_key = tte_advice_goal_slot_4 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 5 } } localization_key = tte_advice_goal_slot_5 } default = tte_plan_no_goal }",
+          "defined_text = { name = GetTTEAdviceGoal_society random = no text = { trigger = { check_variable = { which = tte_advice_slot_society value = 1 } } localization_key = tte_advice_goal_slot_1 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 2 } } localization_key = tte_advice_goal_slot_2 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 3 } } localization_key = tte_advice_goal_slot_3 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 4 } } localization_key = tte_advice_goal_slot_4 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 5 } } localization_key = tte_advice_goal_slot_5 } default = tte_plan_no_goal }",
+          "defined_text = { name = GetTTEAdviceGoal_engineering random = no text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 1 } } localization_key = tte_advice_goal_slot_1 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 2 } } localization_key = tte_advice_goal_slot_2 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 3 } } localization_key = tte_advice_goal_slot_3 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 4 } } localization_key = tte_advice_goal_slot_4 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 5 } } localization_key = tte_advice_goal_slot_5 } default = tte_plan_no_goal }"
+        ],
+        "triggers": [
+          "tte_advice_live_physics = { is_ai = no has_country_flag = tte_automation OR = { AND = { has_country_flag = tte_advice_pick_Root always = yes NOT = { is_researching_technology = Root } tte_offered_Root = yes } } }",
+          "tte_advice_live_society = { is_ai = no has_country_flag = tte_automation OR = {  } }",
+          "tte_advice_live_engineering = { is_ai = no has_country_flag = tte_automation OR = {  } }"
+        ],
+        "localisation": {
+          "english": {
+            "tte_advice_heading": "Goal research advice",
+            "tte_advice_help": "Advice only · click to refresh, hover for reasons\nChoose any card. Auto-research requires the native gear.",
+            "tte_advice_wait": "No current suggestion\nClick to recheck",
+            "tte_advice_role_goal": "Goal technology",
+            "tte_advice_role_route": "Prerequisite",
+            "tte_advice_role_filler": "Tier filler",
+            "tte_advice_empty_tip": "No current valid suggestion, or goal priority is paused. Choose freely. Click to recheck; this does not start research.",
+            "tte_advice_goal_slot_1": "Goal 1 · [From.GetTTEGoal1]",
+            "tte_advice_goal_slot_2": "Goal 2 · [From.GetTTEGoal2]",
+            "tte_advice_goal_slot_3": "Goal 3 · [From.GetTTEGoal3]",
+            "tte_advice_goal_slot_4": "Goal 4 · [From.GetTTEGoal4]",
+            "tte_advice_goal_slot_5": "Goal 5 · [From.GetTTEGoal5]",
+            "tte_advice_physics_goal_Root": "§Y$Root$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Root_tip": "§H$Root$§!\n[From.GetTTEAdviceGoal_physics]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_route_Root": "§Y$Root$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Root_tip": "§H$Root$§!\n[From.GetTTEAdviceGoal_physics]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_filler_Root": "§Y$Root$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Root_tip": "§H$Root$§!\n[From.GetTTEAdviceGoal_physics]\nThe goal route needs a higher tier. Research one T0 technology toward unlocking T1.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left."
+          },
+          "simp_chinese": {
+            "tte_advice_heading": "目标科研建议",
+            "tte_advice_help": "仅供参考 · 点击建议刷新，悬停查看理由\n手动选卡不受限制；齿轮开启后才会自动科研。",
+            "tte_advice_wait": "暂无当前建议\n点击重新检查",
+            "tte_advice_role_goal": "目标科技",
+            "tte_advice_role_route": "前置科技",
+            "tte_advice_role_filler": "补足等级",
+            "tte_advice_empty_tip": "没有当前有效的建议，或目标优先已暂停。可自由手选；点击重新检查，不会开始科研。",
+            "tte_advice_goal_slot_1": "目标 1 · [From.GetTTEGoal1]",
+            "tte_advice_goal_slot_2": "目标 2 · [From.GetTTEGoal2]",
+            "tte_advice_goal_slot_3": "目标 3 · [From.GetTTEGoal3]",
+            "tte_advice_goal_slot_4": "目标 4 · [From.GetTTEGoal4]",
+            "tte_advice_goal_slot_5": "目标 5 · [From.GetTTEGoal5]",
+            "tte_advice_physics_goal_Root": "§Y$Root$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Root_tip": "§H$Root$§!\n[From.GetTTEAdviceGoal_physics]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_route_Root": "§Y$Root$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Root_tip": "§H$Root$§!\n[From.GetTTEAdviceGoal_physics]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_filler_Root": "§Y$Root$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Root_tip": "§H$Root$§!\n[From.GetTTEAdviceGoal_physics]\n目标路线需要更高等级；研究一项 T0 科技，推进 T1 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。"
+          }
+        }
+      }
+    },
+    "cross_or_repeat": {
+      "catalog": {
+        "technologies": {
+          "Alpha": {
+            "id": "Alpha",
+            "area": "physics",
+            "tier": 0,
+            "cost": 10.0,
+            "condition": true,
+            "repeatable": false,
+            "tierDefined": true,
+            "levels": 1,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "physics"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "0"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "Beta": {
+            "id": "Beta",
+            "area": "society",
+            "tier": 1,
+            "cost": 4000.0,
+            "condition": true,
+            "repeatable": false,
+            "tierDefined": true,
+            "levels": 1,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "society"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "1"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "4000"
+                }
+              ]
+            }
+          },
+          "Choice": {
+            "id": "Choice",
+            "area": "engineering",
+            "tier": 2,
+            "cost": 300.0,
+            "condition": [
+              "any",
+              [
+                "tech",
+                "Alpha"
+              ],
+              [
+                "tech",
+                "Beta"
+              ]
+            ],
+            "repeatable": false,
+            "tierDefined": true,
+            "levels": 1,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "engineering"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "2"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "300"
+                },
+                {
+                  "key": "prerequisites",
+                  "operator": "=",
+                  "value": {
+                    "items": [
+                      {
+                        "key": "OR",
+                        "operator": "=",
+                        "value": {
+                          "items": [
+                            "Alpha",
+                            "Beta"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "Dangerous": {
+            "id": "Dangerous",
+            "area": "physics",
+            "tier": 3,
+            "cost": 500.0,
+            "condition": true,
+            "repeatable": false,
+            "tierDefined": true,
+            "levels": 1,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "physics"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "3"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "500"
+                },
+                {
+                  "key": "is_dangerous",
+                  "operator": "=",
+                  "value": "yes"
+                }
+              ]
+            }
+          },
+          "Goal": {
+            "id": "Goal",
+            "area": "physics",
+            "tier": 5,
+            "cost": 1000.0,
+            "condition": [
+              "all",
+              [
+                "tech",
+                "Choice"
+              ],
+              [
+                "tech",
+                "Dangerous"
+              ]
+            ],
+            "repeatable": false,
+            "tierDefined": true,
+            "levels": 1,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "physics"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "5"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "1000"
+                },
+                {
+                  "key": "prerequisites",
+                  "operator": "=",
+                  "value": {
+                    "items": [
+                      "Choice",
+                      "Dangerous"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "Repeat": {
+            "id": "Repeat",
+            "area": "engineering",
+            "tier": 5,
+            "cost": 2000.0,
+            "condition": [
+              "tech",
+              "Choice"
+            ],
+            "repeatable": true,
+            "tierDefined": true,
+            "levels": -1,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "engineering"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "5"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "2000"
+                },
+                {
+                  "key": "levels",
+                  "operator": "=",
+                  "value": "-1"
+                },
+                {
+                  "key": "prerequisites",
+                  "operator": "=",
+                  "value": {
+                    "items": [
+                      "Choice"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "MoreLevels": {
+            "id": "MoreLevels",
+            "area": "society",
+            "tier": 4,
+            "cost": 200.0,
+            "condition": [
+              "tech",
+              "Beta"
+            ],
+            "repeatable": true,
+            "tierDefined": true,
+            "levels": 3,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "society"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "4"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "200"
+                },
+                {
+                  "key": "levels",
+                  "operator": "=",
+                  "value": "3"
+                },
+                {
+                  "key": "prerequisites",
+                  "operator": "=",
+                  "value": {
+                    "items": [
+                      "Beta"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "Expensive": {
+            "id": "Expensive",
+            "area": "engineering",
+            "tier": 2,
+            "cost": 10000000.0,
+            "condition": true,
+            "repeatable": false,
+            "tierDefined": true,
+            "levels": 1,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "engineering"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "2"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "10000000"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "advice": {
+        "effects": [
+          "tte_refresh_advice = {\nremove_country_flag = tte_advice_pick_Alpha\nremove_country_flag = tte_advice_pick_Beta\nremove_country_flag = tte_advice_pick_Choice\nremove_country_flag = tte_advice_pick_Dangerous\nremove_country_flag = tte_advice_pick_Expensive\nremove_country_flag = tte_advice_pick_Goal\nremove_country_flag = tte_advice_pick_MoreLevels\nremove_country_flag = tte_advice_pick_Repeat\nremove_country_flag = tte_advice_has_physics\nremove_country_flag = tte_advice_role_goal_physics\nremove_country_flag = tte_advice_role_route_physics\nremove_country_flag = tte_advice_role_filler_physics\nclear_variable = tte_advice_slot_physics\nremove_country_flag = tte_advice_has_society\nremove_country_flag = tte_advice_role_goal_society\nremove_country_flag = tte_advice_role_route_society\nremove_country_flag = tte_advice_role_filler_society\nclear_variable = tte_advice_slot_society\nremove_country_flag = tte_advice_has_engineering\nremove_country_flag = tte_advice_role_goal_engineering\nremove_country_flag = tte_advice_role_route_engineering\nremove_country_flag = tte_advice_role_filler_engineering\nclear_variable = tte_advice_slot_engineering\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_physics } always = yes NOT = { is_researching_technology = Alpha } tte_offered_Alpha = yes OR = { tte_priority_Alpha = yes tte_gate_candidate_Alpha = yes } tte_admissible_Alpha = yes } set_country_flag = tte_advice_pick_Alpha set_country_flag = tte_advice_has_physics if = { limit = { OR = { AND = { tte_priority_Alpha = yes check_variable = { which = tte_route_rank_Alpha value = 1 } } AND = { tte_gate_candidate_Alpha = yes check_variable = { which = tte_fill_rank_physics_0 value = 1 } } } } set_variable = { which = tte_advice_slot_physics value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Alpha = yes check_variable = { which = tte_route_rank_Alpha value = 2 } } AND = { tte_gate_candidate_Alpha = yes check_variable = { which = tte_fill_rank_physics_0 value = 2 } } } } set_variable = { which = tte_advice_slot_physics value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Alpha = yes check_variable = { which = tte_route_rank_Alpha value = 3 } } AND = { tte_gate_candidate_Alpha = yes check_variable = { which = tte_fill_rank_physics_0 value = 3 } } } } set_variable = { which = tte_advice_slot_physics value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Alpha = yes check_variable = { which = tte_route_rank_Alpha value = 4 } } AND = { tte_gate_candidate_Alpha = yes check_variable = { which = tte_fill_rank_physics_0 value = 4 } } } } set_variable = { which = tte_advice_slot_physics value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Alpha = yes check_variable = { which = tte_route_rank_Alpha value = 5 } } AND = { tte_gate_candidate_Alpha = yes check_variable = { which = tte_fill_rank_physics_0 value = 5 } } } } set_variable = { which = tte_advice_slot_physics value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Alpha = yes check_variable = { which = tte_fill_rank_physics_0 value = 1 } NOT = { AND = { tte_priority_Alpha = yes OR = { check_variable = { which = tte_route_rank_Alpha value = 1 } } } } } AND = { tte_gate_candidate_Alpha = yes check_variable = { which = tte_fill_rank_physics_0 value = 2 } NOT = { AND = { tte_priority_Alpha = yes OR = { check_variable = { which = tte_route_rank_Alpha value = 1 } check_variable = { which = tte_route_rank_Alpha value = 2 } } } } } AND = { tte_gate_candidate_Alpha = yes check_variable = { which = tte_fill_rank_physics_0 value = 3 } NOT = { AND = { tte_priority_Alpha = yes OR = { check_variable = { which = tte_route_rank_Alpha value = 1 } check_variable = { which = tte_route_rank_Alpha value = 2 } check_variable = { which = tte_route_rank_Alpha value = 3 } } } } } AND = { tte_gate_candidate_Alpha = yes check_variable = { which = tte_fill_rank_physics_0 value = 4 } NOT = { AND = { tte_priority_Alpha = yes OR = { check_variable = { which = tte_route_rank_Alpha value = 1 } check_variable = { which = tte_route_rank_Alpha value = 2 } check_variable = { which = tte_route_rank_Alpha value = 3 } check_variable = { which = tte_route_rank_Alpha value = 4 } } } } } AND = { tte_gate_candidate_Alpha = yes check_variable = { which = tte_fill_rank_physics_0 value = 5 } NOT = { AND = { tte_priority_Alpha = yes OR = { check_variable = { which = tte_route_rank_Alpha value = 1 } check_variable = { which = tte_route_rank_Alpha value = 2 } check_variable = { which = tte_route_rank_Alpha value = 3 } check_variable = { which = tte_route_rank_Alpha value = 4 } check_variable = { which = tte_route_rank_Alpha value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_physics } else_if = { limit = { has_country_flag = tte_goal_Alpha } set_country_flag = tte_advice_role_goal_physics } else_if = { limit = { tte_priority_Alpha = yes } set_country_flag = tte_advice_role_route_physics } else = { set_country_flag = tte_advice_role_filler_physics } }\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_society } always = yes NOT = { is_researching_technology = MoreLevels } tte_offered_MoreLevels = yes OR = { tte_priority_MoreLevels = yes tte_gate_candidate_MoreLevels = yes } tte_admissible_MoreLevels = yes } set_country_flag = tte_advice_pick_MoreLevels set_country_flag = tte_advice_has_society if = { limit = { OR = { AND = { tte_priority_MoreLevels = yes check_variable = { which = tte_route_rank_MoreLevels value = 1 } } AND = { tte_gate_candidate_MoreLevels = yes check_variable = { which = tte_fill_rank_society_4 value = 1 } } } } set_variable = { which = tte_advice_slot_society value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_MoreLevels = yes check_variable = { which = tte_route_rank_MoreLevels value = 2 } } AND = { tte_gate_candidate_MoreLevels = yes check_variable = { which = tte_fill_rank_society_4 value = 2 } } } } set_variable = { which = tte_advice_slot_society value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_MoreLevels = yes check_variable = { which = tte_route_rank_MoreLevels value = 3 } } AND = { tte_gate_candidate_MoreLevels = yes check_variable = { which = tte_fill_rank_society_4 value = 3 } } } } set_variable = { which = tte_advice_slot_society value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_MoreLevels = yes check_variable = { which = tte_route_rank_MoreLevels value = 4 } } AND = { tte_gate_candidate_MoreLevels = yes check_variable = { which = tte_fill_rank_society_4 value = 4 } } } } set_variable = { which = tte_advice_slot_society value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_MoreLevels = yes check_variable = { which = tte_route_rank_MoreLevels value = 5 } } AND = { tte_gate_candidate_MoreLevels = yes check_variable = { which = tte_fill_rank_society_4 value = 5 } } } } set_variable = { which = tte_advice_slot_society value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_MoreLevels = yes check_variable = { which = tte_fill_rank_society_4 value = 1 } NOT = { AND = { tte_priority_MoreLevels = yes OR = { check_variable = { which = tte_route_rank_MoreLevels value = 1 } } } } } AND = { tte_gate_candidate_MoreLevels = yes check_variable = { which = tte_fill_rank_society_4 value = 2 } NOT = { AND = { tte_priority_MoreLevels = yes OR = { check_variable = { which = tte_route_rank_MoreLevels value = 1 } check_variable = { which = tte_route_rank_MoreLevels value = 2 } } } } } AND = { tte_gate_candidate_MoreLevels = yes check_variable = { which = tte_fill_rank_society_4 value = 3 } NOT = { AND = { tte_priority_MoreLevels = yes OR = { check_variable = { which = tte_route_rank_MoreLevels value = 1 } check_variable = { which = tte_route_rank_MoreLevels value = 2 } check_variable = { which = tte_route_rank_MoreLevels value = 3 } } } } } AND = { tte_gate_candidate_MoreLevels = yes check_variable = { which = tte_fill_rank_society_4 value = 4 } NOT = { AND = { tte_priority_MoreLevels = yes OR = { check_variable = { which = tte_route_rank_MoreLevels value = 1 } check_variable = { which = tte_route_rank_MoreLevels value = 2 } check_variable = { which = tte_route_rank_MoreLevels value = 3 } check_variable = { which = tte_route_rank_MoreLevels value = 4 } } } } } AND = { tte_gate_candidate_MoreLevels = yes check_variable = { which = tte_fill_rank_society_4 value = 5 } NOT = { AND = { tte_priority_MoreLevels = yes OR = { check_variable = { which = tte_route_rank_MoreLevels value = 1 } check_variable = { which = tte_route_rank_MoreLevels value = 2 } check_variable = { which = tte_route_rank_MoreLevels value = 3 } check_variable = { which = tte_route_rank_MoreLevels value = 4 } check_variable = { which = tte_route_rank_MoreLevels value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_society } else_if = { limit = { has_country_flag = tte_goal_MoreLevels } set_country_flag = tte_advice_role_goal_society } else_if = { limit = { tte_priority_MoreLevels = yes } set_country_flag = tte_advice_role_route_society } else = { set_country_flag = tte_advice_role_filler_society } }\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_engineering } always = yes NOT = { is_researching_technology = Choice } tte_offered_Choice = yes OR = { tte_priority_Choice = yes tte_gate_candidate_Choice = yes } tte_admissible_Choice = yes } set_country_flag = tte_advice_pick_Choice set_country_flag = tte_advice_has_engineering if = { limit = { OR = { AND = { tte_priority_Choice = yes check_variable = { which = tte_route_rank_Choice value = 1 } } AND = { tte_gate_candidate_Choice = yes check_variable = { which = tte_fill_rank_engineering_2 value = 1 } } } } set_variable = { which = tte_advice_slot_engineering value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Choice = yes check_variable = { which = tte_route_rank_Choice value = 2 } } AND = { tte_gate_candidate_Choice = yes check_variable = { which = tte_fill_rank_engineering_2 value = 2 } } } } set_variable = { which = tte_advice_slot_engineering value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Choice = yes check_variable = { which = tte_route_rank_Choice value = 3 } } AND = { tte_gate_candidate_Choice = yes check_variable = { which = tte_fill_rank_engineering_2 value = 3 } } } } set_variable = { which = tte_advice_slot_engineering value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Choice = yes check_variable = { which = tte_route_rank_Choice value = 4 } } AND = { tte_gate_candidate_Choice = yes check_variable = { which = tte_fill_rank_engineering_2 value = 4 } } } } set_variable = { which = tte_advice_slot_engineering value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Choice = yes check_variable = { which = tte_route_rank_Choice value = 5 } } AND = { tte_gate_candidate_Choice = yes check_variable = { which = tte_fill_rank_engineering_2 value = 5 } } } } set_variable = { which = tte_advice_slot_engineering value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Choice = yes check_variable = { which = tte_fill_rank_engineering_2 value = 1 } NOT = { AND = { tte_priority_Choice = yes OR = { check_variable = { which = tte_route_rank_Choice value = 1 } } } } } AND = { tte_gate_candidate_Choice = yes check_variable = { which = tte_fill_rank_engineering_2 value = 2 } NOT = { AND = { tte_priority_Choice = yes OR = { check_variable = { which = tte_route_rank_Choice value = 1 } check_variable = { which = tte_route_rank_Choice value = 2 } } } } } AND = { tte_gate_candidate_Choice = yes check_variable = { which = tte_fill_rank_engineering_2 value = 3 } NOT = { AND = { tte_priority_Choice = yes OR = { check_variable = { which = tte_route_rank_Choice value = 1 } check_variable = { which = tte_route_rank_Choice value = 2 } check_variable = { which = tte_route_rank_Choice value = 3 } } } } } AND = { tte_gate_candidate_Choice = yes check_variable = { which = tte_fill_rank_engineering_2 value = 4 } NOT = { AND = { tte_priority_Choice = yes OR = { check_variable = { which = tte_route_rank_Choice value = 1 } check_variable = { which = tte_route_rank_Choice value = 2 } check_variable = { which = tte_route_rank_Choice value = 3 } check_variable = { which = tte_route_rank_Choice value = 4 } } } } } AND = { tte_gate_candidate_Choice = yes check_variable = { which = tte_fill_rank_engineering_2 value = 5 } NOT = { AND = { tte_priority_Choice = yes OR = { check_variable = { which = tte_route_rank_Choice value = 1 } check_variable = { which = tte_route_rank_Choice value = 2 } check_variable = { which = tte_route_rank_Choice value = 3 } check_variable = { which = tte_route_rank_Choice value = 4 } check_variable = { which = tte_route_rank_Choice value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_engineering } else_if = { limit = { has_country_flag = tte_goal_Choice } set_country_flag = tte_advice_role_goal_engineering } else_if = { limit = { tte_priority_Choice = yes } set_country_flag = tte_advice_role_route_engineering } else = { set_country_flag = tte_advice_role_filler_engineering } }\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_physics } always = yes NOT = { is_researching_technology = Dangerous } tte_offered_Dangerous = yes OR = { tte_priority_Dangerous = yes tte_gate_candidate_Dangerous = yes } tte_admissible_Dangerous = yes } set_country_flag = tte_advice_pick_Dangerous set_country_flag = tte_advice_has_physics if = { limit = { OR = { AND = { tte_priority_Dangerous = yes check_variable = { which = tte_route_rank_Dangerous value = 1 } } AND = { tte_gate_candidate_Dangerous = yes check_variable = { which = tte_fill_rank_physics_3 value = 1 } } } } set_variable = { which = tte_advice_slot_physics value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Dangerous = yes check_variable = { which = tte_route_rank_Dangerous value = 2 } } AND = { tte_gate_candidate_Dangerous = yes check_variable = { which = tte_fill_rank_physics_3 value = 2 } } } } set_variable = { which = tte_advice_slot_physics value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Dangerous = yes check_variable = { which = tte_route_rank_Dangerous value = 3 } } AND = { tte_gate_candidate_Dangerous = yes check_variable = { which = tte_fill_rank_physics_3 value = 3 } } } } set_variable = { which = tte_advice_slot_physics value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Dangerous = yes check_variable = { which = tte_route_rank_Dangerous value = 4 } } AND = { tte_gate_candidate_Dangerous = yes check_variable = { which = tte_fill_rank_physics_3 value = 4 } } } } set_variable = { which = tte_advice_slot_physics value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Dangerous = yes check_variable = { which = tte_route_rank_Dangerous value = 5 } } AND = { tte_gate_candidate_Dangerous = yes check_variable = { which = tte_fill_rank_physics_3 value = 5 } } } } set_variable = { which = tte_advice_slot_physics value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Dangerous = yes check_variable = { which = tte_fill_rank_physics_3 value = 1 } NOT = { AND = { tte_priority_Dangerous = yes OR = { check_variable = { which = tte_route_rank_Dangerous value = 1 } } } } } AND = { tte_gate_candidate_Dangerous = yes check_variable = { which = tte_fill_rank_physics_3 value = 2 } NOT = { AND = { tte_priority_Dangerous = yes OR = { check_variable = { which = tte_route_rank_Dangerous value = 1 } check_variable = { which = tte_route_rank_Dangerous value = 2 } } } } } AND = { tte_gate_candidate_Dangerous = yes check_variable = { which = tte_fill_rank_physics_3 value = 3 } NOT = { AND = { tte_priority_Dangerous = yes OR = { check_variable = { which = tte_route_rank_Dangerous value = 1 } check_variable = { which = tte_route_rank_Dangerous value = 2 } check_variable = { which = tte_route_rank_Dangerous value = 3 } } } } } AND = { tte_gate_candidate_Dangerous = yes check_variable = { which = tte_fill_rank_physics_3 value = 4 } NOT = { AND = { tte_priority_Dangerous = yes OR = { check_variable = { which = tte_route_rank_Dangerous value = 1 } check_variable = { which = tte_route_rank_Dangerous value = 2 } check_variable = { which = tte_route_rank_Dangerous value = 3 } check_variable = { which = tte_route_rank_Dangerous value = 4 } } } } } AND = { tte_gate_candidate_Dangerous = yes check_variable = { which = tte_fill_rank_physics_3 value = 5 } NOT = { AND = { tte_priority_Dangerous = yes OR = { check_variable = { which = tte_route_rank_Dangerous value = 1 } check_variable = { which = tte_route_rank_Dangerous value = 2 } check_variable = { which = tte_route_rank_Dangerous value = 3 } check_variable = { which = tte_route_rank_Dangerous value = 4 } check_variable = { which = tte_route_rank_Dangerous value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_physics } else_if = { limit = { has_country_flag = tte_goal_Dangerous } set_country_flag = tte_advice_role_goal_physics } else_if = { limit = { tte_priority_Dangerous = yes } set_country_flag = tte_advice_role_route_physics } else = { set_country_flag = tte_advice_role_filler_physics } }\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_physics } always = yes NOT = { is_researching_technology = Goal } tte_offered_Goal = yes OR = { tte_priority_Goal = yes tte_gate_candidate_Goal = yes } tte_admissible_Goal = yes } set_country_flag = tte_advice_pick_Goal set_country_flag = tte_advice_has_physics if = { limit = { OR = { AND = { tte_priority_Goal = yes check_variable = { which = tte_route_rank_Goal value = 1 } } AND = { tte_gate_candidate_Goal = yes check_variable = { which = tte_fill_rank_physics_5 value = 1 } } } } set_variable = { which = tte_advice_slot_physics value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Goal = yes check_variable = { which = tte_route_rank_Goal value = 2 } } AND = { tte_gate_candidate_Goal = yes check_variable = { which = tte_fill_rank_physics_5 value = 2 } } } } set_variable = { which = tte_advice_slot_physics value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Goal = yes check_variable = { which = tte_route_rank_Goal value = 3 } } AND = { tte_gate_candidate_Goal = yes check_variable = { which = tte_fill_rank_physics_5 value = 3 } } } } set_variable = { which = tte_advice_slot_physics value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Goal = yes check_variable = { which = tte_route_rank_Goal value = 4 } } AND = { tte_gate_candidate_Goal = yes check_variable = { which = tte_fill_rank_physics_5 value = 4 } } } } set_variable = { which = tte_advice_slot_physics value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Goal = yes check_variable = { which = tte_route_rank_Goal value = 5 } } AND = { tte_gate_candidate_Goal = yes check_variable = { which = tte_fill_rank_physics_5 value = 5 } } } } set_variable = { which = tte_advice_slot_physics value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Goal = yes check_variable = { which = tte_fill_rank_physics_5 value = 1 } NOT = { AND = { tte_priority_Goal = yes OR = { check_variable = { which = tte_route_rank_Goal value = 1 } } } } } AND = { tte_gate_candidate_Goal = yes check_variable = { which = tte_fill_rank_physics_5 value = 2 } NOT = { AND = { tte_priority_Goal = yes OR = { check_variable = { which = tte_route_rank_Goal value = 1 } check_variable = { which = tte_route_rank_Goal value = 2 } } } } } AND = { tte_gate_candidate_Goal = yes check_variable = { which = tte_fill_rank_physics_5 value = 3 } NOT = { AND = { tte_priority_Goal = yes OR = { check_variable = { which = tte_route_rank_Goal value = 1 } check_variable = { which = tte_route_rank_Goal value = 2 } check_variable = { which = tte_route_rank_Goal value = 3 } } } } } AND = { tte_gate_candidate_Goal = yes check_variable = { which = tte_fill_rank_physics_5 value = 4 } NOT = { AND = { tte_priority_Goal = yes OR = { check_variable = { which = tte_route_rank_Goal value = 1 } check_variable = { which = tte_route_rank_Goal value = 2 } check_variable = { which = tte_route_rank_Goal value = 3 } check_variable = { which = tte_route_rank_Goal value = 4 } } } } } AND = { tte_gate_candidate_Goal = yes check_variable = { which = tte_fill_rank_physics_5 value = 5 } NOT = { AND = { tte_priority_Goal = yes OR = { check_variable = { which = tte_route_rank_Goal value = 1 } check_variable = { which = tte_route_rank_Goal value = 2 } check_variable = { which = tte_route_rank_Goal value = 3 } check_variable = { which = tte_route_rank_Goal value = 4 } check_variable = { which = tte_route_rank_Goal value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_physics } else_if = { limit = { has_country_flag = tte_goal_Goal } set_country_flag = tte_advice_role_goal_physics } else_if = { limit = { tte_priority_Goal = yes } set_country_flag = tte_advice_role_route_physics } else = { set_country_flag = tte_advice_role_filler_physics } }\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_engineering } always = yes NOT = { is_researching_technology = Repeat } tte_offered_Repeat = yes OR = { tte_priority_Repeat = yes tte_gate_candidate_Repeat = yes } tte_admissible_Repeat = yes } set_country_flag = tte_advice_pick_Repeat set_country_flag = tte_advice_has_engineering if = { limit = { OR = { AND = { tte_priority_Repeat = yes check_variable = { which = tte_route_rank_Repeat value = 1 } } AND = { tte_gate_candidate_Repeat = yes check_variable = { which = tte_fill_rank_engineering_5 value = 1 } } } } set_variable = { which = tte_advice_slot_engineering value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Repeat = yes check_variable = { which = tte_route_rank_Repeat value = 2 } } AND = { tte_gate_candidate_Repeat = yes check_variable = { which = tte_fill_rank_engineering_5 value = 2 } } } } set_variable = { which = tte_advice_slot_engineering value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Repeat = yes check_variable = { which = tte_route_rank_Repeat value = 3 } } AND = { tte_gate_candidate_Repeat = yes check_variable = { which = tte_fill_rank_engineering_5 value = 3 } } } } set_variable = { which = tte_advice_slot_engineering value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Repeat = yes check_variable = { which = tte_route_rank_Repeat value = 4 } } AND = { tte_gate_candidate_Repeat = yes check_variable = { which = tte_fill_rank_engineering_5 value = 4 } } } } set_variable = { which = tte_advice_slot_engineering value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Repeat = yes check_variable = { which = tte_route_rank_Repeat value = 5 } } AND = { tte_gate_candidate_Repeat = yes check_variable = { which = tte_fill_rank_engineering_5 value = 5 } } } } set_variable = { which = tte_advice_slot_engineering value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Repeat = yes check_variable = { which = tte_fill_rank_engineering_5 value = 1 } NOT = { AND = { tte_priority_Repeat = yes OR = { check_variable = { which = tte_route_rank_Repeat value = 1 } } } } } AND = { tte_gate_candidate_Repeat = yes check_variable = { which = tte_fill_rank_engineering_5 value = 2 } NOT = { AND = { tte_priority_Repeat = yes OR = { check_variable = { which = tte_route_rank_Repeat value = 1 } check_variable = { which = tte_route_rank_Repeat value = 2 } } } } } AND = { tte_gate_candidate_Repeat = yes check_variable = { which = tte_fill_rank_engineering_5 value = 3 } NOT = { AND = { tte_priority_Repeat = yes OR = { check_variable = { which = tte_route_rank_Repeat value = 1 } check_variable = { which = tte_route_rank_Repeat value = 2 } check_variable = { which = tte_route_rank_Repeat value = 3 } } } } } AND = { tte_gate_candidate_Repeat = yes check_variable = { which = tte_fill_rank_engineering_5 value = 4 } NOT = { AND = { tte_priority_Repeat = yes OR = { check_variable = { which = tte_route_rank_Repeat value = 1 } check_variable = { which = tte_route_rank_Repeat value = 2 } check_variable = { which = tte_route_rank_Repeat value = 3 } check_variable = { which = tte_route_rank_Repeat value = 4 } } } } } AND = { tte_gate_candidate_Repeat = yes check_variable = { which = tte_fill_rank_engineering_5 value = 5 } NOT = { AND = { tte_priority_Repeat = yes OR = { check_variable = { which = tte_route_rank_Repeat value = 1 } check_variable = { which = tte_route_rank_Repeat value = 2 } check_variable = { which = tte_route_rank_Repeat value = 3 } check_variable = { which = tte_route_rank_Repeat value = 4 } check_variable = { which = tte_route_rank_Repeat value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_engineering } else_if = { limit = { has_country_flag = tte_goal_Repeat } set_country_flag = tte_advice_role_goal_engineering } else_if = { limit = { tte_priority_Repeat = yes } set_country_flag = tte_advice_role_route_engineering } else = { set_country_flag = tte_advice_role_filler_engineering } }\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_society } always = yes NOT = { is_researching_technology = Beta } tte_offered_Beta = yes OR = { tte_priority_Beta = yes tte_gate_candidate_Beta = yes } tte_admissible_Beta = yes } set_country_flag = tte_advice_pick_Beta set_country_flag = tte_advice_has_society if = { limit = { OR = { AND = { tte_priority_Beta = yes check_variable = { which = tte_route_rank_Beta value = 1 } } AND = { tte_gate_candidate_Beta = yes check_variable = { which = tte_fill_rank_society_1 value = 1 } } } } set_variable = { which = tte_advice_slot_society value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Beta = yes check_variable = { which = tte_route_rank_Beta value = 2 } } AND = { tte_gate_candidate_Beta = yes check_variable = { which = tte_fill_rank_society_1 value = 2 } } } } set_variable = { which = tte_advice_slot_society value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Beta = yes check_variable = { which = tte_route_rank_Beta value = 3 } } AND = { tte_gate_candidate_Beta = yes check_variable = { which = tte_fill_rank_society_1 value = 3 } } } } set_variable = { which = tte_advice_slot_society value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Beta = yes check_variable = { which = tte_route_rank_Beta value = 4 } } AND = { tte_gate_candidate_Beta = yes check_variable = { which = tte_fill_rank_society_1 value = 4 } } } } set_variable = { which = tte_advice_slot_society value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Beta = yes check_variable = { which = tte_route_rank_Beta value = 5 } } AND = { tte_gate_candidate_Beta = yes check_variable = { which = tte_fill_rank_society_1 value = 5 } } } } set_variable = { which = tte_advice_slot_society value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Beta = yes check_variable = { which = tte_fill_rank_society_1 value = 1 } NOT = { AND = { tte_priority_Beta = yes OR = { check_variable = { which = tte_route_rank_Beta value = 1 } } } } } AND = { tte_gate_candidate_Beta = yes check_variable = { which = tte_fill_rank_society_1 value = 2 } NOT = { AND = { tte_priority_Beta = yes OR = { check_variable = { which = tte_route_rank_Beta value = 1 } check_variable = { which = tte_route_rank_Beta value = 2 } } } } } AND = { tte_gate_candidate_Beta = yes check_variable = { which = tte_fill_rank_society_1 value = 3 } NOT = { AND = { tte_priority_Beta = yes OR = { check_variable = { which = tte_route_rank_Beta value = 1 } check_variable = { which = tte_route_rank_Beta value = 2 } check_variable = { which = tte_route_rank_Beta value = 3 } } } } } AND = { tte_gate_candidate_Beta = yes check_variable = { which = tte_fill_rank_society_1 value = 4 } NOT = { AND = { tte_priority_Beta = yes OR = { check_variable = { which = tte_route_rank_Beta value = 1 } check_variable = { which = tte_route_rank_Beta value = 2 } check_variable = { which = tte_route_rank_Beta value = 3 } check_variable = { which = tte_route_rank_Beta value = 4 } } } } } AND = { tte_gate_candidate_Beta = yes check_variable = { which = tte_fill_rank_society_1 value = 5 } NOT = { AND = { tte_priority_Beta = yes OR = { check_variable = { which = tte_route_rank_Beta value = 1 } check_variable = { which = tte_route_rank_Beta value = 2 } check_variable = { which = tte_route_rank_Beta value = 3 } check_variable = { which = tte_route_rank_Beta value = 4 } check_variable = { which = tte_route_rank_Beta value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_society } else_if = { limit = { has_country_flag = tte_goal_Beta } set_country_flag = tte_advice_role_goal_society } else_if = { limit = { tte_priority_Beta = yes } set_country_flag = tte_advice_role_route_society } else = { set_country_flag = tte_advice_role_filler_society } }\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_engineering } always = yes NOT = { is_researching_technology = Expensive } tte_offered_Expensive = yes OR = { tte_priority_Expensive = yes tte_gate_candidate_Expensive = yes } tte_admissible_Expensive = yes } set_country_flag = tte_advice_pick_Expensive set_country_flag = tte_advice_has_engineering if = { limit = { OR = { AND = { tte_priority_Expensive = yes check_variable = { which = tte_route_rank_Expensive value = 1 } } AND = { tte_gate_candidate_Expensive = yes check_variable = { which = tte_fill_rank_engineering_2 value = 1 } } } } set_variable = { which = tte_advice_slot_engineering value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Expensive = yes check_variable = { which = tte_route_rank_Expensive value = 2 } } AND = { tte_gate_candidate_Expensive = yes check_variable = { which = tte_fill_rank_engineering_2 value = 2 } } } } set_variable = { which = tte_advice_slot_engineering value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Expensive = yes check_variable = { which = tte_route_rank_Expensive value = 3 } } AND = { tte_gate_candidate_Expensive = yes check_variable = { which = tte_fill_rank_engineering_2 value = 3 } } } } set_variable = { which = tte_advice_slot_engineering value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Expensive = yes check_variable = { which = tte_route_rank_Expensive value = 4 } } AND = { tte_gate_candidate_Expensive = yes check_variable = { which = tte_fill_rank_engineering_2 value = 4 } } } } set_variable = { which = tte_advice_slot_engineering value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Expensive = yes check_variable = { which = tte_route_rank_Expensive value = 5 } } AND = { tte_gate_candidate_Expensive = yes check_variable = { which = tte_fill_rank_engineering_2 value = 5 } } } } set_variable = { which = tte_advice_slot_engineering value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Expensive = yes check_variable = { which = tte_fill_rank_engineering_2 value = 1 } NOT = { AND = { tte_priority_Expensive = yes OR = { check_variable = { which = tte_route_rank_Expensive value = 1 } } } } } AND = { tte_gate_candidate_Expensive = yes check_variable = { which = tte_fill_rank_engineering_2 value = 2 } NOT = { AND = { tte_priority_Expensive = yes OR = { check_variable = { which = tte_route_rank_Expensive value = 1 } check_variable = { which = tte_route_rank_Expensive value = 2 } } } } } AND = { tte_gate_candidate_Expensive = yes check_variable = { which = tte_fill_rank_engineering_2 value = 3 } NOT = { AND = { tte_priority_Expensive = yes OR = { check_variable = { which = tte_route_rank_Expensive value = 1 } check_variable = { which = tte_route_rank_Expensive value = 2 } check_variable = { which = tte_route_rank_Expensive value = 3 } } } } } AND = { tte_gate_candidate_Expensive = yes check_variable = { which = tte_fill_rank_engineering_2 value = 4 } NOT = { AND = { tte_priority_Expensive = yes OR = { check_variable = { which = tte_route_rank_Expensive value = 1 } check_variable = { which = tte_route_rank_Expensive value = 2 } check_variable = { which = tte_route_rank_Expensive value = 3 } check_variable = { which = tte_route_rank_Expensive value = 4 } } } } } AND = { tte_gate_candidate_Expensive = yes check_variable = { which = tte_fill_rank_engineering_2 value = 5 } NOT = { AND = { tte_priority_Expensive = yes OR = { check_variable = { which = tte_route_rank_Expensive value = 1 } check_variable = { which = tte_route_rank_Expensive value = 2 } check_variable = { which = tte_route_rank_Expensive value = 3 } check_variable = { which = tte_route_rank_Expensive value = 4 } check_variable = { which = tte_route_rank_Expensive value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_engineering } else_if = { limit = { has_country_flag = tte_goal_Expensive } set_country_flag = tte_advice_role_goal_engineering } else_if = { limit = { tte_priority_Expensive = yes } set_country_flag = tte_advice_role_route_engineering } else = { set_country_flag = tte_advice_role_filler_engineering } }\n}"
+        ],
+        "buttons": [
+          "tte_advice_refresh = { potential = { from = { is_ai = no } } allow = { from = { is_ai = no } } effect = { from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_empty_physics = { potential = { from = { is_ai = no NOT = { tte_advice_live_physics = yes } } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_empty_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_goal_Alpha = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Alpha has_country_flag = tte_advice_role_goal_physics always = yes NOT = { is_researching_technology = Alpha } tte_offered_Alpha = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_goal_Alpha_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_route_Alpha = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Alpha has_country_flag = tte_advice_role_route_physics always = yes NOT = { is_researching_technology = Alpha } tte_offered_Alpha = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_route_Alpha_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_filler_Alpha = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Alpha has_country_flag = tte_advice_role_filler_physics always = yes NOT = { is_researching_technology = Alpha } tte_offered_Alpha = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_filler_Alpha_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_goal_Dangerous = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Dangerous has_country_flag = tte_advice_role_goal_physics always = yes NOT = { is_researching_technology = Dangerous } tte_offered_Dangerous = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_goal_Dangerous_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_route_Dangerous = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Dangerous has_country_flag = tte_advice_role_route_physics always = yes NOT = { is_researching_technology = Dangerous } tte_offered_Dangerous = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_route_Dangerous_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_filler_Dangerous = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Dangerous has_country_flag = tte_advice_role_filler_physics always = yes NOT = { is_researching_technology = Dangerous } tte_offered_Dangerous = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_filler_Dangerous_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_goal_Goal = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Goal has_country_flag = tte_advice_role_goal_physics always = yes NOT = { is_researching_technology = Goal } tte_offered_Goal = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_goal_Goal_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_route_Goal = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Goal has_country_flag = tte_advice_role_route_physics always = yes NOT = { is_researching_technology = Goal } tte_offered_Goal = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_route_Goal_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_filler_Goal = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Goal has_country_flag = tte_advice_role_filler_physics always = yes NOT = { is_researching_technology = Goal } tte_offered_Goal = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_filler_Goal_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_empty_society = { potential = { from = { is_ai = no NOT = { tte_advice_live_society = yes } } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_empty_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_society_goal_Beta = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Beta has_country_flag = tte_advice_role_goal_society always = yes NOT = { is_researching_technology = Beta } tte_offered_Beta = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_society_goal_Beta_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_society_route_Beta = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Beta has_country_flag = tte_advice_role_route_society always = yes NOT = { is_researching_technology = Beta } tte_offered_Beta = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_society_route_Beta_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_society_filler_Beta = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Beta has_country_flag = tte_advice_role_filler_society always = yes NOT = { is_researching_technology = Beta } tte_offered_Beta = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_society_filler_Beta_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_society_goal_MoreLevels = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_MoreLevels has_country_flag = tte_advice_role_goal_society always = yes NOT = { is_researching_technology = MoreLevels } tte_offered_MoreLevels = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_society_goal_MoreLevels_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_society_route_MoreLevels = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_MoreLevels has_country_flag = tte_advice_role_route_society always = yes NOT = { is_researching_technology = MoreLevels } tte_offered_MoreLevels = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_society_route_MoreLevels_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_society_filler_MoreLevels = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_MoreLevels has_country_flag = tte_advice_role_filler_society always = yes NOT = { is_researching_technology = MoreLevels } tte_offered_MoreLevels = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_society_filler_MoreLevels_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_empty_engineering = { potential = { from = { is_ai = no NOT = { tte_advice_live_engineering = yes } } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_empty_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_goal_Choice = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Choice has_country_flag = tte_advice_role_goal_engineering always = yes NOT = { is_researching_technology = Choice } tte_offered_Choice = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_goal_Choice_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_route_Choice = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Choice has_country_flag = tte_advice_role_route_engineering always = yes NOT = { is_researching_technology = Choice } tte_offered_Choice = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_route_Choice_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_filler_Choice = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Choice has_country_flag = tte_advice_role_filler_engineering always = yes NOT = { is_researching_technology = Choice } tte_offered_Choice = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_filler_Choice_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_goal_Expensive = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Expensive has_country_flag = tte_advice_role_goal_engineering always = yes NOT = { is_researching_technology = Expensive } tte_offered_Expensive = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_goal_Expensive_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_route_Expensive = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Expensive has_country_flag = tte_advice_role_route_engineering always = yes NOT = { is_researching_technology = Expensive } tte_offered_Expensive = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_route_Expensive_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_filler_Expensive = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Expensive has_country_flag = tte_advice_role_filler_engineering always = yes NOT = { is_researching_technology = Expensive } tte_offered_Expensive = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_filler_Expensive_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_goal_Repeat = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Repeat has_country_flag = tte_advice_role_goal_engineering always = yes NOT = { is_researching_technology = Repeat } tte_offered_Repeat = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_goal_Repeat_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_route_Repeat = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Repeat has_country_flag = tte_advice_role_route_engineering always = yes NOT = { is_researching_technology = Repeat } tte_offered_Repeat = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_route_Repeat_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_filler_Repeat = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Repeat has_country_flag = tte_advice_role_filler_engineering always = yes NOT = { is_researching_technology = Repeat } tte_offered_Repeat = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_filler_Repeat_tip from = { hidden_effect = { tte_refresh = yes } } } }"
+        ],
+        "gui": "containerWindowType = { name = tte_advice_panel position = { x = 498 y = 0 } size = { width = 356 height = 450 } moveable = no clipping = no background = { name = tte_advice_background quadTextureSprite = GFX_tile_outliner_bg_solid }\ninstantTextBoxType = { name = tte_advice_heading text = tte_advice_heading font = \"cg_16b\" position = { x = 8 y = 12 } maxWidth = 235 maxHeight = 24 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_refresh position = { x = 228 y = 10 } size = { x = 108 y = 24 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_refresh_label effect = tte_advice_refresh }\ninstantTextBoxType = { name = tte_advice_help text = tte_advice_help font = \"cg_16b\" position = { x = 8 y = 340 } maxWidth = 335 maxHeight = 100 alwaysTransparent = yes }\ninstantTextBoxType = { name = tte_advice_field_physics text = tte_area_physics font = \"cg_16b\" position = { x = 8 y = 44 } maxWidth = 335 maxHeight = 20 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_empty_physics position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_wait multiline = yes effect = tte_advice_empty_physics }\neffectbuttonType = { name = tte_advice_physics_goal_Alpha position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_goal_Alpha multiline = yes effect = tte_advice_physics_goal_Alpha }\neffectbuttonType = { name = tte_advice_physics_route_Alpha position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_route_Alpha multiline = yes effect = tte_advice_physics_route_Alpha }\neffectbuttonType = { name = tte_advice_physics_filler_Alpha position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_filler_Alpha multiline = yes effect = tte_advice_physics_filler_Alpha }\neffectbuttonType = { name = tte_advice_physics_goal_Dangerous position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_goal_Dangerous multiline = yes effect = tte_advice_physics_goal_Dangerous }\neffectbuttonType = { name = tte_advice_physics_route_Dangerous position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_route_Dangerous multiline = yes effect = tte_advice_physics_route_Dangerous }\neffectbuttonType = { name = tte_advice_physics_filler_Dangerous position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_filler_Dangerous multiline = yes effect = tte_advice_physics_filler_Dangerous }\neffectbuttonType = { name = tte_advice_physics_goal_Goal position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_goal_Goal multiline = yes effect = tte_advice_physics_goal_Goal }\neffectbuttonType = { name = tte_advice_physics_route_Goal position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_route_Goal multiline = yes effect = tte_advice_physics_route_Goal }\neffectbuttonType = { name = tte_advice_physics_filler_Goal position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_filler_Goal multiline = yes effect = tte_advice_physics_filler_Goal }\ninstantTextBoxType = { name = tte_advice_field_society text = tte_area_society font = \"cg_16b\" position = { x = 8 y = 142 } maxWidth = 335 maxHeight = 20 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_empty_society position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_wait multiline = yes effect = tte_advice_empty_society }\neffectbuttonType = { name = tte_advice_society_goal_Beta position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_society_goal_Beta multiline = yes effect = tte_advice_society_goal_Beta }\neffectbuttonType = { name = tte_advice_society_route_Beta position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_society_route_Beta multiline = yes effect = tte_advice_society_route_Beta }\neffectbuttonType = { name = tte_advice_society_filler_Beta position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_society_filler_Beta multiline = yes effect = tte_advice_society_filler_Beta }\neffectbuttonType = { name = tte_advice_society_goal_MoreLevels position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_society_goal_MoreLevels multiline = yes effect = tte_advice_society_goal_MoreLevels }\neffectbuttonType = { name = tte_advice_society_route_MoreLevels position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_society_route_MoreLevels multiline = yes effect = tte_advice_society_route_MoreLevels }\neffectbuttonType = { name = tte_advice_society_filler_MoreLevels position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_society_filler_MoreLevels multiline = yes effect = tte_advice_society_filler_MoreLevels }\ninstantTextBoxType = { name = tte_advice_field_engineering text = tte_area_engineering font = \"cg_16b\" position = { x = 8 y = 240 } maxWidth = 335 maxHeight = 20 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_empty_engineering position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_wait multiline = yes effect = tte_advice_empty_engineering }\neffectbuttonType = { name = tte_advice_engineering_goal_Choice position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_goal_Choice multiline = yes effect = tte_advice_engineering_goal_Choice }\neffectbuttonType = { name = tte_advice_engineering_route_Choice position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_route_Choice multiline = yes effect = tte_advice_engineering_route_Choice }\neffectbuttonType = { name = tte_advice_engineering_filler_Choice position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_filler_Choice multiline = yes effect = tte_advice_engineering_filler_Choice }\neffectbuttonType = { name = tte_advice_engineering_goal_Expensive position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_goal_Expensive multiline = yes effect = tte_advice_engineering_goal_Expensive }\neffectbuttonType = { name = tte_advice_engineering_route_Expensive position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_route_Expensive multiline = yes effect = tte_advice_engineering_route_Expensive }\neffectbuttonType = { name = tte_advice_engineering_filler_Expensive position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_filler_Expensive multiline = yes effect = tte_advice_engineering_filler_Expensive }\neffectbuttonType = { name = tte_advice_engineering_goal_Repeat position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_goal_Repeat multiline = yes effect = tte_advice_engineering_goal_Repeat }\neffectbuttonType = { name = tte_advice_engineering_route_Repeat position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_route_Repeat multiline = yes effect = tte_advice_engineering_route_Repeat }\neffectbuttonType = { name = tte_advice_engineering_filler_Repeat position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_filler_Repeat multiline = yes effect = tte_advice_engineering_filler_Repeat }\n}",
+        "getters": [
+          "defined_text = { name = GetTTEAdviceGoal_physics random = no text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 1 } } localization_key = tte_advice_goal_slot_1 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 2 } } localization_key = tte_advice_goal_slot_2 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 3 } } localization_key = tte_advice_goal_slot_3 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 4 } } localization_key = tte_advice_goal_slot_4 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 5 } } localization_key = tte_advice_goal_slot_5 } default = tte_plan_no_goal }",
+          "defined_text = { name = GetTTEAdviceGoal_society random = no text = { trigger = { check_variable = { which = tte_advice_slot_society value = 1 } } localization_key = tte_advice_goal_slot_1 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 2 } } localization_key = tte_advice_goal_slot_2 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 3 } } localization_key = tte_advice_goal_slot_3 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 4 } } localization_key = tte_advice_goal_slot_4 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 5 } } localization_key = tte_advice_goal_slot_5 } default = tte_plan_no_goal }",
+          "defined_text = { name = GetTTEAdviceGoal_engineering random = no text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 1 } } localization_key = tte_advice_goal_slot_1 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 2 } } localization_key = tte_advice_goal_slot_2 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 3 } } localization_key = tte_advice_goal_slot_3 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 4 } } localization_key = tte_advice_goal_slot_4 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 5 } } localization_key = tte_advice_goal_slot_5 } default = tte_plan_no_goal }"
+        ],
+        "triggers": [
+          "tte_advice_live_physics = { is_ai = no has_country_flag = tte_automation OR = { AND = { has_country_flag = tte_advice_pick_Alpha always = yes NOT = { is_researching_technology = Alpha } tte_offered_Alpha = yes } AND = { has_country_flag = tte_advice_pick_Dangerous always = yes NOT = { is_researching_technology = Dangerous } tte_offered_Dangerous = yes } AND = { has_country_flag = tte_advice_pick_Goal always = yes NOT = { is_researching_technology = Goal } tte_offered_Goal = yes } } }",
+          "tte_advice_live_society = { is_ai = no has_country_flag = tte_automation OR = { AND = { has_country_flag = tte_advice_pick_Beta always = yes NOT = { is_researching_technology = Beta } tte_offered_Beta = yes } AND = { has_country_flag = tte_advice_pick_MoreLevels always = yes NOT = { is_researching_technology = MoreLevels } tte_offered_MoreLevels = yes } } }",
+          "tte_advice_live_engineering = { is_ai = no has_country_flag = tte_automation OR = { AND = { has_country_flag = tte_advice_pick_Choice always = yes NOT = { is_researching_technology = Choice } tte_offered_Choice = yes } AND = { has_country_flag = tte_advice_pick_Expensive always = yes NOT = { is_researching_technology = Expensive } tte_offered_Expensive = yes } AND = { has_country_flag = tte_advice_pick_Repeat always = yes NOT = { is_researching_technology = Repeat } tte_offered_Repeat = yes } } }"
+        ],
+        "localisation": {
+          "english": {
+            "tte_advice_heading": "Goal research advice",
+            "tte_advice_help": "Advice only · click to refresh, hover for reasons\nChoose any card. Auto-research requires the native gear.",
+            "tte_advice_wait": "No current suggestion\nClick to recheck",
+            "tte_advice_role_goal": "Goal technology",
+            "tte_advice_role_route": "Prerequisite",
+            "tte_advice_role_filler": "Tier filler",
+            "tte_advice_empty_tip": "No current valid suggestion, or goal priority is paused. Choose freely. Click to recheck; this does not start research.",
+            "tte_advice_goal_slot_1": "Goal 1 · [From.GetTTEGoal1]",
+            "tte_advice_goal_slot_2": "Goal 2 · [From.GetTTEGoal2]",
+            "tte_advice_goal_slot_3": "Goal 3 · [From.GetTTEGoal3]",
+            "tte_advice_goal_slot_4": "Goal 4 · [From.GetTTEGoal4]",
+            "tte_advice_goal_slot_5": "Goal 5 · [From.GetTTEGoal5]",
+            "tte_advice_physics_goal_Alpha": "§Y$Alpha$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Alpha_tip": "§H$Alpha$§!\n[From.GetTTEAdviceGoal_physics]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_route_Alpha": "§Y$Alpha$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Alpha_tip": "§H$Alpha$§!\n[From.GetTTEAdviceGoal_physics]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_filler_Alpha": "§Y$Alpha$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Alpha_tip": "§H$Alpha$§!\n[From.GetTTEAdviceGoal_physics]\nThe goal route needs a higher tier. Research one T0 technology toward unlocking T1.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_goal_Dangerous": "§Y$Dangerous$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Dangerous_tip": "§H$Dangerous$§!\n[From.GetTTEAdviceGoal_physics]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_route_Dangerous": "§Y$Dangerous$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Dangerous_tip": "§H$Dangerous$§!\n[From.GetTTEAdviceGoal_physics]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_filler_Dangerous": "§Y$Dangerous$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Dangerous_tip": "§H$Dangerous$§!\n[From.GetTTEAdviceGoal_physics]\nThe goal route needs a higher tier. Research one T3 technology toward unlocking T4.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_goal_Goal": "§Y$Goal$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Goal_tip": "§H$Goal$§!\n[From.GetTTEAdviceGoal_physics]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_route_Goal": "§Y$Goal$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Goal_tip": "§H$Goal$§!\n[From.GetTTEAdviceGoal_physics]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_filler_Goal": "§Y$Goal$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Goal_tip": "§H$Goal$§!\n[From.GetTTEAdviceGoal_physics]\nThe goal route needs a higher tier. Research one T5 technology toward unlocking T6.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_society_goal_Beta": "§Y$Beta$§!\n$tte_advice_role_goal$",
+            "tte_advice_society_goal_Beta_tip": "§H$Beta$§!\n[From.GetTTEAdviceGoal_society]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_society_route_Beta": "§Y$Beta$§!\n$tte_advice_role_route$",
+            "tte_advice_society_route_Beta_tip": "§H$Beta$§!\n[From.GetTTEAdviceGoal_society]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_society_filler_Beta": "§Y$Beta$§!\n$tte_advice_role_filler$",
+            "tte_advice_society_filler_Beta_tip": "§H$Beta$§!\n[From.GetTTEAdviceGoal_society]\nThe goal route needs a higher tier. Research one T1 technology toward unlocking T2.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_society_goal_MoreLevels": "§Y$MoreLevels$§!\n$tte_advice_role_goal$",
+            "tte_advice_society_goal_MoreLevels_tip": "§H$MoreLevels$§!\n[From.GetTTEAdviceGoal_society]\nContinuous goal: research the next level when offered, until you cancel or pause.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_society_route_MoreLevels": "§Y$MoreLevels$§!\n$tte_advice_role_route$",
+            "tte_advice_society_route_MoreLevels_tip": "§H$MoreLevels$§!\n[From.GetTTEAdviceGoal_society]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_society_filler_MoreLevels": "§Y$MoreLevels$§!\n$tte_advice_role_filler$",
+            "tte_advice_society_filler_MoreLevels_tip": "§H$MoreLevels$§!\n[From.GetTTEAdviceGoal_society]\nThe goal route needs a higher tier. Research one T4 technology toward unlocking T5.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_goal_Choice": "§Y$Choice$§!\n$tte_advice_role_goal$",
+            "tte_advice_engineering_goal_Choice_tip": "§H$Choice$§!\n[From.GetTTEAdviceGoal_engineering]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_route_Choice": "§Y$Choice$§!\n$tte_advice_role_route$",
+            "tte_advice_engineering_route_Choice_tip": "§H$Choice$§!\n[From.GetTTEAdviceGoal_engineering]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_filler_Choice": "§Y$Choice$§!\n$tte_advice_role_filler$",
+            "tte_advice_engineering_filler_Choice_tip": "§H$Choice$§!\n[From.GetTTEAdviceGoal_engineering]\nThe goal route needs a higher tier. Research one T2 technology toward unlocking T3.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_goal_Expensive": "§Y$Expensive$§!\n$tte_advice_role_goal$",
+            "tte_advice_engineering_goal_Expensive_tip": "§H$Expensive$§!\n[From.GetTTEAdviceGoal_engineering]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_route_Expensive": "§Y$Expensive$§!\n$tte_advice_role_route$",
+            "tte_advice_engineering_route_Expensive_tip": "§H$Expensive$§!\n[From.GetTTEAdviceGoal_engineering]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_filler_Expensive": "§Y$Expensive$§!\n$tte_advice_role_filler$",
+            "tte_advice_engineering_filler_Expensive_tip": "§H$Expensive$§!\n[From.GetTTEAdviceGoal_engineering]\nThe goal route needs a higher tier. Research one T2 technology toward unlocking T3.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_goal_Repeat": "§Y$Repeat$§!\n$tte_advice_role_goal$",
+            "tte_advice_engineering_goal_Repeat_tip": "§H$Repeat$§!\n[From.GetTTEAdviceGoal_engineering]\nContinuous goal: research the next level when offered, until you cancel or pause.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_route_Repeat": "§Y$Repeat$§!\n$tte_advice_role_route$",
+            "tte_advice_engineering_route_Repeat_tip": "§H$Repeat$§!\n[From.GetTTEAdviceGoal_engineering]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_filler_Repeat": "§Y$Repeat$§!\n$tte_advice_role_filler$",
+            "tte_advice_engineering_filler_Repeat_tip": "§H$Repeat$§!\n[From.GetTTEAdviceGoal_engineering]\nThe goal route needs a higher tier. Research one T5 technology toward unlocking T6.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left."
+          },
+          "simp_chinese": {
+            "tte_advice_heading": "目标科研建议",
+            "tte_advice_help": "仅供参考 · 点击建议刷新，悬停查看理由\n手动选卡不受限制；齿轮开启后才会自动科研。",
+            "tte_advice_wait": "暂无当前建议\n点击重新检查",
+            "tte_advice_role_goal": "目标科技",
+            "tte_advice_role_route": "前置科技",
+            "tte_advice_role_filler": "补足等级",
+            "tte_advice_empty_tip": "没有当前有效的建议，或目标优先已暂停。可自由手选；点击重新检查，不会开始科研。",
+            "tte_advice_goal_slot_1": "目标 1 · [From.GetTTEGoal1]",
+            "tte_advice_goal_slot_2": "目标 2 · [From.GetTTEGoal2]",
+            "tte_advice_goal_slot_3": "目标 3 · [From.GetTTEGoal3]",
+            "tte_advice_goal_slot_4": "目标 4 · [From.GetTTEGoal4]",
+            "tte_advice_goal_slot_5": "目标 5 · [From.GetTTEGoal5]",
+            "tte_advice_physics_goal_Alpha": "§Y$Alpha$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Alpha_tip": "§H$Alpha$§!\n[From.GetTTEAdviceGoal_physics]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_route_Alpha": "§Y$Alpha$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Alpha_tip": "§H$Alpha$§!\n[From.GetTTEAdviceGoal_physics]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_filler_Alpha": "§Y$Alpha$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Alpha_tip": "§H$Alpha$§!\n[From.GetTTEAdviceGoal_physics]\n目标路线需要更高等级；研究一项 T0 科技，推进 T1 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_goal_Dangerous": "§Y$Dangerous$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Dangerous_tip": "§H$Dangerous$§!\n[From.GetTTEAdviceGoal_physics]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_route_Dangerous": "§Y$Dangerous$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Dangerous_tip": "§H$Dangerous$§!\n[From.GetTTEAdviceGoal_physics]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_filler_Dangerous": "§Y$Dangerous$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Dangerous_tip": "§H$Dangerous$§!\n[From.GetTTEAdviceGoal_physics]\n目标路线需要更高等级；研究一项 T3 科技，推进 T4 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_goal_Goal": "§Y$Goal$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Goal_tip": "§H$Goal$§!\n[From.GetTTEAdviceGoal_physics]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_route_Goal": "§Y$Goal$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Goal_tip": "§H$Goal$§!\n[From.GetTTEAdviceGoal_physics]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_filler_Goal": "§Y$Goal$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Goal_tip": "§H$Goal$§!\n[From.GetTTEAdviceGoal_physics]\n目标路线需要更高等级；研究一项 T5 科技，推进 T6 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_society_goal_Beta": "§Y$Beta$§!\n$tte_advice_role_goal$",
+            "tte_advice_society_goal_Beta_tip": "§H$Beta$§!\n[From.GetTTEAdviceGoal_society]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_society_route_Beta": "§Y$Beta$§!\n$tte_advice_role_route$",
+            "tte_advice_society_route_Beta_tip": "§H$Beta$§!\n[From.GetTTEAdviceGoal_society]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_society_filler_Beta": "§Y$Beta$§!\n$tte_advice_role_filler$",
+            "tte_advice_society_filler_Beta_tip": "§H$Beta$§!\n[From.GetTTEAdviceGoal_society]\n目标路线需要更高等级；研究一项 T1 科技，推进 T2 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_society_goal_MoreLevels": "§Y$MoreLevels$§!\n$tte_advice_role_goal$",
+            "tte_advice_society_goal_MoreLevels_tip": "§H$MoreLevels$§!\n[From.GetTTEAdviceGoal_society]\n持续研究目标：推荐下一轮；只在抽到时优先，直到你取消或暂停。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_society_route_MoreLevels": "§Y$MoreLevels$§!\n$tte_advice_role_route$",
+            "tte_advice_society_route_MoreLevels_tip": "§H$MoreLevels$§!\n[From.GetTTEAdviceGoal_society]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_society_filler_MoreLevels": "§Y$MoreLevels$§!\n$tte_advice_role_filler$",
+            "tte_advice_society_filler_MoreLevels_tip": "§H$MoreLevels$§!\n[From.GetTTEAdviceGoal_society]\n目标路线需要更高等级；研究一项 T4 科技，推进 T5 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_goal_Choice": "§Y$Choice$§!\n$tte_advice_role_goal$",
+            "tte_advice_engineering_goal_Choice_tip": "§H$Choice$§!\n[From.GetTTEAdviceGoal_engineering]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_route_Choice": "§Y$Choice$§!\n$tte_advice_role_route$",
+            "tte_advice_engineering_route_Choice_tip": "§H$Choice$§!\n[From.GetTTEAdviceGoal_engineering]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_filler_Choice": "§Y$Choice$§!\n$tte_advice_role_filler$",
+            "tte_advice_engineering_filler_Choice_tip": "§H$Choice$§!\n[From.GetTTEAdviceGoal_engineering]\n目标路线需要更高等级；研究一项 T2 科技，推进 T3 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_goal_Expensive": "§Y$Expensive$§!\n$tte_advice_role_goal$",
+            "tte_advice_engineering_goal_Expensive_tip": "§H$Expensive$§!\n[From.GetTTEAdviceGoal_engineering]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_route_Expensive": "§Y$Expensive$§!\n$tte_advice_role_route$",
+            "tte_advice_engineering_route_Expensive_tip": "§H$Expensive$§!\n[From.GetTTEAdviceGoal_engineering]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_filler_Expensive": "§Y$Expensive$§!\n$tte_advice_role_filler$",
+            "tte_advice_engineering_filler_Expensive_tip": "§H$Expensive$§!\n[From.GetTTEAdviceGoal_engineering]\n目标路线需要更高等级；研究一项 T2 科技，推进 T3 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_goal_Repeat": "§Y$Repeat$§!\n$tte_advice_role_goal$",
+            "tte_advice_engineering_goal_Repeat_tip": "§H$Repeat$§!\n[From.GetTTEAdviceGoal_engineering]\n持续研究目标：推荐下一轮；只在抽到时优先，直到你取消或暂停。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_route_Repeat": "§Y$Repeat$§!\n$tte_advice_role_route$",
+            "tte_advice_engineering_route_Repeat_tip": "§H$Repeat$§!\n[From.GetTTEAdviceGoal_engineering]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_filler_Repeat": "§Y$Repeat$§!\n$tte_advice_role_filler$",
+            "tte_advice_engineering_filler_Repeat_tip": "§H$Repeat$§!\n[From.GetTTEAdviceGoal_engineering]\n目标路线需要更高等级；研究一项 T5 科技，推进 T6 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。"
+          }
+        }
+      }
+    },
+    "swaps_and_potential": {
+      "catalog": {
+        "technologies": {
+          "Base": {
+            "id": "Base",
+            "area": "physics",
+            "tier": 0,
+            "cost": 5.0,
+            "condition": true,
+            "repeatable": false,
+            "tierDefined": true,
+            "levels": 1,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "physics"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "0"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "Swapped": {
+            "id": "Swapped",
+            "area": "engineering",
+            "tier": 2,
+            "cost": 100.0,
+            "condition": [
+              "tech",
+              "Base"
+            ],
+            "repeatable": false,
+            "tierDefined": true,
+            "levels": 1,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "engineering"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "2"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "100"
+                },
+                {
+                  "key": "potential",
+                  "operator": "=",
+                  "value": {
+                    "items": [
+                      {
+                        "key": "has_dlc",
+                        "operator": "=",
+                        "value": "Fixture DLC"
+                      },
+                      {
+                        "key": "NOT",
+                        "operator": "=",
+                        "value": {
+                          "items": [
+                            {
+                              "key": "has_technology",
+                              "operator": "=",
+                              "value": "Exclusive"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "key": "technology_swap",
+                  "operator": "=",
+                  "value": {
+                    "items": [
+                      {
+                        "key": "name",
+                        "operator": "=",
+                        "value": "DisplayOnly"
+                      },
+                      {
+                        "key": "trigger",
+                        "operator": "=",
+                        "value": {
+                          "items": [
+                            {
+                              "key": "is_ai",
+                              "operator": "=",
+                              "value": "yes"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "key": "area",
+                        "operator": "=",
+                        "value": "society"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "key": "technology_swap",
+                  "operator": "=",
+                  "value": {
+                    "items": [
+                      {
+                        "key": "name",
+                        "operator": "=",
+                        "value": "OtherDisplay"
+                      },
+                      {
+                        "key": "trigger",
+                        "operator": "=",
+                        "value": {
+                          "items": [
+                            {
+                              "key": "has_origin",
+                              "operator": "=",
+                              "value": "fixture_origin"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "key": "area",
+                        "operator": "=",
+                        "value": "physics"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "key": "prerequisites",
+                  "operator": "=",
+                  "value": {
+                    "items": [
+                      "Base"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "Exclusive": {
+            "id": "Exclusive",
+            "area": "society",
+            "tier": 3,
+            "cost": 0.0,
+            "condition": true,
+            "repeatable": false,
+            "tierDefined": true,
+            "levels": 1,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "society"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "3"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "0"
+                },
+                {
+                  "key": "potential",
+                  "operator": "=",
+                  "value": {
+                    "items": [
+                      {
+                        "key": "known_gate",
+                        "operator": "=",
+                        "value": "yes"
+                      },
+                      {
+                        "key": "NOT",
+                        "operator": "=",
+                        "value": {
+                          "items": [
+                            {
+                              "key": "unknown_event_gate",
+                              "operator": "=",
+                              "value": "yes"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "Capped": {
+            "id": "Capped",
+            "area": "physics",
+            "tier": 7,
+            "cost": 3000.0,
+            "condition": [
+              "tech",
+              "Swapped"
+            ],
+            "repeatable": true,
+            "tierDefined": true,
+            "levels": 2,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "physics"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "7"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "3000"
+                },
+                {
+                  "key": "levels",
+                  "operator": "=",
+                  "value": "2"
+                },
+                {
+                  "key": "prerequisites",
+                  "operator": "=",
+                  "value": {
+                    "items": [
+                      "Swapped"
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "MissingTier": {
+            "id": "MissingTier",
+            "area": "engineering",
+            "tier": 6,
+            "cost": 9.0,
+            "condition": true,
+            "repeatable": false,
+            "tierDefined": false,
+            "levels": 1,
+            "rawDefinitionFields": {
+              "items": [
+                {
+                  "key": "area",
+                  "operator": "=",
+                  "value": "engineering"
+                },
+                {
+                  "key": "tier",
+                  "operator": "=",
+                  "value": "6"
+                },
+                {
+                  "key": "cost",
+                  "operator": "=",
+                  "value": "9"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "advice": {
+        "effects": [
+          "tte_refresh_advice = {\nremove_country_flag = tte_advice_pick_Base\nremove_country_flag = tte_advice_pick_Capped\nremove_country_flag = tte_advice_pick_Exclusive\nremove_country_flag = tte_advice_pick_MissingTier\nremove_country_flag = tte_advice_pick_Swapped\nremove_country_flag = tte_advice_has_physics\nremove_country_flag = tte_advice_role_goal_physics\nremove_country_flag = tte_advice_role_route_physics\nremove_country_flag = tte_advice_role_filler_physics\nclear_variable = tte_advice_slot_physics\nremove_country_flag = tte_advice_has_society\nremove_country_flag = tte_advice_role_goal_society\nremove_country_flag = tte_advice_role_route_society\nremove_country_flag = tte_advice_role_filler_society\nclear_variable = tte_advice_slot_society\nremove_country_flag = tte_advice_has_engineering\nremove_country_flag = tte_advice_role_goal_engineering\nremove_country_flag = tte_advice_role_route_engineering\nremove_country_flag = tte_advice_role_filler_engineering\nclear_variable = tte_advice_slot_engineering\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_society } always = yes NOT = { is_researching_technology = Exclusive } tte_offered_Exclusive = yes OR = { tte_priority_Exclusive = yes tte_gate_candidate_Exclusive = yes } tte_admissible_Exclusive = yes } set_country_flag = tte_advice_pick_Exclusive set_country_flag = tte_advice_has_society if = { limit = { OR = { AND = { tte_priority_Exclusive = yes check_variable = { which = tte_route_rank_Exclusive value = 1 } } AND = { tte_gate_candidate_Exclusive = yes check_variable = { which = tte_fill_rank_society_3 value = 1 } } } } set_variable = { which = tte_advice_slot_society value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Exclusive = yes check_variable = { which = tte_route_rank_Exclusive value = 2 } } AND = { tte_gate_candidate_Exclusive = yes check_variable = { which = tte_fill_rank_society_3 value = 2 } } } } set_variable = { which = tte_advice_slot_society value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Exclusive = yes check_variable = { which = tte_route_rank_Exclusive value = 3 } } AND = { tte_gate_candidate_Exclusive = yes check_variable = { which = tte_fill_rank_society_3 value = 3 } } } } set_variable = { which = tte_advice_slot_society value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Exclusive = yes check_variable = { which = tte_route_rank_Exclusive value = 4 } } AND = { tte_gate_candidate_Exclusive = yes check_variable = { which = tte_fill_rank_society_3 value = 4 } } } } set_variable = { which = tte_advice_slot_society value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Exclusive = yes check_variable = { which = tte_route_rank_Exclusive value = 5 } } AND = { tte_gate_candidate_Exclusive = yes check_variable = { which = tte_fill_rank_society_3 value = 5 } } } } set_variable = { which = tte_advice_slot_society value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Exclusive = yes check_variable = { which = tte_fill_rank_society_3 value = 1 } NOT = { AND = { tte_priority_Exclusive = yes OR = { check_variable = { which = tte_route_rank_Exclusive value = 1 } } } } } AND = { tte_gate_candidate_Exclusive = yes check_variable = { which = tte_fill_rank_society_3 value = 2 } NOT = { AND = { tte_priority_Exclusive = yes OR = { check_variable = { which = tte_route_rank_Exclusive value = 1 } check_variable = { which = tte_route_rank_Exclusive value = 2 } } } } } AND = { tte_gate_candidate_Exclusive = yes check_variable = { which = tte_fill_rank_society_3 value = 3 } NOT = { AND = { tte_priority_Exclusive = yes OR = { check_variable = { which = tte_route_rank_Exclusive value = 1 } check_variable = { which = tte_route_rank_Exclusive value = 2 } check_variable = { which = tte_route_rank_Exclusive value = 3 } } } } } AND = { tte_gate_candidate_Exclusive = yes check_variable = { which = tte_fill_rank_society_3 value = 4 } NOT = { AND = { tte_priority_Exclusive = yes OR = { check_variable = { which = tte_route_rank_Exclusive value = 1 } check_variable = { which = tte_route_rank_Exclusive value = 2 } check_variable = { which = tte_route_rank_Exclusive value = 3 } check_variable = { which = tte_route_rank_Exclusive value = 4 } } } } } AND = { tte_gate_candidate_Exclusive = yes check_variable = { which = tte_fill_rank_society_3 value = 5 } NOT = { AND = { tte_priority_Exclusive = yes OR = { check_variable = { which = tte_route_rank_Exclusive value = 1 } check_variable = { which = tte_route_rank_Exclusive value = 2 } check_variable = { which = tte_route_rank_Exclusive value = 3 } check_variable = { which = tte_route_rank_Exclusive value = 4 } check_variable = { which = tte_route_rank_Exclusive value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_society } else_if = { limit = { has_country_flag = tte_goal_Exclusive } set_country_flag = tte_advice_role_goal_society } else_if = { limit = { tte_priority_Exclusive = yes } set_country_flag = tte_advice_role_route_society } else = { set_country_flag = tte_advice_role_filler_society } }\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_physics } always = yes NOT = { is_researching_technology = Base } tte_offered_Base = yes OR = { tte_priority_Base = yes tte_gate_candidate_Base = yes } tte_admissible_Base = yes } set_country_flag = tte_advice_pick_Base set_country_flag = tte_advice_has_physics if = { limit = { OR = { AND = { tte_priority_Base = yes check_variable = { which = tte_route_rank_Base value = 1 } } AND = { tte_gate_candidate_Base = yes check_variable = { which = tte_fill_rank_physics_0 value = 1 } } } } set_variable = { which = tte_advice_slot_physics value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Base = yes check_variable = { which = tte_route_rank_Base value = 2 } } AND = { tte_gate_candidate_Base = yes check_variable = { which = tte_fill_rank_physics_0 value = 2 } } } } set_variable = { which = tte_advice_slot_physics value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Base = yes check_variable = { which = tte_route_rank_Base value = 3 } } AND = { tte_gate_candidate_Base = yes check_variable = { which = tte_fill_rank_physics_0 value = 3 } } } } set_variable = { which = tte_advice_slot_physics value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Base = yes check_variable = { which = tte_route_rank_Base value = 4 } } AND = { tte_gate_candidate_Base = yes check_variable = { which = tte_fill_rank_physics_0 value = 4 } } } } set_variable = { which = tte_advice_slot_physics value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Base = yes check_variable = { which = tte_route_rank_Base value = 5 } } AND = { tte_gate_candidate_Base = yes check_variable = { which = tte_fill_rank_physics_0 value = 5 } } } } set_variable = { which = tte_advice_slot_physics value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Base = yes check_variable = { which = tte_fill_rank_physics_0 value = 1 } NOT = { AND = { tte_priority_Base = yes OR = { check_variable = { which = tte_route_rank_Base value = 1 } } } } } AND = { tte_gate_candidate_Base = yes check_variable = { which = tte_fill_rank_physics_0 value = 2 } NOT = { AND = { tte_priority_Base = yes OR = { check_variable = { which = tte_route_rank_Base value = 1 } check_variable = { which = tte_route_rank_Base value = 2 } } } } } AND = { tte_gate_candidate_Base = yes check_variable = { which = tte_fill_rank_physics_0 value = 3 } NOT = { AND = { tte_priority_Base = yes OR = { check_variable = { which = tte_route_rank_Base value = 1 } check_variable = { which = tte_route_rank_Base value = 2 } check_variable = { which = tte_route_rank_Base value = 3 } } } } } AND = { tte_gate_candidate_Base = yes check_variable = { which = tte_fill_rank_physics_0 value = 4 } NOT = { AND = { tte_priority_Base = yes OR = { check_variable = { which = tte_route_rank_Base value = 1 } check_variable = { which = tte_route_rank_Base value = 2 } check_variable = { which = tte_route_rank_Base value = 3 } check_variable = { which = tte_route_rank_Base value = 4 } } } } } AND = { tte_gate_candidate_Base = yes check_variable = { which = tte_fill_rank_physics_0 value = 5 } NOT = { AND = { tte_priority_Base = yes OR = { check_variable = { which = tte_route_rank_Base value = 1 } check_variable = { which = tte_route_rank_Base value = 2 } check_variable = { which = tte_route_rank_Base value = 3 } check_variable = { which = tte_route_rank_Base value = 4 } check_variable = { which = tte_route_rank_Base value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_physics } else_if = { limit = { has_country_flag = tte_goal_Base } set_country_flag = tte_advice_role_goal_physics } else_if = { limit = { tte_priority_Base = yes } set_country_flag = tte_advice_role_route_physics } else = { set_country_flag = tte_advice_role_filler_physics } }\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_engineering } always = yes NOT = { is_researching_technology = MissingTier } tte_offered_MissingTier = yes OR = { tte_priority_MissingTier = yes tte_gate_candidate_MissingTier = yes } tte_admissible_MissingTier = yes } set_country_flag = tte_advice_pick_MissingTier set_country_flag = tte_advice_has_engineering if = { limit = { OR = { AND = { tte_priority_MissingTier = yes check_variable = { which = tte_route_rank_MissingTier value = 1 } } AND = { tte_gate_candidate_MissingTier = yes check_variable = { which = tte_fill_rank_engineering_6 value = 1 } } } } set_variable = { which = tte_advice_slot_engineering value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_MissingTier = yes check_variable = { which = tte_route_rank_MissingTier value = 2 } } AND = { tte_gate_candidate_MissingTier = yes check_variable = { which = tte_fill_rank_engineering_6 value = 2 } } } } set_variable = { which = tte_advice_slot_engineering value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_MissingTier = yes check_variable = { which = tte_route_rank_MissingTier value = 3 } } AND = { tte_gate_candidate_MissingTier = yes check_variable = { which = tte_fill_rank_engineering_6 value = 3 } } } } set_variable = { which = tte_advice_slot_engineering value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_MissingTier = yes check_variable = { which = tte_route_rank_MissingTier value = 4 } } AND = { tte_gate_candidate_MissingTier = yes check_variable = { which = tte_fill_rank_engineering_6 value = 4 } } } } set_variable = { which = tte_advice_slot_engineering value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_MissingTier = yes check_variable = { which = tte_route_rank_MissingTier value = 5 } } AND = { tte_gate_candidate_MissingTier = yes check_variable = { which = tte_fill_rank_engineering_6 value = 5 } } } } set_variable = { which = tte_advice_slot_engineering value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_MissingTier = yes check_variable = { which = tte_fill_rank_engineering_6 value = 1 } NOT = { AND = { tte_priority_MissingTier = yes OR = { check_variable = { which = tte_route_rank_MissingTier value = 1 } } } } } AND = { tte_gate_candidate_MissingTier = yes check_variable = { which = tte_fill_rank_engineering_6 value = 2 } NOT = { AND = { tte_priority_MissingTier = yes OR = { check_variable = { which = tte_route_rank_MissingTier value = 1 } check_variable = { which = tte_route_rank_MissingTier value = 2 } } } } } AND = { tte_gate_candidate_MissingTier = yes check_variable = { which = tte_fill_rank_engineering_6 value = 3 } NOT = { AND = { tte_priority_MissingTier = yes OR = { check_variable = { which = tte_route_rank_MissingTier value = 1 } check_variable = { which = tte_route_rank_MissingTier value = 2 } check_variable = { which = tte_route_rank_MissingTier value = 3 } } } } } AND = { tte_gate_candidate_MissingTier = yes check_variable = { which = tte_fill_rank_engineering_6 value = 4 } NOT = { AND = { tte_priority_MissingTier = yes OR = { check_variable = { which = tte_route_rank_MissingTier value = 1 } check_variable = { which = tte_route_rank_MissingTier value = 2 } check_variable = { which = tte_route_rank_MissingTier value = 3 } check_variable = { which = tte_route_rank_MissingTier value = 4 } } } } } AND = { tte_gate_candidate_MissingTier = yes check_variable = { which = tte_fill_rank_engineering_6 value = 5 } NOT = { AND = { tte_priority_MissingTier = yes OR = { check_variable = { which = tte_route_rank_MissingTier value = 1 } check_variable = { which = tte_route_rank_MissingTier value = 2 } check_variable = { which = tte_route_rank_MissingTier value = 3 } check_variable = { which = tte_route_rank_MissingTier value = 4 } check_variable = { which = tte_route_rank_MissingTier value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_engineering } else_if = { limit = { has_country_flag = tte_goal_MissingTier } set_country_flag = tte_advice_role_goal_engineering } else_if = { limit = { tte_priority_MissingTier = yes } set_country_flag = tte_advice_role_route_engineering } else = { set_country_flag = tte_advice_role_filler_engineering } }\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_physics } OR = { AND = { has_origin = fixture_origin NOT = { OR = { AND = { is_ai = yes } } } } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes OR = { tte_priority_Swapped = yes tte_gate_candidate_Swapped = yes } tte_admissible_Swapped = yes } set_country_flag = tte_advice_pick_Swapped set_country_flag = tte_advice_has_physics if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 1 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_physics_2 value = 1 } } } } set_variable = { which = tte_advice_slot_physics value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 2 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_physics_2 value = 2 } } } } set_variable = { which = tte_advice_slot_physics value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 3 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_physics_2 value = 3 } } } } set_variable = { which = tte_advice_slot_physics value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 4 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_physics_2 value = 4 } } } } set_variable = { which = tte_advice_slot_physics value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 5 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_physics_2 value = 5 } } } } set_variable = { which = tte_advice_slot_physics value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_physics_2 value = 1 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } } } } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_physics_2 value = 2 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } check_variable = { which = tte_route_rank_Swapped value = 2 } } } } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_physics_2 value = 3 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } check_variable = { which = tte_route_rank_Swapped value = 2 } check_variable = { which = tte_route_rank_Swapped value = 3 } } } } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_physics_2 value = 4 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } check_variable = { which = tte_route_rank_Swapped value = 2 } check_variable = { which = tte_route_rank_Swapped value = 3 } check_variable = { which = tte_route_rank_Swapped value = 4 } } } } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_physics_2 value = 5 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } check_variable = { which = tte_route_rank_Swapped value = 2 } check_variable = { which = tte_route_rank_Swapped value = 3 } check_variable = { which = tte_route_rank_Swapped value = 4 } check_variable = { which = tte_route_rank_Swapped value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_physics } else_if = { limit = { has_country_flag = tte_goal_Swapped } set_country_flag = tte_advice_role_goal_physics } else_if = { limit = { tte_priority_Swapped = yes } set_country_flag = tte_advice_role_route_physics } else = { set_country_flag = tte_advice_role_filler_physics } }\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_society } OR = { AND = { is_ai = yes  } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes OR = { tte_priority_Swapped = yes tte_gate_candidate_Swapped = yes } tte_admissible_Swapped = yes } set_country_flag = tte_advice_pick_Swapped set_country_flag = tte_advice_has_society if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 1 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_society_2 value = 1 } } } } set_variable = { which = tte_advice_slot_society value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 2 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_society_2 value = 2 } } } } set_variable = { which = tte_advice_slot_society value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 3 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_society_2 value = 3 } } } } set_variable = { which = tte_advice_slot_society value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 4 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_society_2 value = 4 } } } } set_variable = { which = tte_advice_slot_society value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 5 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_society_2 value = 5 } } } } set_variable = { which = tte_advice_slot_society value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_society_2 value = 1 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } } } } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_society_2 value = 2 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } check_variable = { which = tte_route_rank_Swapped value = 2 } } } } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_society_2 value = 3 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } check_variable = { which = tte_route_rank_Swapped value = 2 } check_variable = { which = tte_route_rank_Swapped value = 3 } } } } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_society_2 value = 4 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } check_variable = { which = tte_route_rank_Swapped value = 2 } check_variable = { which = tte_route_rank_Swapped value = 3 } check_variable = { which = tte_route_rank_Swapped value = 4 } } } } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_society_2 value = 5 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } check_variable = { which = tte_route_rank_Swapped value = 2 } check_variable = { which = tte_route_rank_Swapped value = 3 } check_variable = { which = tte_route_rank_Swapped value = 4 } check_variable = { which = tte_route_rank_Swapped value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_society } else_if = { limit = { has_country_flag = tte_goal_Swapped } set_country_flag = tte_advice_role_goal_society } else_if = { limit = { tte_priority_Swapped = yes } set_country_flag = tte_advice_role_route_society } else = { set_country_flag = tte_advice_role_filler_society } }\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_engineering } OR = { NOT = { OR = { AND = { is_ai = yes } AND = { has_origin = fixture_origin } } } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes OR = { tte_priority_Swapped = yes tte_gate_candidate_Swapped = yes } tte_admissible_Swapped = yes } set_country_flag = tte_advice_pick_Swapped set_country_flag = tte_advice_has_engineering if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 1 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_engineering_2 value = 1 } } } } set_variable = { which = tte_advice_slot_engineering value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 2 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_engineering_2 value = 2 } } } } set_variable = { which = tte_advice_slot_engineering value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 3 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_engineering_2 value = 3 } } } } set_variable = { which = tte_advice_slot_engineering value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 4 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_engineering_2 value = 4 } } } } set_variable = { which = tte_advice_slot_engineering value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Swapped = yes check_variable = { which = tte_route_rank_Swapped value = 5 } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_engineering_2 value = 5 } } } } set_variable = { which = tte_advice_slot_engineering value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_engineering_2 value = 1 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } } } } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_engineering_2 value = 2 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } check_variable = { which = tte_route_rank_Swapped value = 2 } } } } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_engineering_2 value = 3 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } check_variable = { which = tte_route_rank_Swapped value = 2 } check_variable = { which = tte_route_rank_Swapped value = 3 } } } } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_engineering_2 value = 4 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } check_variable = { which = tte_route_rank_Swapped value = 2 } check_variable = { which = tte_route_rank_Swapped value = 3 } check_variable = { which = tte_route_rank_Swapped value = 4 } } } } } AND = { tte_gate_candidate_Swapped = yes check_variable = { which = tte_fill_rank_engineering_2 value = 5 } NOT = { AND = { tte_priority_Swapped = yes OR = { check_variable = { which = tte_route_rank_Swapped value = 1 } check_variable = { which = tte_route_rank_Swapped value = 2 } check_variable = { which = tte_route_rank_Swapped value = 3 } check_variable = { which = tte_route_rank_Swapped value = 4 } check_variable = { which = tte_route_rank_Swapped value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_engineering } else_if = { limit = { has_country_flag = tte_goal_Swapped } set_country_flag = tte_advice_role_goal_engineering } else_if = { limit = { tte_priority_Swapped = yes } set_country_flag = tte_advice_role_route_engineering } else = { set_country_flag = tte_advice_role_filler_engineering } }\nif = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_physics } always = yes NOT = { is_researching_technology = Capped } tte_offered_Capped = yes OR = { tte_priority_Capped = yes tte_gate_candidate_Capped = yes } tte_admissible_Capped = yes } set_country_flag = tte_advice_pick_Capped set_country_flag = tte_advice_has_physics if = { limit = { OR = { AND = { tte_priority_Capped = yes check_variable = { which = tte_route_rank_Capped value = 1 } } AND = { tte_gate_candidate_Capped = yes check_variable = { which = tte_fill_rank_physics_7 value = 1 } } } } set_variable = { which = tte_advice_slot_physics value = 1 } } else_if = { limit = { OR = { AND = { tte_priority_Capped = yes check_variable = { which = tte_route_rank_Capped value = 2 } } AND = { tte_gate_candidate_Capped = yes check_variable = { which = tte_fill_rank_physics_7 value = 2 } } } } set_variable = { which = tte_advice_slot_physics value = 2 } } else_if = { limit = { OR = { AND = { tte_priority_Capped = yes check_variable = { which = tte_route_rank_Capped value = 3 } } AND = { tte_gate_candidate_Capped = yes check_variable = { which = tte_fill_rank_physics_7 value = 3 } } } } set_variable = { which = tte_advice_slot_physics value = 3 } } else_if = { limit = { OR = { AND = { tte_priority_Capped = yes check_variable = { which = tte_route_rank_Capped value = 4 } } AND = { tte_gate_candidate_Capped = yes check_variable = { which = tte_fill_rank_physics_7 value = 4 } } } } set_variable = { which = tte_advice_slot_physics value = 4 } } else_if = { limit = { OR = { AND = { tte_priority_Capped = yes check_variable = { which = tte_route_rank_Capped value = 5 } } AND = { tte_gate_candidate_Capped = yes check_variable = { which = tte_fill_rank_physics_7 value = 5 } } } } set_variable = { which = tte_advice_slot_physics value = 5 } } if = { limit = { OR = { AND = { tte_gate_candidate_Capped = yes check_variable = { which = tte_fill_rank_physics_7 value = 1 } NOT = { AND = { tte_priority_Capped = yes OR = { check_variable = { which = tte_route_rank_Capped value = 1 } } } } } AND = { tte_gate_candidate_Capped = yes check_variable = { which = tte_fill_rank_physics_7 value = 2 } NOT = { AND = { tte_priority_Capped = yes OR = { check_variable = { which = tte_route_rank_Capped value = 1 } check_variable = { which = tte_route_rank_Capped value = 2 } } } } } AND = { tte_gate_candidate_Capped = yes check_variable = { which = tte_fill_rank_physics_7 value = 3 } NOT = { AND = { tte_priority_Capped = yes OR = { check_variable = { which = tte_route_rank_Capped value = 1 } check_variable = { which = tte_route_rank_Capped value = 2 } check_variable = { which = tte_route_rank_Capped value = 3 } } } } } AND = { tte_gate_candidate_Capped = yes check_variable = { which = tte_fill_rank_physics_7 value = 4 } NOT = { AND = { tte_priority_Capped = yes OR = { check_variable = { which = tte_route_rank_Capped value = 1 } check_variable = { which = tte_route_rank_Capped value = 2 } check_variable = { which = tte_route_rank_Capped value = 3 } check_variable = { which = tte_route_rank_Capped value = 4 } } } } } AND = { tte_gate_candidate_Capped = yes check_variable = { which = tte_fill_rank_physics_7 value = 5 } NOT = { AND = { tte_priority_Capped = yes OR = { check_variable = { which = tte_route_rank_Capped value = 1 } check_variable = { which = tte_route_rank_Capped value = 2 } check_variable = { which = tte_route_rank_Capped value = 3 } check_variable = { which = tte_route_rank_Capped value = 4 } check_variable = { which = tte_route_rank_Capped value = 5 } } } } } } } set_country_flag = tte_advice_role_filler_physics } else_if = { limit = { has_country_flag = tte_goal_Capped } set_country_flag = tte_advice_role_goal_physics } else_if = { limit = { tte_priority_Capped = yes } set_country_flag = tte_advice_role_route_physics } else = { set_country_flag = tte_advice_role_filler_physics } }\n}"
+        ],
+        "buttons": [
+          "tte_advice_refresh = { potential = { from = { is_ai = no } } allow = { from = { is_ai = no } } effect = { from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_empty_physics = { potential = { from = { is_ai = no NOT = { tte_advice_live_physics = yes } } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_empty_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_goal_Base = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Base has_country_flag = tte_advice_role_goal_physics always = yes NOT = { is_researching_technology = Base } tte_offered_Base = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_goal_Base_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_route_Base = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Base has_country_flag = tte_advice_role_route_physics always = yes NOT = { is_researching_technology = Base } tte_offered_Base = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_route_Base_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_filler_Base = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Base has_country_flag = tte_advice_role_filler_physics always = yes NOT = { is_researching_technology = Base } tte_offered_Base = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_filler_Base_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_goal_Capped = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Capped has_country_flag = tte_advice_role_goal_physics always = yes NOT = { is_researching_technology = Capped } tte_offered_Capped = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_goal_Capped_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_route_Capped = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Capped has_country_flag = tte_advice_role_route_physics always = yes NOT = { is_researching_technology = Capped } tte_offered_Capped = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_route_Capped_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_filler_Capped = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Capped has_country_flag = tte_advice_role_filler_physics always = yes NOT = { is_researching_technology = Capped } tte_offered_Capped = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_filler_Capped_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_goal_Swapped = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Swapped has_country_flag = tte_advice_role_goal_physics OR = { AND = { has_origin = fixture_origin NOT = { OR = { AND = { is_ai = yes } } } } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_goal_Swapped_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_route_Swapped = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Swapped has_country_flag = tte_advice_role_route_physics OR = { AND = { has_origin = fixture_origin NOT = { OR = { AND = { is_ai = yes } } } } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_route_Swapped_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_physics_filler_Swapped = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Swapped has_country_flag = tte_advice_role_filler_physics OR = { AND = { has_origin = fixture_origin NOT = { OR = { AND = { is_ai = yes } } } } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_physics_filler_Swapped_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_empty_society = { potential = { from = { is_ai = no NOT = { tte_advice_live_society = yes } } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_empty_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_society_goal_Exclusive = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Exclusive has_country_flag = tte_advice_role_goal_society always = yes NOT = { is_researching_technology = Exclusive } tte_offered_Exclusive = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_society_goal_Exclusive_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_society_route_Exclusive = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Exclusive has_country_flag = tte_advice_role_route_society always = yes NOT = { is_researching_technology = Exclusive } tte_offered_Exclusive = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_society_route_Exclusive_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_society_filler_Exclusive = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Exclusive has_country_flag = tte_advice_role_filler_society always = yes NOT = { is_researching_technology = Exclusive } tte_offered_Exclusive = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_society_filler_Exclusive_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_society_goal_Swapped = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Swapped has_country_flag = tte_advice_role_goal_society OR = { AND = { is_ai = yes  } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_society_goal_Swapped_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_society_route_Swapped = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Swapped has_country_flag = tte_advice_role_route_society OR = { AND = { is_ai = yes  } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_society_route_Swapped_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_society_filler_Swapped = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Swapped has_country_flag = tte_advice_role_filler_society OR = { AND = { is_ai = yes  } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_society_filler_Swapped_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_empty_engineering = { potential = { from = { is_ai = no NOT = { tte_advice_live_engineering = yes } } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_empty_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_goal_MissingTier = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_MissingTier has_country_flag = tte_advice_role_goal_engineering always = yes NOT = { is_researching_technology = MissingTier } tte_offered_MissingTier = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_goal_MissingTier_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_route_MissingTier = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_MissingTier has_country_flag = tte_advice_role_route_engineering always = yes NOT = { is_researching_technology = MissingTier } tte_offered_MissingTier = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_route_MissingTier_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_filler_MissingTier = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_MissingTier has_country_flag = tte_advice_role_filler_engineering always = yes NOT = { is_researching_technology = MissingTier } tte_offered_MissingTier = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_filler_MissingTier_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_goal_Swapped = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Swapped has_country_flag = tte_advice_role_goal_engineering OR = { NOT = { OR = { AND = { is_ai = yes } AND = { has_origin = fixture_origin } } } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_goal_Swapped_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_route_Swapped = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Swapped has_country_flag = tte_advice_role_route_engineering OR = { NOT = { OR = { AND = { is_ai = yes } AND = { has_origin = fixture_origin } } } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_route_Swapped_tip from = { hidden_effect = { tte_refresh = yes } } } }",
+          "tte_advice_engineering_filler_Swapped = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_Swapped has_country_flag = tte_advice_role_filler_engineering OR = { NOT = { OR = { AND = { is_ai = yes } AND = { has_origin = fixture_origin } } } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = tte_advice_engineering_filler_Swapped_tip from = { hidden_effect = { tte_refresh = yes } } } }"
+        ],
+        "gui": "containerWindowType = { name = tte_advice_panel position = { x = 498 y = 0 } size = { width = 356 height = 450 } moveable = no clipping = no background = { name = tte_advice_background quadTextureSprite = GFX_tile_outliner_bg_solid }\ninstantTextBoxType = { name = tte_advice_heading text = tte_advice_heading font = \"cg_16b\" position = { x = 8 y = 12 } maxWidth = 235 maxHeight = 24 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_refresh position = { x = 228 y = 10 } size = { x = 108 y = 24 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_refresh_label effect = tte_advice_refresh }\ninstantTextBoxType = { name = tte_advice_help text = tte_advice_help font = \"cg_16b\" position = { x = 8 y = 340 } maxWidth = 335 maxHeight = 100 alwaysTransparent = yes }\ninstantTextBoxType = { name = tte_advice_field_physics text = tte_area_physics font = \"cg_16b\" position = { x = 8 y = 44 } maxWidth = 335 maxHeight = 20 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_empty_physics position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_wait multiline = yes effect = tte_advice_empty_physics }\neffectbuttonType = { name = tte_advice_physics_goal_Base position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_goal_Base multiline = yes effect = tte_advice_physics_goal_Base }\neffectbuttonType = { name = tte_advice_physics_route_Base position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_route_Base multiline = yes effect = tte_advice_physics_route_Base }\neffectbuttonType = { name = tte_advice_physics_filler_Base position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_filler_Base multiline = yes effect = tte_advice_physics_filler_Base }\neffectbuttonType = { name = tte_advice_physics_goal_Capped position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_goal_Capped multiline = yes effect = tte_advice_physics_goal_Capped }\neffectbuttonType = { name = tte_advice_physics_route_Capped position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_route_Capped multiline = yes effect = tte_advice_physics_route_Capped }\neffectbuttonType = { name = tte_advice_physics_filler_Capped position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_filler_Capped multiline = yes effect = tte_advice_physics_filler_Capped }\neffectbuttonType = { name = tte_advice_physics_goal_Swapped position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_goal_Swapped multiline = yes effect = tte_advice_physics_goal_Swapped }\neffectbuttonType = { name = tte_advice_physics_route_Swapped position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_route_Swapped multiline = yes effect = tte_advice_physics_route_Swapped }\neffectbuttonType = { name = tte_advice_physics_filler_Swapped position = { x = 8 y = 68 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_physics_filler_Swapped multiline = yes effect = tte_advice_physics_filler_Swapped }\ninstantTextBoxType = { name = tte_advice_field_society text = tte_area_society font = \"cg_16b\" position = { x = 8 y = 142 } maxWidth = 335 maxHeight = 20 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_empty_society position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_wait multiline = yes effect = tte_advice_empty_society }\neffectbuttonType = { name = tte_advice_society_goal_Exclusive position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_society_goal_Exclusive multiline = yes effect = tte_advice_society_goal_Exclusive }\neffectbuttonType = { name = tte_advice_society_route_Exclusive position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_society_route_Exclusive multiline = yes effect = tte_advice_society_route_Exclusive }\neffectbuttonType = { name = tte_advice_society_filler_Exclusive position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_society_filler_Exclusive multiline = yes effect = tte_advice_society_filler_Exclusive }\neffectbuttonType = { name = tte_advice_society_goal_Swapped position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_society_goal_Swapped multiline = yes effect = tte_advice_society_goal_Swapped }\neffectbuttonType = { name = tte_advice_society_route_Swapped position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_society_route_Swapped multiline = yes effect = tte_advice_society_route_Swapped }\neffectbuttonType = { name = tte_advice_society_filler_Swapped position = { x = 8 y = 166 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_society_filler_Swapped multiline = yes effect = tte_advice_society_filler_Swapped }\ninstantTextBoxType = { name = tte_advice_field_engineering text = tte_area_engineering font = \"cg_16b\" position = { x = 8 y = 240 } maxWidth = 335 maxHeight = 20 alwaysTransparent = yes }\neffectbuttonType = { name = tte_advice_empty_engineering position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_wait multiline = yes effect = tte_advice_empty_engineering }\neffectbuttonType = { name = tte_advice_engineering_goal_MissingTier position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_goal_MissingTier multiline = yes effect = tte_advice_engineering_goal_MissingTier }\neffectbuttonType = { name = tte_advice_engineering_route_MissingTier position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_route_MissingTier multiline = yes effect = tte_advice_engineering_route_MissingTier }\neffectbuttonType = { name = tte_advice_engineering_filler_MissingTier position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_filler_MissingTier multiline = yes effect = tte_advice_engineering_filler_MissingTier }\neffectbuttonType = { name = tte_advice_engineering_goal_Swapped position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_goal_Swapped multiline = yes effect = tte_advice_engineering_goal_Swapped }\neffectbuttonType = { name = tte_advice_engineering_route_Swapped position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_route_Swapped multiline = yes effect = tte_advice_engineering_route_Swapped }\neffectbuttonType = { name = tte_advice_engineering_filler_Swapped position = { x = 8 y = 264 } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = tte_advice_engineering_filler_Swapped multiline = yes effect = tte_advice_engineering_filler_Swapped }\n}",
+        "getters": [
+          "defined_text = { name = GetTTEAdviceGoal_physics random = no text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 1 } } localization_key = tte_advice_goal_slot_1 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 2 } } localization_key = tte_advice_goal_slot_2 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 3 } } localization_key = tte_advice_goal_slot_3 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 4 } } localization_key = tte_advice_goal_slot_4 } text = { trigger = { check_variable = { which = tte_advice_slot_physics value = 5 } } localization_key = tte_advice_goal_slot_5 } default = tte_plan_no_goal }",
+          "defined_text = { name = GetTTEAdviceGoal_society random = no text = { trigger = { check_variable = { which = tte_advice_slot_society value = 1 } } localization_key = tte_advice_goal_slot_1 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 2 } } localization_key = tte_advice_goal_slot_2 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 3 } } localization_key = tte_advice_goal_slot_3 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 4 } } localization_key = tte_advice_goal_slot_4 } text = { trigger = { check_variable = { which = tte_advice_slot_society value = 5 } } localization_key = tte_advice_goal_slot_5 } default = tte_plan_no_goal }",
+          "defined_text = { name = GetTTEAdviceGoal_engineering random = no text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 1 } } localization_key = tte_advice_goal_slot_1 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 2 } } localization_key = tte_advice_goal_slot_2 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 3 } } localization_key = tte_advice_goal_slot_3 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 4 } } localization_key = tte_advice_goal_slot_4 } text = { trigger = { check_variable = { which = tte_advice_slot_engineering value = 5 } } localization_key = tte_advice_goal_slot_5 } default = tte_plan_no_goal }"
+        ],
+        "triggers": [
+          "tte_advice_live_physics = { is_ai = no has_country_flag = tte_automation OR = { AND = { has_country_flag = tte_advice_pick_Base always = yes NOT = { is_researching_technology = Base } tte_offered_Base = yes } AND = { has_country_flag = tte_advice_pick_Capped always = yes NOT = { is_researching_technology = Capped } tte_offered_Capped = yes } AND = { has_country_flag = tte_advice_pick_Swapped OR = { AND = { has_origin = fixture_origin NOT = { OR = { AND = { is_ai = yes } } } } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes } } }",
+          "tte_advice_live_society = { is_ai = no has_country_flag = tte_automation OR = { AND = { has_country_flag = tte_advice_pick_Exclusive always = yes NOT = { is_researching_technology = Exclusive } tte_offered_Exclusive = yes } AND = { has_country_flag = tte_advice_pick_Swapped OR = { AND = { is_ai = yes  } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes } } }",
+          "tte_advice_live_engineering = { is_ai = no has_country_flag = tte_automation OR = { AND = { has_country_flag = tte_advice_pick_MissingTier always = yes NOT = { is_researching_technology = MissingTier } tte_offered_MissingTier = yes } AND = { has_country_flag = tte_advice_pick_Swapped OR = { NOT = { OR = { AND = { is_ai = yes } AND = { has_origin = fixture_origin } } } } NOT = { is_researching_technology = Swapped } tte_offered_Swapped = yes } } }"
+        ],
+        "localisation": {
+          "english": {
+            "tte_advice_heading": "Goal research advice",
+            "tte_advice_help": "Advice only · click to refresh, hover for reasons\nChoose any card. Auto-research requires the native gear.",
+            "tte_advice_wait": "No current suggestion\nClick to recheck",
+            "tte_advice_role_goal": "Goal technology",
+            "tte_advice_role_route": "Prerequisite",
+            "tte_advice_role_filler": "Tier filler",
+            "tte_advice_empty_tip": "No current valid suggestion, or goal priority is paused. Choose freely. Click to recheck; this does not start research.",
+            "tte_advice_goal_slot_1": "Goal 1 · [From.GetTTEGoal1]",
+            "tte_advice_goal_slot_2": "Goal 2 · [From.GetTTEGoal2]",
+            "tte_advice_goal_slot_3": "Goal 3 · [From.GetTTEGoal3]",
+            "tte_advice_goal_slot_4": "Goal 4 · [From.GetTTEGoal4]",
+            "tte_advice_goal_slot_5": "Goal 5 · [From.GetTTEGoal5]",
+            "tte_advice_physics_goal_Base": "§Y$Base$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Base_tip": "§H$Base$§!\n[From.GetTTEAdviceGoal_physics]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_route_Base": "§Y$Base$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Base_tip": "§H$Base$§!\n[From.GetTTEAdviceGoal_physics]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_filler_Base": "§Y$Base$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Base_tip": "§H$Base$§!\n[From.GetTTEAdviceGoal_physics]\nThe goal route needs a higher tier. Research one T0 technology toward unlocking T1.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_goal_Capped": "§Y$Capped$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Capped_tip": "§H$Capped$§!\n[From.GetTTEAdviceGoal_physics]\nContinuous goal: research the next level when offered, until you cancel or pause.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_route_Capped": "§Y$Capped$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Capped_tip": "§H$Capped$§!\n[From.GetTTEAdviceGoal_physics]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_filler_Capped": "§Y$Capped$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Capped_tip": "§H$Capped$§!\n[From.GetTTEAdviceGoal_physics]\nThe goal route needs a higher tier. Research one T7 technology toward unlocking T8.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_goal_Swapped": "§Y$Swapped$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_physics]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_route_Swapped": "§Y$Swapped$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_physics]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_physics_filler_Swapped": "§Y$Swapped$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_physics]\nThe goal route needs a higher tier. Research one T2 technology toward unlocking T3.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_society_goal_Exclusive": "§Y$Exclusive$§!\n$tte_advice_role_goal$",
+            "tte_advice_society_goal_Exclusive_tip": "§H$Exclusive$§!\n[From.GetTTEAdviceGoal_society]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_society_route_Exclusive": "§Y$Exclusive$§!\n$tte_advice_role_route$",
+            "tte_advice_society_route_Exclusive_tip": "§H$Exclusive$§!\n[From.GetTTEAdviceGoal_society]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_society_filler_Exclusive": "§Y$Exclusive$§!\n$tte_advice_role_filler$",
+            "tte_advice_society_filler_Exclusive_tip": "§H$Exclusive$§!\n[From.GetTTEAdviceGoal_society]\nThe goal route needs a higher tier. Research one T3 technology toward unlocking T4.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_society_goal_Swapped": "§Y$Swapped$§!\n$tte_advice_role_goal$",
+            "tte_advice_society_goal_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_society]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_society_route_Swapped": "§Y$Swapped$§!\n$tte_advice_role_route$",
+            "tte_advice_society_route_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_society]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_society_filler_Swapped": "§Y$Swapped$§!\n$tte_advice_role_filler$",
+            "tte_advice_society_filler_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_society]\nThe goal route needs a higher tier. Research one T2 technology toward unlocking T3.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_goal_MissingTier": "§Y$MissingTier$§!\n$tte_advice_role_goal$",
+            "tte_advice_engineering_goal_MissingTier_tip": "§H$MissingTier$§!\n[From.GetTTEAdviceGoal_engineering]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_route_MissingTier": "§Y$MissingTier$§!\n$tte_advice_role_route$",
+            "tte_advice_engineering_route_MissingTier_tip": "§H$MissingTier$§!\n[From.GetTTEAdviceGoal_engineering]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_filler_MissingTier": "§Y$MissingTier$§!\n$tte_advice_role_filler$",
+            "tte_advice_engineering_filler_MissingTier_tip": "§H$MissingTier$§!\n[From.GetTTEAdviceGoal_engineering]\nThe goal route needs a higher tier. Research one T6 technology toward unlocking T7.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_goal_Swapped": "§Y$Swapped$§!\n$tte_advice_role_goal$",
+            "tte_advice_engineering_goal_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_engineering]\nThis is the currently prioritized goal, ready to research.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_route_Swapped": "§Y$Swapped$§!\n$tte_advice_role_route$",
+            "tte_advice_engineering_route_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_engineering]\nThis is an unfinished prerequisite on the prioritized goal route.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left.",
+            "tte_advice_engineering_filler_Swapped": "§Y$Swapped$§!\n$tte_advice_role_filler$",
+            "tte_advice_engineering_filler_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_engineering]\nThe goal route needs a higher tier. Research one T2 technology toward unlocking T3.\nOnly eligible offered cards are compared. Lower base cost breaks equal-priority ties.\nClick only refreshes advice; select research on the native card to the left."
+          },
+          "simp_chinese": {
+            "tte_advice_heading": "目标科研建议",
+            "tte_advice_help": "仅供参考 · 点击建议刷新，悬停查看理由\n手动选卡不受限制；齿轮开启后才会自动科研。",
+            "tte_advice_wait": "暂无当前建议\n点击重新检查",
+            "tte_advice_role_goal": "目标科技",
+            "tte_advice_role_route": "前置科技",
+            "tte_advice_role_filler": "补足等级",
+            "tte_advice_empty_tip": "没有当前有效的建议，或目标优先已暂停。可自由手选；点击重新检查，不会开始科研。",
+            "tte_advice_goal_slot_1": "目标 1 · [From.GetTTEGoal1]",
+            "tte_advice_goal_slot_2": "目标 2 · [From.GetTTEGoal2]",
+            "tte_advice_goal_slot_3": "目标 3 · [From.GetTTEGoal3]",
+            "tte_advice_goal_slot_4": "目标 4 · [From.GetTTEGoal4]",
+            "tte_advice_goal_slot_5": "目标 5 · [From.GetTTEGoal5]",
+            "tte_advice_physics_goal_Base": "§Y$Base$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Base_tip": "§H$Base$§!\n[From.GetTTEAdviceGoal_physics]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_route_Base": "§Y$Base$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Base_tip": "§H$Base$§!\n[From.GetTTEAdviceGoal_physics]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_filler_Base": "§Y$Base$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Base_tip": "§H$Base$§!\n[From.GetTTEAdviceGoal_physics]\n目标路线需要更高等级；研究一项 T0 科技，推进 T1 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_goal_Capped": "§Y$Capped$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Capped_tip": "§H$Capped$§!\n[From.GetTTEAdviceGoal_physics]\n持续研究目标：推荐下一轮；只在抽到时优先，直到你取消或暂停。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_route_Capped": "§Y$Capped$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Capped_tip": "§H$Capped$§!\n[From.GetTTEAdviceGoal_physics]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_filler_Capped": "§Y$Capped$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Capped_tip": "§H$Capped$§!\n[From.GetTTEAdviceGoal_physics]\n目标路线需要更高等级；研究一项 T7 科技，推进 T8 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_goal_Swapped": "§Y$Swapped$§!\n$tte_advice_role_goal$",
+            "tte_advice_physics_goal_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_physics]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_route_Swapped": "§Y$Swapped$§!\n$tte_advice_role_route$",
+            "tte_advice_physics_route_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_physics]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_physics_filler_Swapped": "§Y$Swapped$§!\n$tte_advice_role_filler$",
+            "tte_advice_physics_filler_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_physics]\n目标路线需要更高等级；研究一项 T2 科技，推进 T3 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_society_goal_Exclusive": "§Y$Exclusive$§!\n$tte_advice_role_goal$",
+            "tte_advice_society_goal_Exclusive_tip": "§H$Exclusive$§!\n[From.GetTTEAdviceGoal_society]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_society_route_Exclusive": "§Y$Exclusive$§!\n$tte_advice_role_route$",
+            "tte_advice_society_route_Exclusive_tip": "§H$Exclusive$§!\n[From.GetTTEAdviceGoal_society]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_society_filler_Exclusive": "§Y$Exclusive$§!\n$tte_advice_role_filler$",
+            "tte_advice_society_filler_Exclusive_tip": "§H$Exclusive$§!\n[From.GetTTEAdviceGoal_society]\n目标路线需要更高等级；研究一项 T3 科技，推进 T4 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_society_goal_Swapped": "§Y$Swapped$§!\n$tte_advice_role_goal$",
+            "tte_advice_society_goal_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_society]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_society_route_Swapped": "§Y$Swapped$§!\n$tte_advice_role_route$",
+            "tte_advice_society_route_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_society]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_society_filler_Swapped": "§Y$Swapped$§!\n$tte_advice_role_filler$",
+            "tte_advice_society_filler_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_society]\n目标路线需要更高等级；研究一项 T2 科技，推进 T3 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_goal_MissingTier": "§Y$MissingTier$§!\n$tte_advice_role_goal$",
+            "tte_advice_engineering_goal_MissingTier_tip": "§H$MissingTier$§!\n[From.GetTTEAdviceGoal_engineering]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_route_MissingTier": "§Y$MissingTier$§!\n$tte_advice_role_route$",
+            "tte_advice_engineering_route_MissingTier_tip": "§H$MissingTier$§!\n[From.GetTTEAdviceGoal_engineering]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_filler_MissingTier": "§Y$MissingTier$§!\n$tte_advice_role_filler$",
+            "tte_advice_engineering_filler_MissingTier_tip": "§H$MissingTier$§!\n[From.GetTTEAdviceGoal_engineering]\n目标路线需要更高等级；研究一项 T6 科技，推进 T7 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_goal_Swapped": "§Y$Swapped$§!\n$tte_advice_role_goal$",
+            "tte_advice_engineering_goal_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_engineering]\n这是当前优先目标，可直接研究。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_route_Swapped": "§Y$Swapped$§!\n$tte_advice_role_route$",
+            "tte_advice_engineering_route_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_engineering]\n这是当前优先目标路线上的未完成前置。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。",
+            "tte_advice_engineering_filler_Swapped": "§Y$Swapped$§!\n$tte_advice_role_filler$",
+            "tte_advice_engineering_filler_Swapped_tip": "§H$Swapped$§!\n[From.GetTTEAdviceGoal_engineering]\n目标路线需要更高等级；研究一项 T2 科技，推进 T3 的解锁。\n仅比较已经抽到且有效的科技。同优先级建议基础花费较低的一项。\n点击只刷新建议；请在左侧原版卡片上选择科研。"
+          }
+        }
+      }
+    }
+  }
+}
