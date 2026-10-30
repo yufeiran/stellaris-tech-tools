@@ -25,7 +25,7 @@
     "native_mod/compiled_adapter/src/selection.rs": "9af9e6e659356781b50787175029bfd0c452e21121e4d840baa98a40334a8ef8",
     "native_mod/compiled_adapter/src/sources.rs": "0f116142e701379a4dcd07c44ac82fcef3141a8a2099117f1ddefb82cb26891d",
     "native_mod/compiled_adapter/src/traditional.rs": "5882bd0fc0414ae5856a3c4fcafe2363ce4b04234eccf80a2fe43180891f92e3",
-    "native_mod/compiled_adapter/src/view.rs": "c1f170b090f84e7abdc3a265fd6de603b678394e6045fb65fca92bd9a8f03359",
+    "native_mod/compiled_adapter/src/view.rs": "609634284942403e1a028cc6dce31691273b546c5b9a6f27e84a8efed625bbef",
     "native_mod/compiled_adapter/src/web.rs": "1e82947bb99ffa4fe5e6b8ae6c16bea6b26bbed6cbf5880318cd3660d0d5ee20",
     "native_mod/compiled_adapter/src/wizard.rs": "5bbb8730853c5678fdafa5a2a56b3439956ce85909b770f74aab1ee26c0c4f9a",
     "native_mod/compiled_adapter/src/workshop.rs": "35f43bfdbcb158d78efbbd1b1028c543a2eeebe47a32bdaf45cb7a79510fadab",

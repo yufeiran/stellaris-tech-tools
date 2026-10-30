@@ -345,7 +345,7 @@ fn compile_goal_slots(out: &mut View, techs: &[Tech]) -> Result<()> {
             format!("[Root.GetTTEGoal{n}]"),
         );
         out.loc(format!("ttegs_number_{n}"), n.to_string(), n.to_string());
-        out.buttons.push(t!("ttegs_slot_@n@={potential={from={is_ai=no}} allow={from={is_ai=no has_country_flag=ttegs_selected_valid NOT={has_country_flag=ttegs_dialog}}} effect={custom_tooltip=ttegs_tip_@n@ from={hidden_effect={ttegs_capture=yes set_variable={which=ttegs_destination value=@n@} ttegs_request=yes}}}}",n=n));
+        out.buttons.push(t!("ttegs_slot_@n@={potential={from={is_ai=no}} allow={hidden_trigger={from={is_ai=no has_country_flag=ttegs_selected_valid NOT={has_country_flag=ttegs_dialog}}}} effect={custom_tooltip=ttegs_tip_@n@ from={hidden_effect={ttegs_capture=yes set_variable={which=ttegs_destination value=@n@} ttegs_request=yes}}}}",n=n));
     }
     out.loc(
         "ttegs_selected_label",
