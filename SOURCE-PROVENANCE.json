@@ -1,6 +1,6 @@
 {
   "scope": "Public external tools only; no private repository history, game installation, saves or source-Mod files",
-  "snapshot": "1.3.1-candidate",
+  "snapshot": "1.3.1",
   "runtimeSourceFiles": {
     "native_mod/compiled_adapter/Cargo.lock": "64ef3b50a4d12a49d9699c47f7233bc909f4f6ad196bbc701d3352858841004a",
     "native_mod/compiled_adapter/src/advice.rs": "2066c83e6650b4cf7068353c5636e12eda29e9caa56077d90deb2abd334d6cd5",
@@ -39,6 +39,8 @@
     "dist/search.js": "f2b6f52d234d6b19b376847d3fede0c0407bc2a66e4c6d67ce8b1fdd7892c7e0",
     "dist/pdf-export.js": "3be486556e502f4e4b3716bdb964aecc744ba3fa4881c7ebfefb590cb14ad6de"
   },
-  "sourceEdits": "Original source copied from author candidate; browser display data retains public authored placeholders",
-  "displayAssets": "Authored placeholders by default; optional exact hash-verified local restoration"
+  "sourceEdits": "Curated external runtime source; authored placeholders replace optional game display assets",
+  "displayAssets": "Authored placeholders by default; optional exact hash-verified local restoration",
+  "shippedRuntimeSource": "2d924b54450b9e1847556325298a42ef4997274d",
+  "windowsViewerAuthorBuild": "14d4f41fe519432203cae9f7949c9254fa85f71c"
 }

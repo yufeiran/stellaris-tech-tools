@@ -1,0 +1,24 @@
+{
+  "version": "1.3.1",
+  "item": "3818261596",
+  "sourceTag": "tools-1.3.1",
+  "runtimeSourceCommit": "2d924b54450b9e1847556325298a42ef4997274d",
+  "targets": [
+    "Windows-x86_64",
+    "Linux-x86_64-musl",
+    "macOS-x86_64",
+    "macOS-arm64"
+  ],
+  "browserEntryTargets": [
+    "Windows-x86_64"
+  ],
+  "nativeWrapperAcceptance": "PASS all four OS/CPU targets, authored fixtures",
+  "gameUiAcceptance": "Windows vanilla English1.0, UIOD English1.6, Dark Blue Chinese2.0",
+  "otherGameUi": "Not newly tested on Mac/Linux for1.3.1",
+  "pdfAcceptance": "Real Chromium PDF: all983 IDs; English/Chinese text extraction and enlarged rendering",
+  "chromeFindUi": "Not tested: saved browser-tool origin permission denied",
+  "toolFiles": 232,
+  "windowsViewerSha256": "2b90519990c70cff2931a858ae6845fbde3a29417c538aaa703ee9d83d6dfbb8",
+  "displayDifference": "Public source has authored placeholders; exact optional asset restoration is local and never executes the viewer",
+  "bitwiseBuildReproducibilityClaimed": false
+}

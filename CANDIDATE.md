@@ -1,14 +1,6 @@
-# 1.3.1 candidate (not yet published to Steam)
+# Source snapshot for tools1.3.1
 
-Shared in-game goal slot editing and browser PDF export are under acceptance.
-Selecting a technology and assigning it to one of five explicit slots are
-separate actions. Existing occupied slots require replacement/swap confirmation.
-The browser export keeps full bilingual names and IDs as searchable vector text.
-
-The default source uses authored display placeholders. Optional display assets
-can still be restored from the precisely hashed 1.3.0 viewer using the existing
-developer helper; this does not execute that viewer. Project Rust, launcher and
-frontend source is MIT licensed; third-party notices remain applicable.
-
-CI artifacts are development candidates only, not public Workshop updates.
-Native wrapper acceptance does not constitute in-game UI or Chrome Find testing.
+The source for all four adapters and the Windows viewer is captured by the
+tools-1.3.1 tag. Workshop binaries are distributed in the Mod, not this Git repo.
+See README.md and workshop-1.3.1/RELEASE.json for features and acceptance limits.
+No private authoring history, game/source-Mod data, accounts or saves are included.

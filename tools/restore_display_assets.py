@@ -7,7 +7,7 @@ p.add_argument('viewer',type=Path,help='Already installed Workshop Windows viewe
 p.add_argument('--restore',action='store_true',help='Write optional display assets into this source checkout; default is verify-only')
 a=p.parse_args();data=a.viewer.read_bytes()
 meta=json.loads((Path(__file__).with_name('display-assets.json')).read_text(encoding='utf-8'))
-if hashlib.sha256(data).hexdigest()!=meta['sourceBinarySha256']:raise SystemExit('Not the exact published Workshop1.3.0 viewer')
+if hashlib.sha256(data).hexdigest()!=meta['sourceBinarySha256']:raise SystemExit('Not the exact Workshop viewer specified in tools/display-assets.json')
 for r in meta['files']:
     dest=root/r['file'];blob=data[r['offset']:r['offset']+r['bytes']]
     if not dest.resolve().is_relative_to(root) or dest.is_symlink():raise SystemExit('Unsafe destination')

@@ -3,10 +3,10 @@
 Open-source external tools bundled with **Tech Tree & Research Planner**:
 [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3818261596).
 
-| Shipped in Workshop1.3.0 | Source |
+| Workshop1.3.1 tools | Source |
 | --- | --- |
-| Windows, Linux, Intel Mac and Apple Silicon in-game adapter | `adapter-1.2.0` tag |
-| Windows local browser tree | `viewer-1.3.0` tag / current source |
+| Windows, Linux, Intel Mac and Apple Silicon in-game adapter | `tools-1.3.1` tag |
+| Windows local browser tree and searchable PDF export | `tools-1.3.1` tag + optional display restoration below |
 
 The Workshop already includes the programs. Players do not need Python, Rust,
 this repository or a separate download. This repository publishes the external
@@ -21,7 +21,8 @@ MIT applies to our code; third-party notices keep their original licenses.
   It keeps the same Workshop identity. It does not enable Mods or edit playsets.
 - `OPEN-TECH-TREE.bat` (Windows): reads the selected sources and serves a zoomable,
   searchable tech tree on `127.0.0.1`. It does not read save progress or change
-  in-game goals. Close its terminal to stop the local server.
+  in-game goals. Use Export PDF → Save as PDF for an offline copy with real
+  bilingual names and technology IDs. Close its terminal to stop the local server.
 - No DLL injection, background service, account credentials or automatic
   download of game/Mod files. No elevation is requested. Reports/backups stay
   in `~/TTE-Research-Planner`; reports contain local source paths.
@@ -31,8 +32,8 @@ MIT applies to our code; third-party notices keep their original licenses.
 
 ## Verify the distributed programs
 
-`workshop-1.3.0/SHA256SUMS` lists the exact executable, launcher and notice files
-uploaded with Workshop1.3.0. You can use your own SHA-256 tool, or optionally:
+`workshop-1.3.1/SHA256SUMS` lists the exact executable, launcher and notice files
+included in the frozen Workshop1.3.1 tools. You can use your own SHA-256 tool, or optionally:
 
 ```text
 python tools/verify_workshop.py PATH_TO_3818261596
@@ -58,6 +59,12 @@ linking. Sources include authored fixtures for unknown IDs, changed parents,
 overrides, localization, five goals, advice, repeatables, safe writes and launchers.
 They do not require a user's game, saves or account. Fixture tests are not game QA.
 
+1.3.1 adds five explicit in-game goal slots and confirmed replacement/swap.
+Windows game UI was checked with vanilla/UIOD/Dark Blue, including2.0×. All
+four native platforms passed wrapper fixtures. Mac/Linux game UI and Chrome
+PDF Find UI are not newly accepted; see `workshop-1.3.1/RELEASE.json`.
+Previous releases remain at `adapter-1.2.0` and `viewer-1.3.0`.
+
 The default public browser build uses authored field icons and no bundled
 legacy search-hint snapshot. Copyrighted game artwork is not redistributed here.
 For the exact display assets used by the shipped Windows viewer, optionally run:
@@ -81,6 +88,7 @@ No bit-for-bit build reproducibility is claimed across compilers/platforms.
 
 适配工具读取当前播放集，备份后只替换本规划器的科技脚本包；浏览器入口仅在
 本机回环地址提供只读科技资料，不同步存档进度与游戏内目标。源码、构建说明、
-随包文件的 SHA-256 与只读校验工具均在仓库内。默认源码构建使用学科占位图；
+随包文件的 SHA-256 与只读校验工具均在仓库内。1.3.1 可在图中直接设置五个目标，
+浏览器可导出含中英文名称和 ID 文字层的 PDF。默认源码构建使用学科占位图；
 有游戏美术与旧拼音提示数据的原版展示资源可从已订阅的精确版本程序中本地
 恢复，恢复脚本不执行该程序、不扫描硬盘、不接触游戏内存。
