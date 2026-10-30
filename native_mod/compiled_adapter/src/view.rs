@@ -1202,13 +1202,9 @@ fn compile_graphs(
                     "",
                 ));
             }
-            for slot in 1..=MAX_GOALS {
-                choices.push(option(
-                    &format!("tte_goal_slot_{slot}"),
-                    &format!("tte_open_tracked_{slot}=yes"),
-                    &format!("has_country_flag=tte_slot_{slot}"),
-                ));
-            }
+            // Native option captions/triggers are cached when an event opens.
+            // The five effect buttons above update live after move/swap; a
+            // second set of native goal shortcuts would show stale occupants.
             choices.extend([
                 option("tte_select_open", &jump("tteselect.1"), ""),
                 option("tte_back", &jump("tte.1"), ""),
