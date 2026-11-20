@@ -1,11 +1,16 @@
 //! Local web atlas with a source-derived, read-only catalog.
 //! No runtime generation/registration, save reads, writes via HTTP or remote bind.
-use crate::{catalog, script::Result, sources::Sources};
+use crate::{
+    catalog,
+    script::Result,
+    sources::{self, Sources},
+};
 use serde_json::{json, Value as Json};
 use std::{
     collections::BTreeMap,
     io::{Read, Write},
     net::{TcpListener, TcpStream},
+    path::Path,
     time::Duration,
 };
 
@@ -55,9 +60,9 @@ fn expand(text: &str, values: &BTreeMap<String, String>) -> String {
         let mut out = String::new();
         let mut rest = current.as_str();
         while let Some(start) = rest.find('$') {
-            out.push_str(&rest[..start]);
             let tail = &rest[start + 1..];
             let Some(end) = tail.find('$') else { break };
+            out.push_str(&rest[..start]);
             out.push_str(
                 values
                     .get(&tail[..end])
@@ -79,6 +84,22 @@ fn expand(text: &str, values: &BTreeMap<String, String>) -> String {
         current = out;
     }
     plain(&current)
+}
+
+fn installed_game_version(root: &Path) -> Json {
+    let settings = sources::text(&root.join("launcher-settings.json"))
+        .ok()
+        .and_then(|text| serde_json::from_str::<Json>(&text).ok())
+        .unwrap_or(Json::Null);
+    let name = settings["version"]
+        .as_str()
+        .map(str::trim)
+        .filter(|s| !s.is_empty());
+    let raw = settings["rawVersion"]
+        .as_str()
+        .map(str::trim)
+        .filter(|s| !s.is_empty());
+    json!({"name": name.or(raw).unwrap_or("Stellaris"), "raw": raw.or(name).unwrap_or("Unknown")})
 }
 
 pub fn payload(report: &Json, sources: &Sources) -> Result<Vec<u8>> {
@@ -173,7 +194,8 @@ pub fn payload(report: &Json, sources: &Sources) -> Result<Vec<u8>> {
                 .or_default() += 1;
         }
     }
-    let data = json!({"meta":{"game":{"name":"v1.3.1","raw":"v1.3.1"},
+    let game = sources.layers.first().ok_or("Missing game source")?;
+    let data = json!({"meta":{"game":installed_game_version(&game.root),
             "iconAtlas":hints["iconAtlas"],"localViewer":true},
         "sources":layers,"technologies":technologies,"dlcs":[],"searchPinyin":hints["searchPinyin"],
         "diagnostics":{"counts":issue_counts,"eligibility":"unknown / engine-controlled","liveSaveState":false}});
@@ -425,6 +447,8 @@ mod tests {
         ]);
         assert_eq!(localise("name", &values), "Example ");
         assert_eq!(localise("missing", &values), "missing");
+        assert_eq!(expand("Cost: $5", &values), "Cost: $5");
+        assert_eq!(expand("$other$ costs $5", &values), "Example costs $5");
     }
     #[test]
     fn unknown_mod_nodes_overrides_and_changed_prerequisites_are_collected() {
@@ -448,6 +472,11 @@ mod tests {
         ));
         let game = root.join("PRIVATE_ROOT_DO_NOT_SERVE");
         let source = root.join("PRIVATE_MOD_DO_NOT_SERVE");
+        write(
+            &game,
+            "launcher-settings.json",
+            r#"{"version":"Cygnus v4.5.4 (1b4f)","rawVersion":"v4.5.4"}"#,
+        );
         write(&game,"common/technology/a.txt","base={area=physics tier=0 cost=10 category={computing}} other={area=society tier=0 cost=5 category={statecraft}}");
         write(&source, "descriptor.mod", "name=\"Unlisted test source\"");
         write(&source,"common/technology/z.txt","base={area=physics tier=0 cost=77 category={computing}} newly_authored={area=engineering tier=7 cost=123 prerequisites={OR={base other} missing} category={new_category} levels=-1}");
@@ -460,7 +489,7 @@ mod tests {
         let collect = || {
             let mut sources = Sources::load(
                 &game,
-                &[source.clone()],
+                &[source.clone().into()],
                 vec!["english".into(), "simp_chinese".into()],
                 true,
             )
@@ -476,6 +505,8 @@ mod tests {
             serde_json::from_slice::<Json>(&data).unwrap()
         };
         let first = collect();
+        assert_eq!(first["meta"]["game"]["name"], "Cygnus v4.5.4 (1b4f)");
+        assert_eq!(first["meta"]["game"]["raw"], "v4.5.4");
         let rows = first["technologies"].as_array().unwrap();
         let new = rows.iter().find(|t| t["id"] == "newly_authored").unwrap();
         assert_eq!(new["name"]["zh"], "新模组科技");
@@ -494,7 +525,9 @@ mod tests {
             77.0
         );
         write(&source,"common/technology/z.txt","newly_authored={area=engineering tier=7 cost=123 prerequisites={other} category={new_category}}");
+        fs::remove_file(game.join("launcher-settings.json")).unwrap();
         let second = collect();
+        assert_eq!(second["meta"]["game"]["raw"], "Unknown");
         let new = second["technologies"]
             .as_array()
             .unwrap()

@@ -1,0 +1,21 @@
+{
+  "version": "1.3.7",
+  "item": 3818261596,
+  "sourceTag": "tools-1.3.7",
+  "runtimeSourceCommit": "9a9acbc9007cf6bcd2d8a3dd631a47c19b3b8c65",
+  "targets": [
+    "Windows-x86_64",
+    "Linux-x86_64-musl",
+    "macOS-x86_64",
+    "macOS-arm64"
+  ],
+  "browserEntryTargets": [
+    "Windows-x86_64",
+    "Linux-x86_64-musl",
+    "macOS-x86_64",
+    "macOS-arm64"
+  ],
+  "verification": "Both player entrypoints passed with Stellaris 4.5.4 data on Windows, Ubuntu WSL, and macOS (Intel via Rosetta). Windows also used real Workshop sources. Saved-game and in-game UI behaviour were outside this adapter regression.",
+  "toolFiles": 234,
+  "windowsViewerSha256": "118e0fa494f97f206d8d5ed219ae58d49dd8ad68a8886b68d183ef8df0fe1e5a"
+}

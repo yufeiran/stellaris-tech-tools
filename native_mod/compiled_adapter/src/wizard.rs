@@ -342,7 +342,7 @@ pub fn automatic(
     }
     for root in std::iter::once(&game)
         .chain(std::iter::once(&docs))
-        .chain(mods.iter())
+        .chain(mods.iter().map(|source| &source.root))
     {
         if parent.starts_with(crate::sources::canonical(root)?) {
             return Err(
@@ -359,8 +359,12 @@ pub fn automatic(
         writeln!(output,"Action: build and register a NEW local planner; keep playset selection unchanged.\n操作：生成并登记本地规划器，不自动切换播放集。").map_err(|e|e.to_string())?;
     }
     for source in &mods {
-        writeln!(output, "  {}", crate::safe(&source.display().to_string()))
-            .map_err(|e| e.to_string())?;
+        writeln!(
+            output,
+            "  {}",
+            crate::safe(&source.root.display().to_string())
+        )
+        .map_err(|e| e.to_string())?;
     }
     for warning in selection["warnings"].as_array().into_iter().flatten() {
         writeln!(
@@ -527,7 +531,7 @@ pub fn web_automatic(
     let parent = crate::sources::canonical(ancestor)?.join(suffix);
     for source in std::iter::once(&game)
         .chain(std::iter::once(&docs))
-        .chain(mods.iter())
+        .chain(mods.iter().map(|source| &source.root))
     {
         if parent.starts_with(crate::sources::canonical(source)?) {
             return Err("Browser working files must be outside source/user-data folders".into());
@@ -542,8 +546,12 @@ pub fn web_automatic(
     )
     .map_err(|e| e.to_string())?;
     for source in &mods {
-        writeln!(output, "  {}", crate::safe(&source.display().to_string()))
-            .map_err(|e| e.to_string())?;
+        writeln!(
+            output,
+            "  {}",
+            crate::safe(&source.root.display().to_string())
+        )
+        .map_err(|e| e.to_string())?;
     }
     let answer = question(
         input,

@@ -242,7 +242,7 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
         .collect();
     for input in tier_inputs {
         tier_files = true;
-        for e in script::parse(&sources.expand(&input.raw, &[])?)?.entries() {
+        for e in script::parse(&sources.expand(&input)?)?.entries() {
             if let Some(key) = &e.key {
                 if matches!(&e.value, Value::Block(_)) {
                     if let Ok(tier) = key.parse::<i64>() {
@@ -257,7 +257,15 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
             && key.split('/').count() == 3
             && key.ends_with(".txt")
         {
-            for e in script::parse(&input.raw)?.entries() {
+            for e in script::parse(&input.raw)
+                .map_err(|e| {
+                    format!(
+                        "{} / {}: {e}",
+                        sources.layers[input.layer].name, input.relative
+                    )
+                })?
+                .entries()
+            {
                 if let Some(k) = &e.key {
                     if k.starts_with('@') {
                         if let Some(v) = e.value.atom() {
@@ -291,7 +299,7 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
     let mut definitions: BTreeMap<String, Tech> = BTreeMap::new();
     for path in paths {
         let input = sources.files[&path].clone();
-        let raw: Arc<str> = sources.expand(&input.raw, &[])?.into();
+        let raw: Arc<str> = sources.expand(&input)?.into();
         let parsed = script::parse(&raw)?;
         let filename = input.relative.rsplit('/').next().unwrap().to_owned();
         let mut local = vars.clone();
@@ -325,9 +333,19 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
                 return Err(format!("Invalid technology ID: {id}"));
             }
             for key in ["area", "tier", "cost", "levels", "prerequisites"] {
-                if e.value.all(key).count() > 1 {
+                let mut fields = e
+                    .value
+                    .entries()
+                    .iter()
+                    .filter(|field| field.key.as_deref() == Some(key));
+                let Some(first) = fields.next() else { continue };
+                if fields.any(|next| {
+                    first.op != "="
+                        || next.op != "="
+                        || script::data(&first.value) != script::data(&next.value)
+                }) {
                     return Err(format!(
-                        "{id}: ambiguous duplicate {key} field; engine precedence is not guessed"
+                        "{filename}:{id}: ambiguous duplicate {key} field; engine precedence is not guessed"
                     ));
                 }
             }
@@ -340,9 +358,15 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
                     "{filename}:{id}: unsupported technology area {area}"
                 ));
             }
-            let tier = numeric(&e.value, "tier", "0", &local)?;
-            let cost = numeric(&e.value, "cost", "1000", &local)?;
-            let levels = numeric(&e.value, "levels", "1", &local)?;
+            let context = |error| {
+                format!(
+                    "{} / {} / {id}: {error}",
+                    sources.layers[input.layer].name, input.relative
+                )
+            };
+            let tier = numeric(&e.value, "tier", "0", &local).map_err(context)?;
+            let cost = numeric(&e.value, "cost", "1000", &local).map_err(context)?;
+            let levels = numeric(&e.value, "levels", "1", &local).map_err(context)?;
             if tier.fract() != 0.0
                 || levels.fract() != 0.0
                 || tier.abs() >= i64::MAX as f64
@@ -350,7 +374,7 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
             {
                 return Err(format!("{id}: non-integer or out-of-range tier/levels"));
             }
-            let cond = condition(e.value.first("prerequisites"), "all")?;
+            let cond = condition(e.value.first("prerequisites"), "all").map_err(context)?;
             let mut shadowed = definitions
                 .get(id)
                 .map(|t| t.record["shadowed"].as_array().unwrap().clone())

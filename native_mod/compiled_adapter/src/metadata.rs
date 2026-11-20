@@ -115,7 +115,7 @@ pub fn enrich(sources: &mut Sources, report: &mut Json) -> Result<()> {
             .iter()
             .find(|(k, _)| path.starts_with(&format!("common/{k}/")))
             .unwrap();
-        let raw = match sources.expand(&input.raw, &[]) {
+        let raw = match sources.expand(&input) {
             Ok(s) => s,
             Err(e) => {
                 diagnostics.push(

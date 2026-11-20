@@ -165,7 +165,10 @@ pub fn condition(expr: &Json, substitute: Option<&str>, future: bool, compact: b
             return YES.into();
         }
         return if future {
-            format!("OR = {{ has_technology = {id} has_country_flag = tte_possible_{id} }}")
+            format!(
+                "OR = {{ has_technology = {id} has_country_flag = tte_possible_{} }}",
+                tech_symbol(id)
+            )
         } else {
             format!("has_technology = {id}")
         };
@@ -189,7 +192,7 @@ pub fn route_calls(expr: &Json) -> String {
         return String::new();
     };
     if list[0] == "tech" {
-        return format!("tte_visit_{} = yes", list[1].as_str().unwrap());
+        return format!("tte_visit_{} = yes", tech_symbol(list[1].as_str().unwrap()));
     }
     if list[0] == "unknown" {
         return String::new();
@@ -209,9 +212,28 @@ pub fn route_calls(expr: &Json) -> String {
     }
 }
 
+/// Keep engine technology IDs intact. Only planner-owned symbols need this
+/// alphabet (notably scripted localisation getters and variable names).
+pub fn tech_symbol(id: &str) -> String {
+    if id.bytes().all(|c| c.is_ascii_alphanumeric() || c == b'_') {
+        return id.into();
+    }
+    // Source IDs start with a letter or underscore. A leading digit in the
+    // suffix reserves a disjoint space without renaming any existing flag.
+    const PREFIX: &str = "0x";
+    use std::fmt::Write;
+    let mut out = String::with_capacity(PREFIX.len() + 2 * id.len());
+    out.push_str(PREFIX);
+    for byte in id.bytes() {
+        write!(out, "{byte:02x}").expect("writing to a String");
+    }
+    out
+}
+
 #[derive(Clone)]
 pub struct Tech {
     pub id: String,
+    pub symbol: String,
     pub area: String,
     pub tier: i64,
     pub cost: f64,
@@ -226,7 +248,7 @@ impl Tech {
         if self.repeatable {
             format!(
                 "OR = {{ {missing} has_country_flag = tte_goal_{} }}",
-                self.id
+                self.symbol
             )
         } else {
             missing
@@ -355,6 +377,7 @@ pub fn technologies(catalog: &Json) -> Result<Vec<Tech>> {
         }
         out.push(Tech {
             id: id.clone(),
+            symbol: tech_symbol(id),
             area: row["area"].as_str().ok_or("Invalid area")?.into(),
             tier,
             cost: row["cost"].as_f64().ok_or("Invalid cost")?,
@@ -545,7 +568,7 @@ pub fn viability(
     let mut refresh = Vec::new();
     for i in dependency_order(techs)? {
         let tech = &techs[i];
-        let key = &tech.id;
+        let key = &tech.symbol;
         let potential = if tech.block.all("potential").count() > 1 {
             YES.into()
         } else if tech.tier_defined {
@@ -558,7 +581,7 @@ pub fn viability(
             "tte_plan_possible_@key@ = { has_country_flag = tte_possible_@key@ }",
             key = key
         ));
-        refresh.push(t!("remove_country_flag = tte_possible_@key@\nif = { limit = { OR = { has_technology = @key@ is_researching_technology = @key@ AND = { has_tech_option = @key@ can_research_technology = @key@ } AND = { @potential@ @parents@ } } } set_country_flag = tte_possible_@key@ }",key=key,potential=potential,parents=parents));
+        refresh.push(t!("remove_country_flag = tte_possible_@key@\nif = { limit = { OR = { has_technology = @id@ is_researching_technology = @id@ AND = { has_tech_option = @id@ can_research_technology = @id@ } AND = { @potential@ @parents@ } } } set_country_flag = tte_possible_@key@ }",key=key,id=tech.id,potential=potential,parents=parents));
     }
     Ok((
         checks,
@@ -576,7 +599,7 @@ pub fn branch_pressure(techs: &[Tech]) -> BTreeMap<String, String> {
         for parent in catalog::ids(&tech.condition) {
             let full = condition(&tech.condition, None, false, true);
             let without = condition(&tech.condition, Some(&parent), false, true);
-            children.get_mut(&parent).unwrap().push(t!("AND = { NOT = { has_technology = @child@ } has_country_flag = tte_possible_@child@ NOT = { has_country_flag = tte_route_@child@ } NOT = { @full@ } @without@ }",child=child,full=full,without=without));
+            children.get_mut(&parent).unwrap().push(t!("AND = { NOT = { has_technology = @child@ } has_country_flag = tte_possible_@symbol@ NOT = { has_country_flag = tte_route_@symbol@ } NOT = { @full@ } @without@ }",child=child,symbol=tech.symbol,full=full,without=without));
         }
     }
     children

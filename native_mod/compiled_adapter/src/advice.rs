@@ -40,7 +40,12 @@ pub fn compile(techs: &[Tech]) -> Result<Advice> {
     };
     let mut script: Vec<_> = techs
         .iter()
-        .map(|tech| t!("remove_country_flag = tte_advice_pick_@key@", key = tech.id))
+        .map(|tech| {
+            t!(
+                "remove_country_flag = tte_advice_pick_@key@",
+                key = tech.symbol
+            )
+        })
         .collect();
     for area in AREAS {
         script.push(t!(
@@ -59,7 +64,7 @@ pub fn compile(techs: &[Tech]) -> Result<Advice> {
     let mut ordered: Vec<_> = techs.iter().collect();
     ordered.sort_by(|a, b| a.cost.total_cmp(&b.cost).then(a.id.cmp(&b.id)));
     for tech in ordered {
-        let key = &tech.id;
+        let key = &tech.symbol;
         let tier = tech.tier;
         for (area, rule) in tech.areas()? {
             let ranks=(1..=MAX_GOALS).map(|slot|t!("@op@ = { limit = { OR = { AND = { tte_priority_@key@ = yes check_variable = { which = tte_route_rank_@key@ value = @slot@ } } AND = { tte_gate_candidate_@key@ = yes check_variable = { which = tte_fill_rank_@area@_@tier@ value = @slot@ } } } } set_variable = { which = tte_advice_slot_@area@ value = @slot@ } }",op=if slot==1{"if"}else{"else_if"},key=key,slot=slot,area=area,tier=tier)).collect::<Vec<_>>().join(" ");
@@ -69,7 +74,7 @@ pub fn compile(techs: &[Tech]) -> Result<Advice> {
             }).collect::<Vec<_>>().join(" ");
             let earlier_gate = format!("OR = {{ {gates} }}");
             let roles=t!("if = { limit = { @earlier_gate@ } set_country_flag = tte_advice_role_filler_@area@ } else_if = { limit = { has_country_flag = tte_goal_@key@ } set_country_flag = tte_advice_role_goal_@area@ } else_if = { limit = { tte_priority_@key@ = yes } set_country_flag = tte_advice_role_route_@area@ } else = { set_country_flag = tte_advice_role_filler_@area@ }",earlier_gate=earlier_gate,area=area,key=key);
-            script.push(t!("if = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_@area@ } @rule@ NOT = { is_researching_technology = @key@ } tte_offered_@key@ = yes OR = { tte_priority_@key@ = yes tte_gate_candidate_@key@ = yes } tte_admissible_@key@ = yes } set_country_flag = tte_advice_pick_@key@ set_country_flag = tte_advice_has_@area@ @ranks@ @roles@ }",area=area,rule=rule,key=key,ranks=ranks,roles=roles));
+            script.push(t!("if = { limit = { is_ai = no has_country_flag = tte_automation NOT = { has_country_flag = tte_advice_has_@area@ } @rule@ NOT = { is_researching_technology = @tech_id@ } tte_offered_@key@ = yes OR = { tte_priority_@key@ = yes tte_gate_candidate_@key@ = yes } tte_admissible_@key@ = yes } set_country_flag = tte_advice_pick_@key@ set_country_flag = tte_advice_has_@area@ @ranks@ @roles@ }",area=area,rule=rule,key=key,tech_id=tech.id,ranks=ranks,roles=roles));
         }
     }
     out.effects.push(format!(
@@ -87,7 +92,7 @@ pub fn compile(techs: &[Tech]) -> Result<Advice> {
         let y = 44 + index * 98;
         for tech in techs {
             if let Some((_, rule)) = tech.areas()?.into_iter().find(|(a, _)| a == area) {
-                live.push(t!("AND = { has_country_flag = tte_advice_pick_@key@ @rule@ NOT = { is_researching_technology = @key@ } tte_offered_@key@ = yes }",key=tech.id,rule=rule));
+                live.push(t!("AND = { has_country_flag = tte_advice_pick_@key@ @rule@ NOT = { is_researching_technology = @tech_id@ } tte_offered_@key@ = yes }",key=tech.symbol,tech_id=tech.id,rule=rule));
             }
         }
         out.triggers.push(t!("tte_advice_live_@area@ = { is_ai = no has_country_flag = tte_automation OR = { @live@ } }",area=area,live=live.join(" ")));
@@ -97,7 +102,7 @@ pub fn compile(techs: &[Tech]) -> Result<Advice> {
                 continue;
             };
             for role in ["goal", "route", "filler"] {
-                let name = format!("tte_advice_{area}_{role}_{}", tech.id);
+                let name = format!("tte_advice_{area}_{role}_{}", tech.symbol);
                 let role_template = if role == "goal" && tech.repeatable {
                     "repeat"
                 } else {
@@ -122,7 +127,7 @@ pub fn compile(techs: &[Tech]) -> Result<Advice> {
                             .insert(name.clone() + suffix, text);
                     }
                 }
-                out.buttons.push(t!("@name@ = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_@key@ has_country_flag = tte_advice_role_@role@_@area@ @rule@ NOT = { is_researching_technology = @key@ } tte_offered_@key@ = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = @name@_tip from = { hidden_effect = { tte_refresh = yes } } } }",name=name,key=tech.id,role=role,area=area,rule=rule));
+                out.buttons.push(t!("@name@ = { potential = { from = { is_ai = no has_country_flag = tte_automation has_country_flag = tte_advice_pick_@key@ has_country_flag = tte_advice_role_@role@_@area@ @rule@ NOT = { is_researching_technology = @tech_id@ } tte_offered_@key@ = yes } } allow = { from = { is_ai = no } } effect = { custom_tooltip = @name@_tip from = { hidden_effect = { tte_refresh = yes } } } }",name=name,key=tech.symbol,tech_id=tech.id,role=role,area=area,rule=rule));
                 widgets.push(t!("effectbuttonType = { name = @name@ position = { x = 8 y = @y@ } size = { x = 336 y = 64 } quadTextureSprite = GFX_tiling_button_standard font = \"cg_16b\" buttonText = @name@ multiline = yes effect = @name@ }",name=name,y=y+24));
             }
         }

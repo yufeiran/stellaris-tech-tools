@@ -12,6 +12,11 @@ const MAX_ARCHIVE: u64 = 8 * 1024 * 1024 * 1024;
 const MAX_ENTRIES: usize = 250000;
 const MAX_FILE: u64 = 64 * 1024 * 1024;
 const MAX_SELECTED: u64 = 512 * 1024 * 1024;
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub enum DescriptorPolicy {
+    Required,
+    RegisteredFallback,
+}
 pub struct Archive {
     pub hash: String,
     pub entries: BTreeSet<String>,
@@ -39,7 +44,11 @@ pub(crate) fn hash(path: &Path) -> Result<String> {
     Ok(format!("{:x}", sha.finalize()))
 }
 impl Archive {
-    pub fn open(path: &Path, want: impl Fn(&str) -> bool) -> Result<Self> {
+    pub fn open(
+        path: &Path,
+        descriptor: DescriptorPolicy,
+        want: impl Fn(&str) -> bool,
+    ) -> Result<Self> {
         let hash_before = hash(path)?;
         let file = File::open(path).map_err(|e| e.to_string())?;
         let mut zip = zip::ZipArchive::new(BufReader::new(file))
@@ -99,7 +108,43 @@ impl Archive {
             }
         }
         if !result.entries.contains("descriptor.mod") {
-            return Err("ZIP source requires descriptor.mod at archive root".into());
+            if descriptor == DescriptorPolicy::Required {
+                return Err("ZIP source requires descriptor.mod at archive root".into());
+            }
+            // Only use a verified external registration for a root-level game layout.
+            // Don't silently import an empty tree from an archive with a wrapper folder.
+            let rooted =
+                result
+                    .entries
+                    .iter()
+                    .filter_map(|p| p.split_once('/'))
+                    .any(|(first, _)| {
+                        matches!(
+                            first,
+                            "common"
+                                | "events"
+                                | "gfx"
+                                | "interface"
+                                | "localisation"
+                                | "localisation_synced"
+                                | "sound"
+                                | "music"
+                                | "flags"
+                                | "map"
+                                | "prescripted_countries"
+                        )
+                    });
+            if !rooted
+                || result
+                    .entries
+                    .iter()
+                    .any(|p| p.ends_with("/descriptor.mod"))
+            {
+                return Err(
+                    "ZIP has no identifiable game content root for the external registration"
+                        .into(),
+                );
+            }
         }
         for (i, key, rel, size) in indexes {
             let entry = zip.by_index(i).map_err(|e| format!("ZIP {rel}: {e}"))?;
@@ -122,7 +167,7 @@ impl Archive {
         let (_, raw) = self
             .texts
             .get("descriptor.mod")
-            .ok_or("ZIP descriptor missing")?;
+            .ok_or("ZIP source requires descriptor.mod at archive root")?;
         Ok(crate::script::normalise(
             std::str::from_utf8(raw).map_err(|_| "ZIP descriptor is not UTF-8")?,
         ))
@@ -162,7 +207,10 @@ mod tests {
             ("common/technology/a.txt", b"a={area=physics}"),
             ("gfx/owned.dds", b"untrusted-not-decoded"),
         ]);
-        let zip = Archive::open(&path, |s| s.starts_with("common/")).unwrap();
+        let zip = Archive::open(&path, DescriptorPolicy::Required, |s| {
+            s.starts_with("common/")
+        })
+        .unwrap();
         assert_eq!(zip.texts.len(), 2);
         assert!(zip.entries.contains("gfx/owned.dds"));
         assert!(!zip.texts.contains_key("gfx/owned.dds"));
@@ -184,7 +232,7 @@ mod tests {
             vec![("wrapper/descriptor.mod", b"name=Owned".as_slice())],
         ] {
             let path = make(&rows);
-            assert!(Archive::open(&path, |_| true).is_err());
+            assert!(Archive::open(&path, DescriptorPolicy::Required, |_| true).is_err());
             std::fs::remove_file(path).unwrap();
         }
     }

@@ -108,7 +108,7 @@ struct Args {
     build: Option<PathBuf>,
     register: Option<PathBuf>,
     selection_guard: dbsnapshot::InputHashes,
-    previewed_mods: Option<Vec<PathBuf>>,
+    previewed_mods: Option<Vec<sources::ModSource>>,
     workshop: Option<workshop::Target>,
     web: bool,
     open_browser: bool,
@@ -336,7 +336,10 @@ fn run(args: Args) -> Result<()> {
         sources::selection(docs, args.playset.as_deref())?
     } else {
         (
-            args.mods,
+            args.mods
+                .into_iter()
+                .map(sources::ModSource::from)
+                .collect(),
             json!({"kind":"explicit-ordered-directories"}),
             Vec::new(),
         )
@@ -370,7 +373,8 @@ fn run(args: Args) -> Result<()> {
             return Err("Report output must be outside the Stellaris user-data directory".into());
         }
     }
-    for root in std::iter::once(&game).chain(mods.iter()) {
+    let mod_roots = || mods.iter().map(|source| &source.root);
+    for root in std::iter::once(&game).chain(mod_roots()) {
         let root = sources::canonical(root)?;
         if output.starts_with(&root) {
             return Err("Output must be outside every source root".into());
@@ -390,7 +394,7 @@ fn run(args: Args) -> Result<()> {
             return Err("Catalog report must be outside the candidate runtime".into());
         }
         for root in std::iter::once(&game)
-            .chain(mods.iter())
+            .chain(mod_roots())
             .chain(args.docs.iter())
             .chain(args.register.iter())
         {

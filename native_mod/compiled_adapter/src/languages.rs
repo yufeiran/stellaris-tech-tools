@@ -231,7 +231,7 @@ pub fn expand(rows: &mut Localisation, report: &Json, sources: &Sources) -> Resu
                     ("locked", "L"),
                 ] {
                     texts.insert(
-                        format!("tte_caption_{state}_{id}"),
+                        format!("tte_caption_{state}_{}", crate::planning::tech_symbol(id)),
                         format!("§{color}{}§!", view::compact_name(caption, 15, 2)),
                     );
                 }

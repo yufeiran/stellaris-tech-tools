@@ -1,5 +1,5 @@
 @echo off
-setlocal
+setlocal DisableDelayedExpansion
 "%~dp0tte-core.exe" %*
 set "TTE_CORE_EXIT=%ERRORLEVEL%"
 if not defined TTE_CORE_NO_PAUSE pause

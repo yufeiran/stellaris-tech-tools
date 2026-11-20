@@ -49,6 +49,21 @@ pub(crate) fn publish_with(
     path: &Path,
     write: impl FnOnce(&mut fs::File) -> io::Result<()>,
 ) -> io::Result<()> {
+    // MoveFileExW needs a verbatim absolute path for long paths. Resolve
+    // only the existing parent; the destination may not exist yet.
+    #[cfg(windows)]
+    let destination = {
+        let name = path.file_name().ok_or_else(|| {
+            io::Error::new(io::ErrorKind::InvalidInput, "Missing report filename")
+        })?;
+        let parent = path
+            .parent()
+            .filter(|p| !p.as_os_str().is_empty())
+            .unwrap_or(Path::new("."));
+        fs::canonicalize(parent)?.join(name)
+    };
+    #[cfg(windows)]
+    let path = destination.as_path();
     let parent = path.parent().unwrap_or(Path::new("."));
     let clock = SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -104,6 +119,23 @@ mod tests {
         cleanup(&dir);
     }
     static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+    #[cfg(windows)]
+    #[test]
+    fn publishes_beyond_max_path_without_clobbering_an_existing_report() {
+        let root = folder();
+        let deep = root
+            .join("a".repeat(100))
+            .join("b".repeat(100))
+            .join("reports");
+        fs::create_dir_all(&deep).unwrap();
+        let path = deep.join("..").join("reports").join("report.json");
+        assert!(path.as_os_str().len() > 260);
+        publish(&path, b"first").unwrap();
+        assert!(publish(&path, b"second").is_err());
+        assert_eq!(fs::read(&path).unwrap(), b"first");
+        assert_eq!(fs::read_dir(&deep).unwrap().count(), 1);
+        cleanup(&root);
+    }
     fn folder() -> PathBuf {
         let clock = SystemTime::now()
             .duration_since(UNIX_EPOCH)

@@ -31,7 +31,7 @@ pub fn compile(techs: &[Tech], potential: &BTreeMap<String, Value>) -> Result<Co
     ];
     let mut cache: Vec<_> = techs
         .iter()
-        .map(|t| t!("remove_country_flag = tte_route_@key@", key = t.id))
+        .map(|t| t!("remove_country_flag = tte_route_@key@", key = t.symbol))
         .collect();
     for area in AREAS {
         for tier in 2..=max_tier {
@@ -66,14 +66,14 @@ pub fn compile(techs: &[Tech], potential: &BTreeMap<String, Value>) -> Result<Co
         .map(|t| {
             t!(
                 "remove_country_flag = tte_goal_@key@\nclear_variable = tte_rank_@key@",
-                key = t.id
+                key = t.symbol
             )
         })
         .collect::<Vec<_>>()
         .join("\n");
     let any_goal = techs
         .iter()
-        .map(|t| t!("has_country_flag = tte_goal_@key@", key = t.id))
+        .map(|t| t!("has_country_flag = tte_goal_@key@", key = t.symbol))
         .collect::<Vec<_>>()
         .join(" ");
     triggers.push(t!(
@@ -89,7 +89,7 @@ pub fn compile(techs: &[Tech], potential: &BTreeMap<String, Value>) -> Result<Co
         all_slots = all_slots
     ));
     for (index, tech) in techs.iter().enumerate() {
-        let key = &tech.id;
+        let key = &tech.symbol;
         let id = 1000 + index;
         let tier = tech.tier;
         let areas = tech.areas()?;
@@ -105,7 +105,7 @@ pub fn compile(techs: &[Tech], potential: &BTreeMap<String, Value>) -> Result<Co
         } else {
             NO.into()
         };
-        triggers.push(t!("tte_gate_candidate_@key@ = { is_ai = no has_country_flag = tte_automation NOT = { has_technology = @key@ } @filler@ }",key=key,filler=filler));
+        triggers.push(t!("tte_gate_candidate_@key@ = { is_ai = no has_country_flag = tte_automation NOT = { has_technology = @tech_id@ } @filler@ }",key=key,tech_id=tech.id,filler=filler));
         triggers.push(t!("tte_filler_@key@ = { tte_gate_candidate_@key@ = yes NOT = { has_country_flag = tte_route_@key@ } }",key=key));
         effects.push(t!(
             "tte_visit_@key@ = { country_event = { id = tteroute.@id@ } }",
@@ -135,7 +135,7 @@ pub fn compile(techs: &[Tech], potential: &BTreeMap<String, Value>) -> Result<Co
         clear_slots,
     ];
     for tech in techs {
-        refresh.push(t!("if = { limit = { has_country_flag = tte_goal_@key@ } if = { limit = { @done@ } remove_country_flag = tte_goal_@key@ clear_variable = tte_rank_@key@ } else = { if = { limit = { NOT = { is_variable_set = tte_rank_@key@ } } set_variable = { which = tte_rank_@key@ value = 1 } } } }",key=tech.id,done=tech.completed()));
+        refresh.push(t!("if = { limit = { has_country_flag = tte_goal_@key@ } if = { limit = { @done@ } remove_country_flag = tte_goal_@key@ clear_variable = tte_rank_@key@ } else = { if = { limit = { NOT = { is_variable_set = tte_rank_@key@ } } set_variable = { which = tte_rank_@key@ value = 1 } } } }",key=tech.symbol,done=tech.completed()));
     }
     for slot in 1..=MAX_GOALS {
         refresh.push(t!(
@@ -143,7 +143,7 @@ pub fn compile(techs: &[Tech], potential: &BTreeMap<String, Value>) -> Result<Co
             slot = slot
         ));
         for tech in techs {
-            refresh.push(t!("if = { limit = { has_country_flag = tte_goal_@key@ check_variable = { which = tte_rank_@key@ value = @slot@ } } set_country_flag = tte_slot_@slot@ tte_visit_@key@ = yes }",key=tech.id,slot=slot));
+            refresh.push(t!("if = { limit = { has_country_flag = tte_goal_@key@ check_variable = { which = tte_rank_@key@ value = @slot@ } } set_country_flag = tte_slot_@slot@ tte_visit_@key@ = yes }",key=tech.symbol,slot=slot));
         }
     }
     for area in AREAS {

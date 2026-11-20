@@ -5,8 +5,7 @@
 
 - INSTALL-TECH-ADAPTER：根据已选来源 Mod 生成游戏内规划器，校验备份后
   更新本规划器自己的科技树包。运行前关闭群星和启动器；不修改来源 Mod。
-- OPEN-TECH-TREE：打开只读浏览器科技资料。目前公开工坊的浏览器入口仅限
-  Windows，不同步存档进度或游戏内目标。PDF 导出保留中英文名称与 ID 文字层。
+- OPEN-TECH-TREE：打开只读浏览器科技资料。Windows、macOS 和 Linux 均可打开浏览器入口，不同步存档进度或游戏内目标。PDF 导出保留中英文名称与 ID 文字层。
 
 使用说明见 launchers/ADAPTER-README.txt 和 launchers/WEB-ATLAS-README.txt。
 运行根目录脚本，核对检测到的路径和来源后按回车；来源或规划器更新后需重跑。

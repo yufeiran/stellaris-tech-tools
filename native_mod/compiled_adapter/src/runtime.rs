@@ -46,9 +46,9 @@ fn validate_ids(report: &Json) -> Result<()> {
         .ok_or("Catalog missing")?
         .keys()
     {
-        if !id.chars().all(|c| c.is_ascii_alphanumeric() || c == '_') {
+        if !view::safe_localisation_key(id) {
             return Err(format!(
-                "Unverified technology ID for generated symbol: {id}; collection still works"
+                "Unsupported technology ID for native localisation: {id}; collection still works"
             ));
         }
     }

@@ -22,7 +22,7 @@ pub fn compile(techs: &[Tech], sources: &mut Sources) -> Result<Diagnostics> {
         .map(|(_, f)| f.clone())
         .collect();
     for file in files {
-        let raw = sources.expand(&file.raw, &[])?;
+        let raw = sources.expand(&file)?;
         let parsed = script::parse(&raw)?;
         for entry in parsed.entries() {
             if let Some(tier) = entry.key.as_deref().and_then(|s| s.parse::<i64>().ok()) {
@@ -89,12 +89,12 @@ pub fn compile(techs: &[Tech], sources: &mut Sources) -> Result<Diagnostics> {
     }
     for tech in techs {
         for (area, rule) in tech.areas()? {
-            let rank=(1..=MAX_GOALS).map(|slot|t!("@op@={limit={OR={AND={tte_priority_@key@=yes check_variable={which=tte_route_rank_@key@ value=@slot@}} AND={tte_gate_candidate_@key@=yes check_variable={which=tte_fill_rank_@area@_@tier@ value=@slot@}}}} set_variable={which=tte_explain_slot_@area@ value=@slot@}}",op=if slot==1{"if"}else{"else_if"},key=tech.id,slot=slot,area=area,tier=tech.tier)).collect::<Vec<_>>().join(" ");
+            let rank=(1..=MAX_GOALS).map(|slot|t!("@op@={limit={OR={AND={tte_priority_@key@=yes check_variable={which=tte_route_rank_@key@ value=@slot@}} AND={tte_gate_candidate_@key@=yes check_variable={which=tte_fill_rank_@area@_@tier@ value=@slot@}}}} set_variable={which=tte_explain_slot_@area@ value=@slot@}}",op=if slot==1{"if"}else{"else_if"},key=tech.symbol,slot=slot,area=area,tier=tech.tier)).collect::<Vec<_>>().join(" ");
             let earlier=planning::combine("OR",(1..MAX_GOALS).map(|slot|{
-            let previous=(1..=slot).map(|rank|t!("check_variable={which=tte_route_rank_@key@ value=@rank@}",key=tech.id,rank=rank)).collect::<Vec<_>>().join(" ");
-            t!("AND={tte_priority_@key@=yes tte_gate_candidate_@key@=yes check_variable={which=tte_fill_rank_@area@_@tier@ value=@slot@} NOT={OR={@previous@}}}",key=tech.id,area=area,tier=tech.tier,slot=slot,previous=previous)
+            let previous=(1..=slot).map(|rank|t!("check_variable={which=tte_route_rank_@key@ value=@rank@}",key=tech.symbol,rank=rank)).collect::<Vec<_>>().join(" ");
+            t!("AND={tte_priority_@key@=yes tte_gate_candidate_@key@=yes check_variable={which=tte_fill_rank_@area@_@tier@ value=@slot@} NOT={OR={@previous@}}}",key=tech.symbol,area=area,tier=tech.tier,slot=slot,previous=previous)
         }).collect());
-            let role=t!("if={limit={@earlier@} set_country_flag=tte_explain_filler_@area@} else_if={limit={has_country_flag=tte_goal_@key@} set_country_flag=tte_explain_goal_@area@} else_if={limit={has_country_flag=tte_route_@key@} set_country_flag=tte_explain_route_@area@} else_if={limit={tte_gate_candidate_@key@=yes} set_country_flag=tte_explain_filler_@area@} else={set_country_flag=tte_explain_outside_@area@}",earlier=earlier,key=tech.id,area=area);
+            let role=t!("if={limit={@earlier@} set_country_flag=tte_explain_filler_@area@} else_if={limit={has_country_flag=tte_goal_@key@} set_country_flag=tte_explain_goal_@area@} else_if={limit={has_country_flag=tte_route_@key@} set_country_flag=tte_explain_route_@area@} else_if={limit={tte_gate_candidate_@key@=yes} set_country_flag=tte_explain_filler_@area@} else={set_country_flag=tte_explain_outside_@area@}",earlier=earlier,key=tech.symbol,area=area);
             let threshold = limits
                 .get(&(tech.tier + 1))
                 .filter(|values| {
@@ -173,7 +173,10 @@ pub fn readiness(tech: &Tech) -> Result<Vec<(String, String)>> {
     }
     let mut rows = vec![
         (
-            format!("has_country_flag=tte_viability_ready NOT={{tte_plan_possible_{k}=yes}}"),
+            format!(
+                "has_country_flag=tte_viability_ready NOT={{tte_plan_possible_{}=yes}}",
+                tech.symbol
+            ),
             "tte_unreachable".into(),
         ),
         (
@@ -226,7 +229,7 @@ pub fn potential_triggers(sources: &mut Sources) -> Result<BTreeMap<String, Valu
     let mut out = BTreeMap::new();
     let mut ambiguous = std::collections::BTreeSet::new();
     for file in files {
-        let raw = match sources.expand(&file.raw, &[]) {
+        let raw = match sources.expand(&file) {
             Ok(raw) => raw,
             Err(error) => {
                 sources.warnings.push(serde_json::json!({"issue":"unanalysed_named_trigger_file","file":file.relative,"reason":error,"handling":"unknown; original engine conditions remain authoritative"}));

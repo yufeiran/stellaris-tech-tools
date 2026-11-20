@@ -12,6 +12,7 @@ pub fn scripts(ids: &[String], focus: &str) -> Result<String> {
     let mut displace = String::new();
     let mut assign = String::new();
     for id in ids {
+        let id = crate::planning::tech_symbol(id);
         clear.push_str(&format!("remove_country_flag=ttegs_pending_{id}\n"));
         let current = t!("if={limit={has_country_flag=ttegs_pending_@id@ has_country_flag=tte_goal_@id@} set_variable={which=ttegs_origin value=tte_rank_@id@}}\n",id=id);
         origin.push_str(&current);

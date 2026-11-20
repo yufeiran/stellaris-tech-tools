@@ -14,7 +14,7 @@ pub(crate) fn safe_localisation_key(key: &str) -> bool {
     !key.is_empty()
         && key
             .chars()
-            .all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '.')
+            .all(|c| c.is_ascii_alphanumeric() || matches!(c, '_' | '.' | '-'))
 }
 pub struct View {
     pub effects: Vec<String>,
@@ -309,7 +309,7 @@ fn compile_goal_slots(out: &mut View, techs: &[Tech]) -> Result<()> {
             out.effects.push(raw[e.span.clone()].into());
         }
     }
-    let checks=techs.iter().map(|t|format!("if={{limit={{has_country_flag=ttegs_pending_{} {}}} set_country_flag=ttegs_pending_valid}} if={{limit={{has_country_flag=tte_viewed_{} {}}} set_country_flag=ttegs_selected_valid}}",t.id,t.addable(),t.id,t.addable())).collect::<String>();
+    let checks=techs.iter().map(|t|format!("if={{limit={{has_country_flag=ttegs_pending_{} {}}} set_country_flag=ttegs_pending_valid}} if={{limit={{has_country_flag=tte_viewed_{} {}}} set_country_flag=ttegs_selected_valid}}",t.symbol,t.addable(),t.symbol,t.addable())).collect::<String>();
     out.effects
         .push("ttegs_recheck={country_event={id=ttegoal.14}}".into());
     out.events.push(format!("country_event={{id=ttegoal.14 hide_window=yes is_triggered_only=yes immediate={{remove_country_flag=ttegs_pending_valid remove_country_flag=ttegs_selected_valid {checks}}}}}"));
@@ -322,7 +322,7 @@ fn compile_goal_slots(out: &mut View, techs: &[Tech]) -> Result<()> {
             .map(|t| {
                 format!(
                     "text={{trigger={{has_country_flag={flag}{}}} localization_key={}}}",
-                    t.id, t.id
+                    t.symbol, t.id
                 )
             })
             .collect::<String>();
@@ -352,7 +352,7 @@ fn compile_goal_slots(out: &mut View, techs: &[Tech]) -> Result<()> {
         "[From.GetTTEGSSelected]",
         "[From.GetTTEGSSelected]",
     );
-    let tips=techs.iter().map(|t|format!("text={{trigger={{has_country_flag=tte_viewed_{}}} localization_key=tte_detail_{}}}",t.id,t.id)).collect::<String>();
+    let tips=techs.iter().map(|t|format!("text={{trigger={{has_country_flag=tte_viewed_{}}} localization_key=tte_detail_{}}}",t.symbol,t.symbol)).collect::<String>();
     out.getters.push(format!(
         "defined_text={{name=GetTTEGSSelectedTip random=no {tips} default=ttegs_pick}}"
     ));
@@ -486,7 +486,7 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
         .map(|t| {
             format!(
                 "text={{trigger={{has_country_flag=tte_goal_{}}} localization_key={}}}",
-                t.id, t.id
+                t.symbol, t.id
             )
         })
         .collect::<Vec<_>>()
@@ -495,7 +495,7 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
         "defined_text={{name=GetTTEGoal random=no {any_goal} default=tte_goal_none}}"
     ));
     for slot in 1..=MAX_GOALS {
-        let texts=techs.iter().map(|tech|t!("text={trigger={has_country_flag=tte_goal_@key@ check_variable={which=tte_rank_@key@ value=@slot@}} localization_key=tte_goal_entry_@key@}",key=tech.id,slot=slot)).collect::<Vec<_>>().join(" ");
+        let texts=techs.iter().map(|tech|t!("text={trigger={has_country_flag=tte_goal_@key@ check_variable={which=tte_rank_@key@ value=@slot@}} localization_key=tte_goal_entry_@key@}",key=tech.symbol,slot=slot)).collect::<Vec<_>>().join(" ");
         out.getters.push(t!(
             "defined_text={name=GetTTEGoal@slot@ random=no @texts@ default=tte_goal_none}",
             slot = slot,
@@ -506,7 +506,7 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
             format!("目标科技 {slot} · [Root.GetTTEGoal{slot}]"),
             format!("Goal {slot} · [Root.GetTTEGoal{slot}]"),
         );
-        let jumps=techs.iter().enumerate().map(|(i,tech)|t!("if={limit={has_country_flag=tte_goal_@key@ check_variable={which=tte_rank_@key@ value=@slot@}} @jump@}",key=tech.id,slot=slot,jump=jump(&chosen_event(i)))).collect::<Vec<_>>().join(" ");
+        let jumps=techs.iter().enumerate().map(|(i,tech)|t!("if={limit={has_country_flag=tte_goal_@key@ check_variable={which=tte_rank_@key@ value=@slot@}} @jump@}",key=tech.symbol,slot=slot,jump=jump(&chosen_event(i)))).collect::<Vec<_>>().join(" ");
         out.effects.push(t!(
             "tte_open_tracked_@slot@={@jumps@}",
             slot = slot,
@@ -519,7 +519,7 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
         .map(|tech| {
             t!(
                 "remove_country_flag=tte_view_@key@ remove_country_flag=tte_viewed_@key@",
-                key = tech.id
+                key = tech.symbol
             )
         })
         .collect::<Vec<_>>()
@@ -625,12 +625,12 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
             .map(|(i, tech)| {
                 let body = match action {
                     "inspect" => jump(&chosen_event(i)),
-                    "track" => format!("tte_target_{}=yes", tech.id),
-                    _ => format!("tte_remove_{}=yes", tech.id),
+                    "track" => format!("tte_target_{}=yes", tech.symbol),
+                    _ => format!("tte_remove_{}=yes", tech.symbol),
                 };
                 t!(
                     "if={limit={has_country_flag=tte_viewed_@key@} @body@}",
-                    key = tech.id,
+                    key = tech.symbol,
                     body = body
                 )
             })
@@ -676,9 +676,10 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
     let mut icons = BTreeMap::new();
     for (i, tech) in techs.iter().enumerate() {
         let k = &tech.id;
+        let symbol = &tech.symbol;
         let e = chosen_event(i);
-        let select = format!("tte_select_node_{k}=yes");
-        out.effects.push(t!("tte_select_node_@key@={tte_view_clear=yes set_country_flag=tte_has_view_selection set_country_flag=tte_viewed_@key@ if={limit={@addable@} set_country_flag=ttegs_selected_valid} tte_view_visit_@key@=yes tte_remember_@key@=yes}",key=k,addable=tech.addable()));
+        let select = format!("tte_select_node_{symbol}=yes");
+        out.effects.push(t!("tte_select_node_@key@={tte_view_clear=yes set_country_flag=tte_has_view_selection set_country_flag=tte_viewed_@key@ if={limit={@addable@} set_country_flag=ttegs_selected_valid} tte_view_visit_@key@=yes tte_remember_@key@=yes}",key=symbol,addable=tech.addable()));
         let area = AREAS.iter().position(|a| a == &tech.area).unwrap();
         let icon = tech
             .block
@@ -693,13 +694,13 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
         if sources.has_resource(&path) {
             out.gfx.push(t!(
                 "spriteType={name=GFX_tte_@key@ texturefile=@path@}",
-                key = k,
+                key = symbol,
                 path = planning::atom(&path)
             ));
-            icons.insert(k.clone(), format!("GFX_tte_{k}"));
+            icons.insert(k.clone(), format!("GFX_tte_{symbol}"));
         }
         out.loc(
-            format!("tte_goal_entry_{k}"),
+            format!("tte_goal_entry_{symbol}"),
             if tech.repeatable {
                 format!("${k}$ · 持续研究")
             } else {
@@ -718,7 +719,7 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
             ("locked", "L"),
         ] {
             out.loc(
-                format!("tte_caption_{state}_{k}"),
+                format!("tte_caption_{state}_{symbol}"),
                 format!(
                     "§{color}{}§!",
                     compact_name(
@@ -741,7 +742,7 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
                 ),
             );
             out.loc(
-                format!("tte_caption_full_{state}_{k}"),
+                format!("tte_caption_full_{state}_{symbol}"),
                 format!("§{color}${k}$§!"),
                 format!("§{color}${k}$§!"),
             );
@@ -749,41 +750,41 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
         // A single country-bound effect button uses the same four state
         // predicates for its caption. Avoid four overlapping GUI instances.
         out.buttons.push(button(
-            &format!("tte_node_{k}"),
+            &format!("tte_node_{symbol}"),
             "",
             &select,
-            &format!("tte_detail_{k}"),
+            &format!("tte_detail_{symbol}"),
         ));
         for (mode, caption) in [(0, "tte_caption"), (1, "tte_caption_full")] {
             let states = ["done", "busy", "offered"]
                 .iter()
                 .map(|state| {
                     format!(
-                        "text={{trigger={{ {} }} localization_key={caption}_{state}_{k}}}",
+                        "text={{trigger={{ {} }} localization_key={caption}_{state}_{symbol}}}",
                         tech.state(state)
                     )
                 })
                 .collect::<Vec<_>>()
                 .join(" ");
-            out.getters.push(format!("defined_text={{name=GetTTECard{mode}_{k} random=no {states} default={caption}_locked_{k} }}"));
+            out.getters.push(format!("defined_text={{name=GetTTECard{mode}_{symbol} random=no {states} default={caption}_locked_{symbol} }}"));
         }
-        let view_name = format!("tte_view_marker_{k}");
+        let view_name = format!("tte_view_marker_{symbol}");
         if parents[k]
             .iter()
             .any(|p| techs.iter().any(|t| &t.id == p && t.area != tech.area))
         {
             out.buttons.push(button(
-                &format!("tte_cross_{k}"),
+                &format!("tte_cross_{symbol}"),
                 "",
                 &select,
-                &format!("tte_detail_{k}"),
+                &format!("tte_detail_{symbol}"),
             ));
         }
         out.buttons.push(button(
             &view_name,
-            &format!("has_country_flag=tte_view_{k}"),
+            &format!("has_country_flag=tte_view_{symbol}"),
             &select,
-            &format!("tte_detail_{k}"),
+            &format!("tte_detail_{symbol}"),
         ));
         let state_texts = [
             ("done", "tte_state_done"),
@@ -813,7 +814,7 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
         .join(" ");
         out.getters.push(t!(
             "defined_text={name=GetTTEState_@key@ random=no @texts@ default=tte_state_locked}",
-            key = k,
+            key = symbol,
             texts = state_texts
         ));
         let source = report["sources"]
@@ -858,7 +859,7 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
         let effects = if effects.is_empty() {
             effects
         } else {
-            let key = format!("tte_source_effects_{k}");
+            let key = format!("tte_source_effects_{symbol}");
             out.loc(&key, &effects, &effects);
             format!("${key}$")
         };
@@ -888,9 +889,9 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
                 format!("\\n\\n§HDirect effects§!\\n{effects}")
             }
         );
-        out.loc(format!("tte_detail_{k}"),format!("§H${k}$§! · T{}\\n[Root.GetTTEState_{k}]\\n${k}_desc${zh_meta}\\n\\n前置：{prereqs}\\n§L来源：{source}。可选前置只需满足一支。§!\\n\\n$tte_intro$",tech.tier),format!("§H${k}$§! · T{}\\n[Root.GetTTEState_{k}]\\n${k}_desc${en_meta}\\n\\nPrerequisites: {prereqs}\\n§LSource: {source}. One OR branch suffices.§!\\n\\n$tte_intro$",tech.tier));
+        out.loc(format!("tte_detail_{symbol}"),format!("§H${k}$§! · T{}\\n[Root.GetTTEState_{symbol}]\\n${k}_desc${zh_meta}\\n\\n前置：{prereqs}\\n§L来源：{source}。可选前置只需满足一支。§!\\n\\n$tte_intro$",tech.tier),format!("§H${k}$§! · T{}\\n[Root.GetTTEState_{symbol}]\\n${k}_desc${en_meta}\\n\\nPrerequisites: {prereqs}\\n§LSource: {source}. One OR branch suffices.§!\\n\\n$tte_intro$",tech.tier));
         if let Some(missing) = report["technologies"][k]["missingPrerequisites"].as_array() {
-            let key = format!("tte_source_missing_{k}");
+            let key = format!("tte_source_missing_{symbol}");
             let text = missing
                 .iter()
                 .filter_map(Json::as_str)
@@ -902,22 +903,22 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
                     .localisation
                     .get_mut(lang)
                     .unwrap()
-                    .get_mut(&format!("tte_detail_{k}"))
+                    .get_mut(&format!("tte_detail_{symbol}"))
                     .unwrap();
                 value.push_str(&format!("\\n\\n§Y$tte_unknown_reference$${key}$§!"));
             }
         }
         let calls = parents[k]
             .iter()
-            .map(|p| format!("tte_view_visit_{p}=yes"))
+            .map(|p| format!("tte_view_visit_{}=yes", planning::tech_symbol(p)))
             .collect::<Vec<_>>()
             .join(" ");
         out.effects.push(t!(
             "tte_view_visit_@key@={country_event={id=tteview.@id@}}",
-            key = k,
+            key = symbol,
             id = 1000 + i
         ));
-        out.events.push(t!("country_event={id=tteview.@id@ hide_window=yes is_triggered_only=yes immediate={if={limit={NOT={has_country_flag=tte_view_@key@}} set_country_flag=tte_view_@key@ @calls@}}}",id=1000+i,key=k,calls=calls));
+        out.events.push(t!("country_event={id=tteview.@id@ hide_window=yes is_triggered_only=yes immediate={if={limit={NOT={has_country_flag=tte_view_@key@}} set_country_flag=tte_view_@key@ @calls@}}}",id=1000+i,key=symbol,calls=calls));
         let mut choices = vec![
             option("tte_inspect_selected", "tte_inspect_selected=yes", ""),
             option(
@@ -939,7 +940,7 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
         ];
         for parent in &parents[k] {
             if let Some((index, p)) = techs.iter().enumerate().find(|(_, t)| &t.id == parent) {
-                let label = format!("tte_parent_{}", p.id);
+                let label = format!("tte_parent_{}", p.symbol);
                 out.loc(
                     label.clone(),
                     format!("前置：${}$ · $tte_area_{}$", p.id, p.area),
@@ -969,13 +970,13 @@ pub fn compile(techs: &[Tech], report: &Json, sources: &Sources) -> Result<View>
         );
         // The class is shared with the whole field. Selecting a technology only
         // changes country flags and event text, never creates another layout.
-        let imm=t!("tte_refresh=yes tte_view_clear=yes set_country_flag=tte_has_view_selection set_country_flag=tte_viewed_@key@ tte_view_visit_@key@=yes set_variable={which=tte_atlas_area value=@area@}",key=k,area=area);
-        out.events.push(t!("country_event={id=@event@ hide_window=yes is_triggered_only=yes immediate={tte_remember_@key@=yes if={limit={check_variable={which=tte_atlas_mode value=1}} country_event={id=ttepreviewlarge.@id@}} else={country_event={id=ttepreviewsmall.@id@}}}}",event=e,id=1000+i,key=k));
+        let imm=t!("tte_refresh=yes tte_view_clear=yes set_country_flag=tte_has_view_selection set_country_flag=tte_viewed_@key@ tte_view_visit_@key@=yes set_variable={which=tte_atlas_area value=@area@}",key=symbol,area=area);
+        out.events.push(t!("country_event={id=@event@ hide_window=yes is_triggered_only=yes immediate={tte_remember_@key@=yes if={limit={check_variable={which=tte_atlas_mode value=1}} country_event={id=ttepreviewlarge.@id@}} else={country_event={id=ttepreviewsmall.@id@}}}}",event=e,id=1000+i,key=symbol));
         for (mode, namespace) in [(0, "ttepreviewsmall"), (1, "ttepreviewlarge")] {
             out.events.push(event(
                 &format!("{namespace}.{}", 1000 + i),
                 k,
-                &format!("tte_detail_{k}"),
+                &format!("tte_detail_{symbol}"),
                 &choices,
                 &format!("tte_graph_{mode}_{area}"),
                 "tte_graph_option",
@@ -1150,14 +1151,14 @@ fn compile_graphs(
                 let (_, y, _) = positions[&tech.id];
                 let x = 4;
                 let column = columns.entry(tech.tier).or_default();
-                column.push(t!("effectbuttonType={name=node_@key@ position={x=@x@ y=@y@} @sizes@ quadTextureSprite=GFX_tiling_button_standard font=\"cg_16b\" buttonText=\"[From.GetTTECard@mode@_@key@]\" multiline=yes borderSize={x=8 y=2} effect=tte_node_@key@ clicksound=click}",key=tech.id,x=x,y=y,mode=mode,sizes=card_sizes(tiers[&tech.tier].1,height)));
+                column.push(t!("effectbuttonType={name=node_@key@ position={x=@x@ y=@y@} @sizes@ quadTextureSprite=GFX_tiling_button_standard font=\"cg_16b\" buttonText=\"[From.GetTTECard@mode@_@key@]\" multiline=yes borderSize={x=8 y=2} effect=tte_node_@key@ clicksound=click}",key=tech.symbol,x=x,y=y,mode=mode,sizes=card_sizes(tiers[&tech.tier].1,height)));
                 if let Some(icon) = icons.get(&tech.id) {
-                    column.push(t!("iconType={name=icon_@key@ spriteType=@icon@ position={x=@x@ y=@y@} scale=0.4 alwaysTransparent=yes}",key=tech.id,icon=icon,x=x+2,y=y+2));
+                    column.push(t!("iconType={name=icon_@key@ spriteType=@icon@ position={x=@x@ y=@y@} scale=0.4 alwaysTransparent=yes}",key=tech.symbol,icon=icon,x=x+2,y=y+2));
                 }
                 if parents[&tech.id].iter().any(|p| !positions.contains_key(p)) {
-                    column.push(t!("effectbuttonType={name=cross_@key@ position={x=-48 y=@y@} orientation=upper_right size={x=44 y=18} quadTextureSprite=GFX_tiling_button_standard font=\"cg_16b\" buttonText=tte_cross_badge effect=tte_cross_@key@ clicksound=click}",key=tech.id,y=y+height-18));
+                    column.push(t!("effectbuttonType={name=cross_@key@ position={x=-48 y=@y@} orientation=upper_right size={x=44 y=18} quadTextureSprite=GFX_tiling_button_standard font=\"cg_16b\" buttonText=tte_cross_badge effect=tte_cross_@key@ clicksound=click}",key=tech.symbol,y=y+height-18));
                 }
-                column.push(t!("effectbuttonType={name=path_@key@ position={x=-22 y=@y@} orientation=upper_right size={x=18 y=16} quadTextureSprite=GFX_tiling_button_standard font=\"cg_16b\" buttonText=tte_path_marker effect=tte_view_marker_@key@ clicksound=click}",key=tech.id,y=y-3));
+                column.push(t!("effectbuttonType={name=path_@key@ position={x=-22 y=@y@} orientation=upper_right size={x=18 y=16} quadTextureSprite=GFX_tiling_button_standard font=\"cg_16b\" buttonText=tte_path_marker effect=tte_view_marker_@key@ clicksound=click}",key=tech.symbol,y=y-3));
             }
             let content_height = top.max(540);
             for (tier, items) in columns {

@@ -1,3 +1,4 @@
+use crate::archive::{Archive, DescriptorPolicy};
 use crate::script::{self, Result, Value};
 use rusqlite::{Connection, OpenFlags};
 use serde_json::{json, Value as Json};
@@ -66,6 +67,29 @@ pub struct Layer {
     pub archive_hash: Option<String>,
     pub archive_entries: Option<BTreeSet<String>>,
 }
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+enum DescriptorOrigin {
+    Explicit,
+    RegisteredInner,
+    RegistrationFile(PathBuf),
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ModSource {
+    pub root: PathBuf,
+    descriptor: DescriptorOrigin,
+}
+
+impl From<PathBuf> for ModSource {
+    fn from(root: PathBuf) -> Self {
+        Self {
+            root,
+            descriptor: DescriptorOrigin::Explicit,
+        }
+    }
+}
+
 #[derive(Clone)]
 pub struct Input {
     pub layer: usize,
@@ -82,6 +106,7 @@ pub struct Sources {
     pub inline_reads: BTreeSet<String>,
     pub languages: Vec<String>,
     pub include_ui: bool,
+    mod_sources: Vec<ModSource>,
 }
 
 fn is_self(metadata: &Value, root: Option<&Path>) -> bool {
@@ -93,10 +118,44 @@ fn is_self(metadata: &Value, root: Option<&Path>) -> bool {
         })
 }
 
+// Local registrations can use paths relative to the Stellaris user data root.
+// Resolve the descriptor and launcher values independently before comparing them.
+fn launcher_content_path(docs: &Path, raw: &str) -> Result<PathBuf> {
+    let path = Path::new(raw);
+    if path.is_absolute() {
+        return canonical(path);
+    }
+    let normalized = raw.replace('\\', "/");
+    let relative_path = normalized.strip_prefix("./").unwrap_or(&normalized);
+    canonical(&docs.join(relative(relative_path)?))
+}
+
+fn dependency_names(metadata: &Value) -> Result<BTreeSet<String>> {
+    let mut names = BTreeSet::new();
+    for list in metadata.all("dependencies") {
+        let Value::Block(entries) = list else {
+            return Err("dependencies must be a list of Mod names".into());
+        };
+        for entry in entries {
+            let name = entry
+                .value
+                .atom()
+                .filter(|s| !s.trim().is_empty() && entry.key.is_none())
+                .ok_or("dependencies must contain plain Mod names")?;
+            names.insert(name.to_owned());
+        }
+    }
+    Ok(names)
+}
+
+fn replacement_prefix(value: &Value) -> Result<String> {
+    relative(value.atom().ok_or("replace_path must be scalar")?).map(|p| p.to_lowercase())
+}
+
 pub fn selection(
     documents: &Path,
     playset: Option<&str>,
-) -> Result<(Vec<PathBuf>, Json, crate::dbsnapshot::InputHashes)> {
+) -> Result<(Vec<ModSource>, Json, crate::dbsnapshot::InputHashes)> {
     let docs = canonical(documents)?;
     let snapshot = crate::dbsnapshot::Snapshot::new(&docs.join("launcher-v2.sqlite"))?;
     let mut hashes = snapshot.hashes.clone();
@@ -123,27 +182,39 @@ pub fn selection(
         return Err("Choose exactly one active playset or specify --playset ID".into());
     }
     let (id, name) = &selected[0];
-    let mut stmt=db.prepare("select m.gameRegistryId,m.dirPath,m.archivePath,m.status,pm.position from playsets_mods pm join mods m on m.id=pm.modId where pm.playsetId=?1 and pm.enabled=1 order by pm.position").map_err(|e|e.to_string())?;
+    let mut stmt = db
+        .prepare(
+            "select pm.modId,m.gameRegistryId,m.dirPath,m.archivePath,m.status,pm.position
+             from playsets_mods pm left join mods m on m.id=pm.modId
+             where pm.playsetId=?1 and pm.enabled=1 order by pm.position",
+        )
+        .map_err(|e| e.to_string())?;
     let rows = stmt
         .query_map([id], |r| {
             Ok((
-                r.get::<_, String>(0)?,
+                r.get::<_, Option<String>>(0)?,
                 r.get::<_, Option<String>>(1)?,
                 r.get::<_, Option<String>>(2)?,
-                r.get::<_, String>(3)?,
-                r.get::<_, i64>(4)?,
+                r.get::<_, Option<String>>(3)?,
+                r.get::<_, Option<String>>(4)?,
+                r.get::<_, i64>(5)?,
             ))
         })
         .map_err(|e| e.to_string())?;
     let mut roots = Vec::new();
     let mut excluded = Vec::new();
+    let mut warnings = Vec::new();
     let mut positions = BTreeSet::new();
     let mut registries = Vec::new();
     for row in rows {
-        let (registry, directory, archive, status, position) = row.map_err(|e| e.to_string())?;
+        let (mod_id, registry, directory, archive, status, position) =
+            row.map_err(|e| e.to_string())?;
         if !positions.insert(position) {
             return Err("Ambiguous source load-order positions".into());
         }
+        let registry = registry.filter(|id| !id.is_empty()).ok_or_else(|| {
+            format!("Enabled Mod {} has no launcher registration. Refresh or remove it from this playset in Paradox Launcher. / 播放集中已启用的 Mod 缺少启动器登记，请在启动器中刷新或移除该条目。", mod_id.as_deref().unwrap_or("<unknown>"))
+        })?;
         let rel = relative(&registry)?;
         if !rel.starts_with("mod/") || !rel.ends_with(".mod") || rel.split('/').count() != 2 {
             return Err(format!("Invalid launcher registration {rel}"));
@@ -153,7 +224,7 @@ pub fn selection(
             return Err("Launcher registration escapes Documents/mod".into());
         }
         crate::dbsnapshot::track(&entry, &mut hashes)?;
-        let meta = script::parse(&text(&entry)?)?;
+        let meta = script::parse(&text(&entry)?).map_err(|e| format!("{rel}: {e}"))?;
         for key in ["name", "remote_file_id", "path", "archive"] {
             if meta.all(key).count() > 1 {
                 return Err(format!(
@@ -161,37 +232,36 @@ pub fn selection(
                 ));
             }
         }
-        let root = meta.scalar("path").map(PathBuf::from);
+        let resolve = |field: &str, path: &str| {
+            launcher_content_path(&docs, path).map_err(|e| format!("{rel}: {field}: {e}"))
+        };
+        let declared_dir = meta.scalar("path").filter(|s| !s.is_empty());
+        let resolved_dir = declared_dir.map(|path| resolve("path", path));
         registries.push(rel.clone());
-        if is_self(&meta, root.as_deref().filter(|p| p.is_absolute())) {
+        if is_self(
+            &meta,
+            resolved_dir.as_ref().and_then(|path| path.as_deref().ok()),
+        ) {
             excluded.push(json!({"registry":rel,"reason":"planner itself"}));
             continue;
         }
-        if status != "ready_to_play" {
+        if status.as_deref() != Some("ready_to_play") {
             return Err(format!("{rel}: source is not ready_to_play"));
         }
         let has_archive = meta.scalar("archive").is_some_and(|s| !s.is_empty())
             || archive.as_deref().is_some_and(|s| !s.is_empty());
         let (root, inner) = if has_archive {
-            if root.as_ref().is_some_and(|p| !p.as_os_str().is_empty())
-                || directory.as_deref().is_some_and(|s| !s.is_empty())
-            {
+            if declared_dir.is_some() || directory.as_deref().is_some_and(|s| !s.is_empty()) {
                 return Err(format!("{rel}: conflicting path/archive registration; refresh this source in the launcher before generating"));
             }
-            let resolve = |s: &str| -> Result<PathBuf> {
-                let p = PathBuf::from(s);
-                canonical(&if p.is_absolute() {
-                    p
-                } else {
-                    docs.join(relative(s)?)
-                })
-            };
             let root = resolve(
+                "archive",
                 meta.scalar("archive")
                     .filter(|s| !s.is_empty())
                     .ok_or_else(|| format!("{rel}: missing archive registration"))?,
             )?;
             let dbroot = resolve(
+                "launcher archivePath",
                 archive
                     .as_deref()
                     .filter(|s| !s.is_empty())
@@ -200,55 +270,107 @@ pub fn selection(
             if root != dbroot || !root.is_file() {
                 return Err(format!("{rel}: launcher/source ZIP mismatch"));
             }
-            let zip = crate::archive::Archive::open(&root, |_| false)?;
+            let zip = Archive::open(&root, DescriptorPolicy::RegisteredFallback, |_| false)
+                .map_err(|e| format!("{rel}: {e}"))?;
             hashes.push((root.clone(), Some(zip.hash.clone())));
-            (root, script::parse(&zip.descriptor()?)?)
+            let inner = if zip.entries.contains("descriptor.mod") {
+                Some(
+                    zip.descriptor()
+                        .and_then(|raw| script::parse(&raw))
+                        .map_err(|e| format!("{rel}: ZIP descriptor.mod: {e}"))?,
+                )
+            } else {
+                None
+            };
+            (root, inner)
         } else {
-            let root = root.ok_or_else(|| format!("{rel}: missing absolute source path"))?;
-            if !root.is_absolute() {
-                return Err(format!("{rel}: source is not an absolute directory"));
-            }
-            let root = canonical(&root)?;
-            if directory
+            let root = resolved_dir.ok_or_else(|| format!("{rel}: missing source path"))??;
+            let dbroot = directory
                 .as_deref()
-                .map(Path::new)
-                .map(canonical)
-                .transpose()?
-                .as_ref()
-                != Some(&root)
-                || !root.is_dir()
-            {
+                .filter(|s| !s.is_empty())
+                .ok_or_else(|| format!("{rel}: missing launcher dirPath"))?;
+            if resolve("launcher dirPath", dbroot)? != root || !root.is_dir() {
                 return Err(format!("{rel}: launcher/source directory mismatch"));
             }
-            crate::dbsnapshot::track(&root.join("descriptor.mod"), &mut hashes)?;
-            let inner = script::parse(&text(&root.join("descriptor.mod"))?)?;
+            let descriptor = root.join("descriptor.mod");
+            crate::dbsnapshot::track(&descriptor, &mut hashes)?;
+            // The launcher has already enabled this folder through its .mod
+            // file. Keep tracking the missing inner descriptor during build.
+            let inner = match fs::symlink_metadata(&descriptor) {
+                Err(e) if e.kind() == std::io::ErrorKind::NotFound => None,
+                Err(e) => return Err(format!("{rel}: descriptor.mod: {e}")),
+                Ok(_) => Some(
+                    script::parse(&text(&descriptor)?)
+                        .map_err(|e| format!("{rel}: descriptor.mod: {e}"))?,
+                ),
+            };
             (root, inner)
+        };
+        let Some(inner) = inner else {
+            if meta
+                .scalar("name")
+                .is_none_or(|name| name.trim().is_empty())
+            {
+                return Err(format!(
+                    "{rel}: missing descriptor.mod and registration name"
+                ));
+            }
+            warnings.push(format!(
+                "{rel}: using .mod registration metadata because descriptor.mod is missing"
+            ));
+            roots.push(ModSource {
+                root,
+                descriptor: DescriptorOrigin::RegistrationFile(entry),
+            });
+            continue;
         };
         if meta.scalar("name") != inner.scalar("name")
             || meta.scalar("remote_file_id") != inner.scalar("remote_file_id")
         {
             return Err(format!("{rel}: descriptor identity mismatch"));
         }
-        for key in ["replace_path", "dependencies"] {
-            let a: Vec<_> = meta.all(key).map(script::data).collect();
-            let b: Vec<_> = inner.all(key).map(script::data).collect();
-            if a != b {
-                return Err(format!(
-                    "{rel}: registration/descriptor {key} mismatch; refresh source registration"
-                ));
-            }
+        let deps = |record: &Value| dependency_names(record).map_err(|e| format!("{rel}: {e}"));
+        if deps(&meta)? != deps(&inner)? {
+            return Err(format!(
+                "{rel}: registration/descriptor dependencies mismatch; refresh source registration"
+            ));
         }
-        roots.push(root);
+        let prefixes = |record: &Value| {
+            record
+                .all("replace_path")
+                .map(replacement_prefix)
+                .collect::<Result<BTreeSet<_>>>()
+                .map_err(|e| format!("{rel}: {e}"))
+        };
+        if prefixes(&meta)? != prefixes(&inner)? {
+            return Err(format!(
+                "{rel}: registration/descriptor replace_path mismatch; refresh source registration"
+            ));
+        }
+        if inner.first("path").is_some() || inner.first("archive").is_some() {
+            warnings.push(format!(
+                "{rel}: ignoring path/archive in descriptor.mod; using the source confirmed by the launcher"
+            ));
+        }
+        roots.push(ModSource {
+            root,
+            descriptor: DescriptorOrigin::RegisteredInner,
+        });
     }
-    let mut warnings = Vec::new();
     let load = docs.join("dlc_load.json");
     crate::dbsnapshot::track(&load, &mut hashes)?;
     if load.is_file() {
-        let last: Json = serde_json::from_str(&text(&load)?).map_err(|e| e.to_string())?;
-        if last.get("enabled_mods") != Some(&json!(registries)) {
-            warnings.push(
-                "Last launched mod list differs; using the chosen playset, not running game state",
-            );
+        let bytes = read_bytes(&load)?;
+        match serde_json::from_slice::<Json>(bytes.strip_prefix(b"\xef\xbb\xbf").unwrap_or(&bytes))
+        {
+            Ok(last) if last.get("enabled_mods") != Some(&json!(registries)) => warnings.push(
+                "Last launched mod list differs; using the chosen playset, not running game state"
+                    .into(),
+            ),
+            Err(_) => {
+                warnings.push("Invalid dlc_load.json; using the chosen launcher playset".into())
+            }
+            _ => {}
         }
     }
     Ok((
@@ -344,7 +466,7 @@ fn wanted(key: &str, languages: &[String], include_ui: bool) -> bool {
 impl Sources {
     pub fn load(
         game: &Path,
-        mods: &[PathBuf],
+        mods: &[ModSource],
         languages: Vec<String>,
         include_ui: bool,
     ) -> Result<Self> {
@@ -357,18 +479,25 @@ impl Sources {
             inline_reads: BTreeSet::new(),
             languages,
             include_ui,
+            mod_sources: mods.to_vec(),
         };
         let mut names = BTreeSet::new();
-        for (index, root) in std::iter::once(game)
-            .chain(mods.iter().map(PathBuf::as_path))
-            .enumerate()
-        {
+        let entries = std::iter::once((game, &DescriptorOrigin::Explicit)).chain(
+            mods.iter()
+                .map(|source| (source.root.as_path(), &source.descriptor)),
+        );
+        for (index, (root, origin)) in entries.enumerate() {
             let root = canonical(root)?;
             if index == 0 && !root.is_dir() {
                 return Err("Game source must be a directory".into());
             }
             let mut archive = if root.is_file() {
-                Some(crate::archive::Archive::open(&root, |key| {
+                let policy = if matches!(origin, DescriptorOrigin::RegistrationFile(_)) {
+                    DescriptorPolicy::RegisteredFallback
+                } else {
+                    DescriptorPolicy::Required
+                };
+                Some(Archive::open(&root, policy, |key| {
                     wanted(key, &result.languages, include_ui)
                 })?)
             } else if root.is_dir() {
@@ -376,20 +505,31 @@ impl Sources {
             } else {
                 return Err(format!("Not a source directory or ZIP: {}", root.display()));
             };
-            let descriptor = root.join("descriptor.mod");
             let raw = if index > 0 {
-                Some(match &archive {
-                    Some(a) => a.descriptor()?,
-                    None => text(&descriptor)?,
+                Some(match (&archive, origin) {
+                    (_, DescriptorOrigin::RegistrationFile(path)) => text(path)?,
+                    (Some(a), _) => a.descriptor()?,
+                    (None, _) => text(&root.join("descriptor.mod"))?,
                 })
             } else {
                 None
             };
-            let meta = raw
+            let mut meta = raw
                 .as_ref()
-                .map(|s| script::parse(s))
+                .map(|s| {
+                    script::parse(s).map_err(|e| format!("{}: descriptor.mod: {e}", root.display()))
+                })
                 .transpose()?
                 .unwrap_or(Value::Block(vec![]));
+            // selection() has already matched the launcher's directory or ZIP to the
+            // outer registration. Embedded installation paths must never select content.
+            if let (
+                DescriptorOrigin::RegisteredInner | DescriptorOrigin::RegistrationFile(_),
+                Value::Block(entries),
+            ) = (origin, &mut meta)
+            {
+                entries.retain(|entry| !matches!(entry.key.as_deref(), Some("path" | "archive")));
+            }
             if index > 0
                 && (is_self(&meta, Some(&root))
                     || archive.as_ref().is_some_and(|a| {
@@ -401,9 +541,10 @@ impl Sources {
                 return Err("Do not import the planner itself".into());
             }
             if meta.first("archive").is_some() || meta.first("path").is_some() {
-                return Err(
-                    "Source descriptor.mod must not redirect to another path/archive".into(),
-                );
+                return Err(format!(
+                    "{}: explicit --mod source has path/archive in descriptor.mod; select its registered launcher playset instead",
+                    root.display()
+                ));
             }
             let name = if index == 0 {
                 "Stellaris".to_owned()
@@ -414,8 +555,7 @@ impl Sources {
                 return Err(format!("Duplicate source name: {name}"));
             }
             for value in meta.all("replace_path") {
-                let prefix =
-                    relative(value.atom().ok_or("replace_path must be scalar")?)?.to_lowercase();
+                let prefix = replacement_prefix(value)?;
                 let before = result.files.len();
                 result
                     .files
@@ -492,20 +632,20 @@ impl Sources {
             }
         }
         for layer in result.layers.iter().skip(1) {
-            if let Some(deps) = layer.metadata.first("dependencies") {
-                for entry in deps.entries() {
-                    let name = entry.value.atom().ok_or("Dependency name must be scalar")?;
-                    if !names.contains(name) {
-                        return Err(format!("{}: missing source dependency {name}", layer.name));
-                    }
+            for name in
+                dependency_names(&layer.metadata).map_err(|e| format!("{}: {e}", layer.name))?
+            {
+                if !names.contains(&name) {
+                    return Err(format!("{}: missing source dependency {name}", layer.name));
                 }
             }
         }
         Ok(result)
     }
 
-    pub fn expand(&mut self, raw: &str, stack: &[String]) -> Result<String> {
-        self.expand_inner(raw, stack, &mut 0)
+    pub fn expand(&mut self, file: &Input) -> Result<String> {
+        self.expand_inner(&file.raw, &[], &mut 0)
+            .map_err(|e| format!("{} / {}: {e}", self.layers[file.layer].name, file.relative))
     }
     fn expand_inner(
         &mut self,
@@ -621,7 +761,9 @@ impl Sources {
             self.inline_reads.insert(key.clone());
             let mut stack = stack.to_vec();
             stack.push(key);
-            let expanded = self.expand_inner(&body, &stack, calls_used)?;
+            let expanded = self
+                .expand_inner(&body, &stack, calls_used)
+                .map_err(|e| format!("{}: {e}", stack.last().unwrap()))?;
             if result
                 .len()
                 .saturating_sub(call.span.len())
@@ -660,9 +802,7 @@ impl Sources {
             if layer
                 .metadata
                 .all("replace_path")
-                .filter_map(Value::atom)
-                .filter_map(|s| relative(s).ok())
-                .map(|s| s.to_lowercase())
+                .filter_map(|v| replacement_prefix(v).ok())
                 .any(|p| key == p || key.starts_with(&(p + "/")))
             {
                 return false;
@@ -671,10 +811,9 @@ impl Sources {
         false
     }
     pub fn verify(&self) -> Result<()> {
-        let roots: Vec<_> = self.layers.iter().skip(1).map(|l| l.root.clone()).collect();
         let current = Self::load(
             &self.layers[0].root,
-            &roots,
+            &self.mod_sources,
             self.languages.clone(),
             self.include_ui,
         )?;
@@ -694,16 +833,24 @@ impl Sources {
         let mut values = BTreeMap::new();
         let mut warnings = Vec::new();
         for (_, file) in rows {
-            let expected = format!("l_{language}:");
-            if !file.raw.lines().any(|s| s.trim() == expected) {
-                continue;
-            }
+            let mut in_language = false;
             for (n, line) in file.raw.lines().enumerate() {
                 let s = line.trim_start();
-                if s.starts_with('#') || s.trim() == expected {
+                if s.starts_with('#') || (!in_language && !s.starts_with("l_")) {
                     continue;
                 }
                 if let Some((key, rest)) = s.split_once(':') {
+                    let key = key.trim_end();
+                    let rest = rest.trim_start();
+                    if let Some(header) = key.strip_prefix("l_") {
+                        if rest.is_empty() || rest.starts_with('#') {
+                            in_language = header == language;
+                            continue;
+                        }
+                    }
+                    if !in_language || key.is_empty() {
+                        continue;
+                    }
                     let rest = rest
                         .trim_start_matches(|c: char| c.is_ascii_digit())
                         .trim_start();

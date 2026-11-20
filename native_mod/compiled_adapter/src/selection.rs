@@ -39,13 +39,13 @@ pub fn compile(techs: &[Tech]) -> Result<(Vec<String>, Vec<String>)> {
     for tech in techs {
         scan.push(t!(
             "remove_country_flag = tte_extra_branch_@key@",
-            key = tech.id
+            key = tech.symbol
         ));
     }
     for tech in techs {
         scan.push(t!(
             "remove_country_flag = tte_best_filler_@key@",
-            key = tech.id
+            key = tech.symbol
         ));
     }
     for area in AREAS {
@@ -58,44 +58,44 @@ pub fn compile(techs: &[Tech]) -> Result<(Vec<String>, Vec<String>)> {
         }
     }
     for tech in techs {
-        let key = &tech.id;
+        let key = &tech.symbol;
         let tier = tech.tier;
         let areas = tech.areas()?;
         // Actual engine offers may come from events/debris, bypassing ordinary
         // draw predicates. Never contradict a currently researchable card with
         // a reconstructed tier, potential or prerequisite predicate.
-        result.push(t!("tte_offered_@key@ = { has_tech_option = @key@ @addable@ can_research_technology = @key@ }",key=key,addable=tech.addable()));
+        result.push(t!("tte_offered_@key@ = { has_tech_option = @tech_id@ @addable@ can_research_technology = @tech_id@ }",key=key,tech_id=tech.id,addable=tech.addable()));
         let mut branches = Vec::new();
         for (area, rule) in &areas {
             let ranks=(1..=MAX_GOALS).map(|rank|t!("if = { limit = { OR = { AND = { tte_priority_@key@ = yes check_variable = { which = tte_route_rank_@key@ value = @rank@ } } AND = { tte_gate_candidate_@key@ = yes check_variable = { which = tte_fill_rank_@area@_@tier@ value = @rank@ } } } } set_country_flag = tte_available_@area@_@rank@ if = { limit = { tte_priority_@key@ = yes } set_country_flag = tte_available_route_@area@_@rank@ if = { limit = { has_country_flag = tte_goal_@key@ } set_country_flag = tte_available_goal_@area@_@rank@ } } }",key=key,rank=rank,area=area,tier=tier)).collect::<Vec<_>>().join(" ");
             branches.push(t!("if = { limit = { @rule@ } @ranks@ if = { limit = { tte_gate_candidate_@key@ = yes } set_country_flag = tte_available_filler_@area@ } }",rule=rule,ranks=ranks,key=key,area=area));
         }
-        let mut branch_check=t!("if = { limit = { tte_filler_@key@ = yes @pressure@ } set_country_flag = tte_extra_branch_@key@ }",key=key,pressure=pressure[key]);
+        let mut branch_check=t!("if = { limit = { tte_filler_@key@ = yes @pressure@ } set_country_flag = tte_extra_branch_@key@ }",key=key,pressure=pressure[&tech.id]);
         let score = format!("{:.6}", planning::filler_score(tech.cost, false));
         let extra = format!("{:.6}", planning::filler_score(tech.cost, true));
         branch_check.push_str(&t!("if = { limit = { tte_filler_@key@ = yes } set_variable = { which = tte_fill_score_@key@ value = @score@ } if = { limit = { has_country_flag = tte_extra_branch_@key@ } set_variable = { which = tte_fill_score_@key@ value = @extra@ } } ",key=key,score=score,extra=extra));
         for (area, rule) in &areas {
             for rank in 1..=MAX_GOALS {
-                branch_check.push_str(&t!("if = { limit = { NOT = { is_researching_technology = @key@ } @rule@ check_variable = { which = tte_fill_rank_@area@_@tier@ value = @rank@ } OR = { NOT = { is_variable_set = tte_best_fill_score_@area@_@rank@ } check_variable = { which = tte_best_fill_score_@area@_@rank@ value < tte_fill_score_@key@ } } } set_variable = { which = tte_best_fill_score_@area@_@rank@ value = tte_fill_score_@key@ } } ",key=key,rule=rule,area=area,tier=tier,rank=rank));
+                branch_check.push_str(&t!("if = { limit = { NOT = { is_researching_technology = @tech_id@ } @rule@ check_variable = { which = tte_fill_rank_@area@_@tier@ value = @rank@ } OR = { NOT = { is_variable_set = tte_best_fill_score_@area@_@rank@ } check_variable = { which = tte_best_fill_score_@area@_@rank@ value < tte_fill_score_@key@ } } } set_variable = { which = tte_best_fill_score_@area@_@rank@ value = tte_fill_score_@key@ } } ",key=key,tech_id=tech.id,rule=rule,area=area,tier=tier,rank=rank));
             }
         }
         branch_check.push('}');
         let available = t!(
-            "if = { limit = { NOT = { is_researching_technology = @key@ } } @branches@ }",
-            key = key,
+            "if = { limit = { NOT = { is_researching_technology = @tech_id@ } } @branches@ }",
+            tech_id = tech.id,
             branches = branches.join(" ")
         );
         scan.push(t!("if = { limit = { OR = { tte_priority_@key@ = yes tte_gate_candidate_@key@ = yes } tte_offered_@key@ = yes } @available@ @branch_check@ }",key=key,available=available,branch_check=branch_check));
     }
     for tech in techs {
-        let key = &tech.id;
+        let key = &tech.symbol;
         let mut best = Vec::new();
         for (area, rule) in tech.areas()? {
             for rank in 1..=MAX_GOALS {
                 best.push(t!("AND = { @rule@ check_variable = { which = tte_fill_rank_@area@_@tier@ value = @rank@ } check_variable = { which = tte_fill_score_@key@ value = tte_best_fill_score_@area@_@rank@ } }",rule=rule,area=area,tier=tech.tier,rank=rank,key=key));
             }
         }
-        scan.push(t!("if = { limit = { tte_filler_@key@ = yes tte_offered_@key@ = yes OR = { is_researching_technology = @key@ OR = { @best@ } } } set_country_flag = tte_best_filler_@key@ }",key=key,best=best.join(" ")));
+        scan.push(t!("if = { limit = { tte_filler_@key@ = yes tte_offered_@key@ = yes OR = { is_researching_technology = @tech_id@ OR = { @best@ } } } set_country_flag = tte_best_filler_@key@ }",key=key,tech_id=tech.id,best=best.join(" ")));
     }
     for area in AREAS {
         for rank in 1..=MAX_GOALS {
@@ -129,7 +129,7 @@ pub fn compile(techs: &[Tech]) -> Result<(Vec<String>, Vec<String>)> {
         ));
     }
     for tech in techs {
-        let key = &tech.id;
+        let key = &tech.symbol;
         let mut branches = Vec::new();
         for (area, rule) in tech.areas()? {
             let mut ranks = Vec::new();

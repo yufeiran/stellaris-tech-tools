@@ -6,8 +6,7 @@ Research Planner. The player does not need Python, Rust or a compiler.
 - INSTALL-TECH-ADAPTER generates the in-game planner from the selected source
   Mods and updates this planner's owned archive after verified backup. Close
   Stellaris and its launcher first. It does not install or modify source Mods.
-- OPEN-TECH-TREE opens a read-only browser reference. The currently published
-  Workshop browser entry is Windows-only. It does not synchronize save progress
+- OPEN-TECH-TREE opens a read-only browser reference. The browser entry supports Windows, macOS and Linux. It does not synchronize save progress
   or in-game goals. PDF export retains bilingual names and IDs as real text.
 
 See launchers/ADAPTER-README.txt and launchers/WEB-ATLAS-README.txt for usage.

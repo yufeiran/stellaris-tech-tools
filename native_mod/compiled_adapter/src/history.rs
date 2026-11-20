@@ -18,7 +18,7 @@ pub fn compile(techs: &[Tech]) -> History {
         .map(|slot| format!("remove_country_flag=tte_recent_slot_{slot}"))
         .collect::<Vec<_>>();
     for (i, tech) in techs.iter().enumerate() {
-        let key = &tech.id;
+        let key = &tech.symbol;
         shift.push(t!("if={limit={has_country_flag=tte_recent_tech_@key@ OR={check_variable={which=tte_recent_previous value=0} check_variable={which=tte_recent_rank_@key@ value<tte_recent_previous}}} change_variable={which=tte_recent_rank_@key@ value=1} if={limit={check_variable={which=tte_recent_rank_@key@ value>8}} remove_country_flag=tte_recent_tech_@key@ clear_variable=tte_recent_rank_@key@}}",key=key));
         for slot in 1..=8 {
             recount.push(t!("if={limit={has_country_flag=tte_recent_tech_@key@ check_variable={which=tte_recent_rank_@key@ value=@slot@}} set_country_flag=tte_recent_slot_@slot@}",key=key,slot=slot));
@@ -58,7 +58,7 @@ pub fn compile(techs: &[Tech]) -> History {
                 let condition = t!(
                     "has_country_flag=@flag@@key@ check_variable={which=@rank@@key@ value=@slot@}",
                     flag = flag,
-                    key = tech.id,
+                    key = tech.symbol,
                     rank = rank,
                     slot = slot
                 );

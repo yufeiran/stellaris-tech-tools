@@ -8,7 +8,8 @@ use serde_json::{json, Value as Json};
 use std::collections::BTreeMap;
 
 fn weight(raw: &str, entries: &[Entry], id: &str, cost: f64) -> Result<String> {
-    let gate = format!("tte_vanilla_{id} = yes");
+    let symbol = crate::planning::tech_symbol(id);
+    let gate = format!("tte_vanilla_{symbol} = yes");
     let mut original = Vec::new();
     let mut additive_seen = false;
     for item in entries {
@@ -39,7 +40,7 @@ fn weight(raw: &str, entries: &[Entry], id: &str, cost: f64) -> Result<String> {
     let factor = (10000000.0 / cost.max(1.0)).clamp(10.0, 10000.0);
     let ordinary = (factor / 100.0).clamp(10.0, 100.0);
     let extra = (factor / 200.0).clamp(10.0, 100.0);
-    Ok(format!("ai_weight = {{\nweight = 1\n{}\nmodifier = {{ weight = {ordinary:.6} tte_filler_{id} = yes NOT = {{ has_country_flag = tte_extra_branch_{id} }} }}\nmodifier = {{ weight = {extra:.6} tte_filler_{id} = yes has_country_flag = tte_extra_branch_{id} }}\nmodifier = {{ weight = 1000 tte_priority_{id} = yes }}\nmodifier = {{ weight = 10000 tte_priority_{id} = yes has_country_flag = tte_goal_{id} }}\nmodifier = {{ factor = 0 is_ai = no has_country_flag = tte_automation NOT = {{ tte_admissible_{id} = yes }} }}\n}}",original.join("\n")))
+    Ok(format!("ai_weight = {{\nweight = 1\n{}\nmodifier = {{ weight = {ordinary:.6} tte_filler_{symbol} = yes NOT = {{ has_country_flag = tte_extra_branch_{symbol} }} }}\nmodifier = {{ weight = {extra:.6} tte_filler_{symbol} = yes has_country_flag = tte_extra_branch_{symbol} }}\nmodifier = {{ weight = 1000 tte_priority_{symbol} = yes }}\nmodifier = {{ weight = 10000 tte_priority_{symbol} = yes has_country_flag = tte_goal_{symbol} }}\nmodifier = {{ factor = 0 is_ai = no has_country_flag = tte_automation NOT = {{ tte_admissible_{symbol} = yes }} }}\n}}",original.join("\n")))
 }
 
 fn without_weight(value: &Value) -> Json {
@@ -96,7 +97,7 @@ pub fn technology_weights(sources: &mut Sources, catalog: &Json) -> Result<Weigh
     let mut proof = Vec::new();
     for path in paths {
         let input = sources.files[&path].clone();
-        let raw = sources.expand(&input.raw, &[])?;
+        let raw = sources.expand(&input)?;
         let parsed = script::parse(&raw)?;
         let mut edits = Vec::new();
         let mut before = BTreeMap::new();

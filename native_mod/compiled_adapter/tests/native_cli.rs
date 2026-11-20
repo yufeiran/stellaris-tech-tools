@@ -926,6 +926,264 @@ fn playset_reads_only_enabled_sources_and_excludes_own_zip() {
     assert_eq!(fs::read(f.docs.join("dlc_load.json")).unwrap(), load);
 }
 #[test]
+fn playset_reports_enabled_mods_with_missing_registration() {
+    let f = Fixture::new();
+    let db_path = f.docs.join("launcher-v2.sqlite");
+    let db = Connection::open(&db_path).unwrap();
+    db.execute(
+        "insert into playsets_mods values('p','orphaned-mod',1,0)",
+        [],
+    )
+    .unwrap();
+    drop(db);
+    let before = fs::read(&db_path).unwrap();
+    let result = f.run(&["--documents", f.docs.to_str().unwrap()]);
+    assert!(!result.status.success());
+    let error = String::from_utf8_lossy(&result.stderr);
+    assert!(
+        error.contains("orphaned-mod") && error.contains("has no launcher registration"),
+        "{error}"
+    );
+    assert!(!f.root.join("result.json").exists());
+    assert_eq!(fs::read(&db_path).unwrap(), before);
+
+    let db = Connection::open(&db_path).unwrap();
+    db.execute("update playsets_mods set enabled=0", [])
+        .unwrap();
+    drop(db);
+    let report = f.ok(&["--documents", f.docs.to_str().unwrap()]);
+    assert_eq!(report["sources"].as_array().unwrap().len(), 1);
+}
+
+#[test]
+fn playset_resolves_local_mod_folders_relative_to_stellaris_user_data() {
+    let f = Fixture::new();
+    let tech_mod = f.docs.join("mod/Local Tech");
+    let loading_screen = f.docs.join("mod/Loading Screen");
+    write(
+        &tech_mod.join("descriptor.mod"),
+        "name=\"Unknown standard source\"",
+    );
+    write(
+        &loading_screen.join("descriptor.mod"),
+        "name=\"Test Loading Screen\"",
+    );
+    write(
+        &loading_screen.join("gfx/loadingscreens/test.dds"),
+        "opaque fixture",
+    );
+    write(
+        &tech_mod.join("common/technology/new.txt"),
+        "novel={area=engineering tier=1 cost=20 prerequisites={base}}",
+    );
+    f.enable("mod/local.mod", &tech_mod, 0, false);
+    f.enable("mod/screen.mod", &loading_screen, 1, false);
+    let local_registration = f.docs.join("mod/local.mod");
+    let screen_registration = f.docs.join("mod/screen.mod");
+    write(
+        &local_registration,
+        "name=\"Unknown standard source\" path=\"./mod/Local Tech\"",
+    );
+    write(
+        &screen_registration,
+        r#"name="Test Loading Screen" path="mod\Loading Screen""#,
+    );
+    let db_path = f.docs.join("launcher-v2.sqlite");
+    let db = Connection::open(&db_path).unwrap();
+    db.execute(
+        "update mods set dirPath='mod/Loading Screen' where id='mod1'",
+        [],
+    )
+    .unwrap();
+    drop(db);
+    let inputs = [
+        db_path,
+        local_registration,
+        screen_registration,
+        f.docs.join("dlc_load.json"),
+    ];
+    let before = inputs.each_ref().map(|path| fs::read(path).unwrap());
+    let report = f.ok(&["--documents", f.docs.to_str().unwrap()]);
+    assert_eq!(
+        report["technologies"]["novel"]["condition"],
+        json!(["tech", "base"])
+    );
+    assert_eq!(report["sources"][1]["name"], "Unknown standard source");
+    assert_eq!(report["sources"][2]["name"], "Test Loading Screen");
+    assert_eq!(
+        inputs.each_ref().map(|path| fs::read(path).unwrap()),
+        before
+    );
+}
+#[test]
+fn invalid_relative_mod_folders_fail_before_writing_a_report() {
+    let f = Fixture::new();
+    f.enable("mod/local.mod", &f.source, 0, false);
+    let registration = f.docs.join("mod/local.mod");
+    write(
+        &f.docs.join("mod/Other/descriptor.mod"),
+        "name=\"Unknown standard source\"",
+    );
+    for (path, message) in [
+        ("../source", "Unsafe source-relative path"),
+        ("mod/Other", "launcher/source directory mismatch"),
+    ] {
+        write(
+            &registration,
+            &format!("name=\"Unknown standard source\" path=\"{path}\""),
+        );
+        let result = f.run(&["--documents", f.docs.to_str().unwrap()]);
+        let error = String::from_utf8_lossy(&result.stderr);
+        assert!(
+            !result.status.success() && error.contains("mod/local.mod") && error.contains(message),
+            "{error}"
+        );
+        assert!(!f.root.join("result.json").exists());
+    }
+}
+#[test]
+fn registered_local_mods_without_inner_descriptors_keep_their_metadata() {
+    let f = Fixture::new();
+    let loading_screen = f.docs.join("mod/Loading Screen");
+    let tech_mod = f.docs.join("mod/Legacy Tech");
+    write(
+        &loading_screen.join("gfx/loadingscreens/test.dds"),
+        "fixture",
+    );
+    write(
+        &tech_mod.join("common/technology/replacement.txt"),
+        "legacy={area=physics tier=1 cost=20}",
+    );
+    f.enable("mod/screen.mod", &loading_screen, 0, false);
+    f.enable("mod/legacy.mod", &tech_mod, 1, false);
+    write(
+        &f.docs.join("mod/screen.mod"),
+        "name=\"Loading Screen\" path=\"mod/Loading Screen\"",
+    );
+    let registration = f.docs.join("mod/legacy.mod");
+    let registered = "name=\"Legacy Tech\" path=\"mod/Legacy Tech\" replace_path=\"common/technology\" dependencies={\"Loading Screen\"}";
+    write(&registration, registered);
+    let inputs = [
+        registration.clone(),
+        f.docs.join("mod/screen.mod"),
+        f.docs.join("launcher-v2.sqlite"),
+    ];
+    let before = inputs.each_ref().map(|path| fs::read(path).unwrap());
+
+    let report = f.ok(&["--documents", f.docs.to_str().unwrap()]);
+    assert_eq!(report["sources"][1]["effectiveTechnologies"], 0);
+    assert_eq!(report["sources"][2]["name"], "Legacy Tech");
+    assert_eq!(report["technologies"]["legacy"]["cost"], 20.0);
+    assert!(report["technologies"].get("base").is_none());
+    let warnings = report["selection"]["warnings"].as_array().unwrap();
+    for name in ["mod/screen.mod", "mod/legacy.mod"] {
+        assert!(warnings
+            .iter()
+            .any(|warning| warning
+                .as_str()
+                .is_some_and(|message| message.starts_with(name)
+                    && message.contains("registration metadata"))));
+    }
+    assert_eq!(
+        inputs.each_ref().map(|path| fs::read(path).unwrap()),
+        before
+    );
+    assert!(!loading_screen.join("descriptor.mod").exists());
+    assert!(!tech_mod.join("descriptor.mod").exists());
+
+    fs::remove_file(f.root.join("result.json")).unwrap();
+    write(
+        &registration,
+        &registered.replace("{\"Loading Screen\"}", "{\"Missing Mod\"}"),
+    );
+    let missing_dependency = f.run(&["--documents", f.docs.to_str().unwrap()]);
+    assert!(!missing_dependency.status.success());
+    assert!(String::from_utf8_lossy(&missing_dependency.stderr)
+        .contains("missing source dependency Missing Mod"));
+    assert!(!f.root.join("result.json").exists());
+}
+
+#[test]
+fn registered_inner_location_fields_never_override_the_selected_content() {
+    let f = Fixture::new();
+    let screen = f.docs.join("mod/Screen");
+    let pack = f.docs.join("mod/Tech Pack");
+    let other = f.docs.join("mod/Unselected");
+    write(&screen.join("gfx/loadingscreens/sample.dds"), "fixture");
+    write(
+        &other.join("common/technology/other.txt"),
+        "wrong={area=physics tier=0 cost=10}",
+    );
+    write(
+        &pack.join("common/technology/pack.txt"),
+        "chosen={area=physics tier=0 cost=10}",
+    );
+    f.enable("mod/screen.mod", &screen, 0, false);
+    f.enable("mod/pack.mod", &pack, 1, false);
+    write(
+        &f.docs.join("mod/screen.mod"),
+        r#"name="Screen" path="mod/Screen""#,
+    );
+    let meta = r#"name="Pack" dependencies={"Screen"} replace_path="common/technology""#;
+    let registration = format!(r#"{meta} path="mod/Tech Pack""#);
+    write(&f.docs.join("mod/pack.mod"), &registration);
+    let inner = pack.join("descriptor.mod");
+    for locators in [
+        r#"path="mod/Tech Pack""#,
+        r#"path="mod/Unselected""#,
+        r#"path="C:/old machine/Tech Pack" archive="old-install.zip""#,
+    ] {
+        let raw = format!("{meta}\n{locators}");
+        write(&inner, &raw);
+        let report = f.ok(&["--documents", f.docs.to_str().unwrap()]);
+        assert_eq!(report["technologies"].as_object().unwrap().len(), 1);
+        assert_eq!(report["technologies"]["chosen"]["cost"], 10.0);
+        assert_eq!(report["sources"][1]["effectiveTechnologies"], 0);
+        assert!(report["selection"]["warnings"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter_map(Value::as_str)
+            .any(|message| message.contains("mod/pack.mod") && message.contains("descriptor.mod")));
+        assert_eq!(fs::read_to_string(&inner).unwrap(), raw);
+        assert_eq!(
+            fs::read_to_string(f.docs.join("mod/pack.mod")).unwrap(),
+            registration
+        );
+        fs::remove_file(f.root.join("result.json")).unwrap();
+    }
+    let explicit = f.run(&["--mod", pack.to_str().unwrap()]);
+    assert!(!explicit.status.success());
+    let error = String::from_utf8_lossy(&explicit.stderr);
+    assert!(
+        error.contains("Tech Pack") && error.contains("descriptor.mod"),
+        "{error}"
+    );
+    write(&inner, r#"name="Other" path="mod/Tech Pack""#);
+    let mismatch = f.run(&["--documents", f.docs.to_str().unwrap()]);
+    assert!(!mismatch.status.success());
+    assert!(String::from_utf8_lossy(&mismatch.stderr)
+        .contains("mod/pack.mod: descriptor identity mismatch"));
+    assert!(!f.root.join("result.json").exists());
+}
+
+#[test]
+fn explicit_sources_and_inconsistent_inner_descriptors_are_not_reinterpreted() {
+    let f = Fixture::new();
+    f.enable("mod/local.mod", &f.source, 0, false);
+    let inner = f.source.join("descriptor.mod");
+    fs::remove_file(&inner).unwrap();
+    let explicit = f.run(&["--mod", f.source.to_str().unwrap()]);
+    assert!(!explicit.status.success());
+    assert!(String::from_utf8_lossy(&explicit.stderr).contains("descriptor.mod"));
+    write(&inner, "name=\"Different mod\"");
+    let mismatch = f.run(&["--documents", f.docs.to_str().unwrap()]);
+    assert!(!mismatch.status.success());
+    assert!(String::from_utf8_lossy(&mismatch.stderr).contains("descriptor identity mismatch"));
+    assert!(!f.root.join("result.json").exists());
+}
+
+#[test]
 fn archived_source_generates_full_planner_and_follows_unlisted_changes() {
     let f = Fixture::new();
     owned_gui_fixture(&f);
@@ -1002,6 +1260,14 @@ fn archived_source_generates_full_planner_and_follows_unlisted_changes() {
 #[test]
 fn launcher_archives_are_read_only_and_stale_directory_is_not_guessed() {
     let f = Fixture::new();
+    write(
+        &f.source.join("descriptor.mod"),
+        r#"name="Unknown standard source" path="mod/unpacked-on-author-PC" archive="old.zip""#,
+    );
+    write(
+        &f.source.join("common/technology/zipped.txt"),
+        "zip_tech={area=physics tier=1 cost=12}",
+    );
     let archive = f.root.join("source.zip");
     zip_source(&f.source, &archive);
     f.enable("mod/zip.mod", &f.source, 0, false);
@@ -1023,6 +1289,7 @@ fn launcher_archives_are_read_only_and_stale_directory_is_not_guessed() {
     let registration = fs::read(f.docs.join("mod/zip.mod")).unwrap();
     let b = f.ok(&["--documents", f.docs.to_str().unwrap()]);
     assert_eq!(b["sources"][1]["kind"], "zip");
+    assert_eq!(b["technologies"]["zip_tech"]["cost"], 12.0);
     assert_eq!(fs::read(f.docs.join("launcher-v2.sqlite")).unwrap(), before);
     assert_eq!(fs::read(f.docs.join("mod/zip.mod")).unwrap(), registration);
     fs::remove_file(f.root.join("result.json")).unwrap();
@@ -1034,6 +1301,247 @@ fn launcher_archives_are_read_only_and_stale_directory_is_not_guessed() {
     assert!(!failure.status.success());
     assert!(String::from_utf8_lossy(&failure.stderr).contains("conflicting path/archive"));
 }
+#[test]
+fn registered_zip_can_use_outer_descriptor_only_for_game_content_at_its_root() {
+    let f = Fixture::new();
+    let pack = f.root.join("local.zip");
+    fs::remove_file(f.source.join("descriptor.mod")).unwrap();
+    write(
+        &f.source.join("common/technology/z.txt"),
+        "zipped={area=physics tier=1}",
+    );
+    zip_source(&f.source, &pack);
+    f.enable("mod/pack.mod", &f.source, 0, false);
+    let registration = f.docs.join("mod/pack.mod");
+    write(
+        &registration,
+        &format!(
+            "name=Pack replace_path=\"common/technology\" archive={}",
+            json!(pack.to_string_lossy().replace('\\', "/"))
+        ),
+    );
+    let db = Connection::open(f.docs.join("launcher-v2.sqlite")).unwrap();
+    db.execute(
+        "update mods set dirPath=null,archivePath=?1",
+        [pack.to_str().unwrap()],
+    )
+    .unwrap();
+    drop(db);
+    let report = f.ok(&["--documents", f.docs.to_str().unwrap()]);
+    assert_eq!(report["technologies"].as_object().unwrap().len(), 1);
+    assert_eq!(report["technologies"]["zipped"]["tier"], 1);
+    assert_eq!(report["sources"][1]["name"], "Pack");
+    assert_eq!(report["sources"][1]["kind"], "zip");
+    fs::remove_file(f.root.join("result.json")).unwrap();
+    assert!(!f.run(&["--mod", pack.to_str().unwrap()]).status.success());
+    write(&f.source.join("nested/descriptor.mod"), "name=Nested");
+    zip_source(&f.source, &pack);
+    assert!(!f
+        .run(&["--documents", f.docs.to_str().unwrap()])
+        .status
+        .success());
+    write(&f.source.join("descriptor.mod"), "name={");
+    zip_source(&f.source, &pack);
+    assert!(!f
+        .run(&["--documents", f.docs.to_str().unwrap()])
+        .status
+        .success());
+    assert!(!f.root.join("result.json").exists());
+}
+
+#[test]
+fn launcher_compares_dependency_members_and_checks_every_list() {
+    let f = Fixture::new();
+    let reg = f.docs.join("mod/pack.mod");
+    f.enable("mod/pack.mod", &f.source, 0, false);
+    let outer = fs::read_to_string(&reg).unwrap();
+    for (i, name) in ["B", "C"].iter().enumerate() {
+        let registry = format!("mod/{name}.mod");
+        let dir = f.docs.join("mod").join(name);
+        write(&dir.join("descriptor.mod"), &format!("name={name}"));
+        f.enable(&registry, &dir, i as i64 + 1, false);
+        write(
+            &f.docs.join(registry),
+            &format!("name={name} path=\"mod/{name}\""),
+        );
+    }
+    let inner = f.source.join("descriptor.mod");
+    let name = r#"name="Unknown standard source""#;
+    write(
+        &reg,
+        &format!(
+            r#"{outer}
+dependencies={{C B B}} replace_path="gfx/portraits" replace_path="gfx/loadingscreens""#
+        ),
+    );
+    write(
+        &inner,
+        &format!(
+            r#"{name}
+dependencies={{B}} dependencies={{C}} replace_path="gfx\loadingscreens/" replace_path="gfx/portraits""#
+        ),
+    );
+    f.ok(&["--documents", f.docs.to_str().unwrap()]);
+    fs::remove_file(f.root.join("result.json")).unwrap();
+    for (descriptor, expected) in [
+        (
+            "dependencies={B} dependencies={Missing}",
+            "missing source dependency Missing",
+        ),
+        ("dependencies={B}", "dependencies mismatch"),
+        (
+            "dependencies={B Missing} replace_path=gfx",
+            "replace_path mismatch",
+        ),
+    ] {
+        write(
+            &reg,
+            &format!("{outer}\ndependencies={{B}} dependencies={{Missing}}"),
+        );
+        write(&inner, &format!("{name}\n{descriptor}"));
+        let r = f.run(&["--documents", f.docs.to_str().unwrap()]);
+        assert!(!r.status.success() && String::from_utf8_lossy(&r.stderr).contains(expected));
+        assert!(!f.root.join("result.json").exists());
+    }
+}
+
+#[test]
+fn historical_load_file_does_not_block_a_valid_active_playset() {
+    let f = Fixture::new();
+    f.enable("mod/pack.mod", &f.source, 0, false);
+    let cache = f.docs.join("dlc_load.json");
+    write(&cache, "{unfinished");
+    let report = f.ok(&["--documents", f.docs.to_str().unwrap()]);
+    assert_eq!(report["sources"][1]["name"], "Unknown standard source");
+    assert!(report["selection"]["warnings"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|v| v.as_str().unwrap().contains("dlc_load.json")));
+    assert_eq!(fs::read_to_string(cache).unwrap(), "{unfinished");
+}
+
+#[test]
+fn localisation_respects_each_language_section_and_header_comments() {
+    let f = Fixture::new();
+    write(&f.source.join("localisation/mixed.yml"),
+        "\u{feff}l_english: # notes\n base : 0 \"English #1\" # notes\nl_simp_chinese:\n base:0 \"中文\"\n");
+    let report = f.ok(&["--mod", f.source.to_str().unwrap()]);
+    assert_eq!(
+        report["localisation"]["english"]["base"]["name"],
+        "English #1"
+    );
+    assert_eq!(
+        report["localisation"]["simp_chinese"]["base"]["name"],
+        "中文"
+    );
+}
+
+#[test]
+fn identical_repeated_technology_fields_survive_planner_generation() {
+    let f = Fixture::new();
+    owned_gui_fixture(&f);
+    write(&f.source.join("common/technology/repeated.txt"),
+        "repeated={area=physics area=physics cost=10 cost=10 prerequisites={base} prerequisites={ base }}");
+    let built = f.root.join("built");
+    let report = f.ok(&[
+        "--mod",
+        f.source.to_str().unwrap(),
+        "--experimental-build",
+        built.to_str().unwrap(),
+    ]);
+    assert_eq!(
+        report["technologies"]["repeated"]["condition"],
+        json!(["tech", "base"])
+    );
+    let emitted = fs::read_to_string(built.join("common/technology/repeated.txt")).unwrap();
+    assert_eq!(emitted.matches("prerequisites=").count(), 2);
+}
+
+#[test]
+fn punctuation_in_source_ids_preserves_native_research_and_distinct_planner_buttons() {
+    let f = Fixture::new();
+    owned_gui_fixture(&f);
+    let path = "common/technology/industry.txt";
+    write(&f.source.join(path), "industry-a={area=engineering tier=1 cost=15 levels=-1} industry_a={area=physics tier=2 cost=30 prerequisites={industry-a}} industry.a={area=society tier=2 cost=25 prerequisites={industry-a}}");
+    write(&f.source.join("localisation/english/industry_l_english.yml"),
+        "l_english:\n industry-a:0 \"Heavy Industry\"\n industry_a:0 \"Power Plants\"\n industry.a:0 \"Factories\"\n");
+    let built = f.root.join("built");
+    let report = f.ok(&[
+        "--mod",
+        f.source.to_str().unwrap(),
+        "--experimental-build",
+        built.to_str().unwrap(),
+    ]);
+    assert_eq!(
+        report["technologies"]["industry_a"]["condition"],
+        json!(["tech", "industry-a"])
+    );
+    assert_eq!(
+        report["localisation"]["english"]["industry-a"]["name"],
+        "Heavy Industry"
+    );
+    let read_folder = |dir: &str| {
+        fs::read_dir(built.join(dir))
+            .unwrap()
+            .map(|e| fs::read_to_string(e.unwrap().path()).unwrap())
+            .collect::<Vec<_>>()
+            .join("\n")
+    };
+    let weights = fs::read_to_string(built.join(path)).unwrap();
+    let gui = read_folder("interface");
+    let triggers = read_folder("common/scripted_triggers");
+    let effects = read_folder("common/scripted_effects");
+    let events = read_folder("events");
+    let loc = read_folder("localisation/english");
+    let getters = read_folder("common/scripted_loc");
+    for (id, symbol) in [
+        ("industry-a", "0x696e6475737472792d61"),
+        ("industry_a", "industry_a"),
+        ("industry.a", "0x696e6475737472792e61"),
+    ] {
+        assert!(
+            weights.contains(&format!("{id}={{"))
+                && weights.contains(&format!("tte_admissible_{symbol} = yes"))
+        );
+        assert!(
+            gui.contains(&format!("[From.GetTTECard0_{symbol}]"))
+                && getters.contains(&format!("name=GetTTECard0_{symbol}"))
+        );
+        assert!(
+            effects.contains(&format!("tte_target_{symbol}"))
+                && events.contains(&format!("ttegs_pending_{symbol}"))
+        );
+        assert!(
+            triggers.contains(&format!("has_tech_option = {id}"))
+                && triggers.contains(&format!("can_research_technology = {id}"))
+        );
+        assert!(
+            loc.contains(&format!("§H${id}$§!"))
+                && loc.contains(&format!("[Root.GetTTEState_{symbol}]"))
+        );
+        if id != symbol {
+            for native in [
+                "has_technology",
+                "has_tech_option",
+                "is_researching_technology",
+                "can_research_technology",
+            ] {
+                for text in [&triggers, &effects, &events, &getters] {
+                    assert!(
+                        !text.contains(&format!("{native} = {symbol}"))
+                            && !text.contains(&format!("{native}={symbol}")),
+                        "{native} uses a planner symbol for {id}"
+                    );
+                }
+            }
+            assert!(!gui.contains(&format!("tte_node_{id}")));
+        }
+    }
+    assert!(events.contains("tte_view_visit_0x696e6475737472792d61=yes"));
+    assert!(weights.contains("prerequisites={industry-a}"));
+}
+
 #[test]
 fn duplicate_order_is_never_guessed() {
     let f = Fixture::new();
