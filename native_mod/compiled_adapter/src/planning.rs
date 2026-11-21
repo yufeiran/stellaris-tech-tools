@@ -74,30 +74,28 @@ fn from_data(data: &Json) -> Result<Value> {
     }
     Ok(Value::Block(entries))
 }
-fn resolved_variables(v: Value, variables: &Json, stack: &[String]) -> Result<Value> {
+fn resolve_planner_values(v: &mut Value, variables: &Json) {
     match v {
         Value::Atom(s) if s.starts_with('@') => {
-            if stack.len() >= 64 || stack.contains(&s) {
-                return Err(format!("Cyclic/deep scripted variable: {s}"));
+            if let Ok(value) =
+                crate::script::resolve_variable(s, |k| variables.get(k).and_then(Json::as_str))
+            {
+                *s = value.to_owned();
             }
-            let Some(value) = variables.get(&s).and_then(Json::as_str) else {
-                return Err(format!(
-                    "Unresolved scripted variable in generated planning rule: {s}"
-                ));
-            };
-            let mut stack = stack.to_vec();
-            stack.push(s);
-            resolved_variables(Value::Atom(value.into()), variables, &stack)
         }
-        Value::Block(es) => Ok(Value::Block(
-            es.into_iter()
-                .map(|mut e| {
-                    e.value = resolved_variables(e.value, variables, stack)?;
-                    Ok(e)
-                })
-                .collect::<Result<_>>()?,
-        )),
-        _ => Ok(v),
+        Value::Block(es) => {
+            for entry in es {
+                resolve_planner_values(&mut entry.value, variables);
+            }
+        }
+        _ => {}
+    }
+}
+
+fn unresolved_atom(value: &Value) -> Option<&str> {
+    match value {
+        Value::Atom(s) => s.starts_with('@').then_some(s),
+        Value::Block(entries) => entries.iter().find_map(|e| unresolved_atom(&e.value)),
     }
 }
 pub fn atom(s: &str) -> String {
@@ -283,7 +281,10 @@ impl Tech {
     }
     pub fn areas(&self) -> Result<Vec<(String, String)>> {
         let swaps: Vec<_> = self.block.all("technology_swap").collect();
-        if !swaps.iter().any(|s| s.scalar("area").is_some()) {
+        if !swaps
+            .iter()
+            .any(|s| s.scalar("area").is_some_and(|a| a != self.area))
+        {
             return Ok(vec![(self.area.clone(), YES.into())]);
         }
         let mut branches: BTreeMap<String, Vec<String>> =
@@ -375,10 +376,37 @@ pub fn technologies(catalog: &Json) -> Result<Vec<Tech>> {
         if !(0..=32).contains(&tier) {
             return Err("Native planner supports tiers 0..32".into());
         }
+        let mut block = from_data(&row["rawDefinitionFields"])?;
+        // This copy supplies display and planning hints. Unknown atoms stay opaque;
+        // the weight emitter reads the unmodified source in its original file scope.
+        resolve_planner_values(&mut block, &row["scriptedVariables"]);
+        // A field-changing swap is copied into a different script scope. Its area
+        // and conditions must be known before generating a per-field recommendation.
+        let area = row["area"].as_str().ok_or("Invalid area")?;
+        if block
+            .all("technology_swap")
+            .any(|s| s.scalar("area").is_some_and(|a| a != area))
+        {
+            for swap in block.all("technology_swap") {
+                if let Some(key) = ["trigger", "area"]
+                    .iter()
+                    .find_map(|field| swap.first(field).and_then(unresolved_atom))
+                {
+                    return Err(format!(
+                        "{} / {} / {id}: unresolved {key} in an area-changing technology_swap",
+                        catalog["sources"][row["sourceLayer"].as_u64().unwrap_or(0) as usize]
+                            ["name"]
+                            .as_str()
+                            .unwrap_or("Unknown source"),
+                        row["sourceRelativePath"].as_str().unwrap_or("unknown file")
+                    ));
+                }
+            }
+        }
         out.push(Tech {
             id: id.clone(),
             symbol: tech_symbol(id),
-            area: row["area"].as_str().ok_or("Invalid area")?.into(),
+            area: area.into(),
             tier,
             cost: row["cost"].as_f64().ok_or("Invalid cost")?,
             repeatable: row["repeatable"].as_bool().unwrap_or(false),
@@ -386,15 +414,7 @@ pub fn technologies(catalog: &Json) -> Result<Vec<Tech>> {
                 .get("originalCondition")
                 .map(|e| native_refs(e, &known))
                 .unwrap_or_else(|| row["condition"].clone()),
-            block: if row.get("scriptedVariables").is_some() {
-                resolved_variables(
-                    from_data(&row["rawDefinitionFields"])?,
-                    &row["scriptedVariables"],
-                    &[],
-                )?
-            } else {
-                from_data(&row["rawDefinitionFields"])?
-            },
+            block,
             tier_defined: row["tierDefined"].as_bool().unwrap_or(true),
         });
     }

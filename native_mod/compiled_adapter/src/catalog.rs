@@ -21,7 +21,10 @@ pub fn identifier(s: &str) -> bool {
     matches!(chars.next(),Some(c) if c.is_ascii_alphabetic()||c=='_')
         && chars.all(|c| c.is_ascii_alphanumeric() || "_.:-".contains(c))
 }
-fn used_variables(v: &Value, all: &BTreeMap<String, String>) -> BTreeMap<String, String> {
+fn used_variables(
+    v: &Value,
+    all: &BTreeMap<String, String>,
+) -> (BTreeMap<String, String>, BTreeSet<String>) {
     fn walk(v: &Value, needed: &mut BTreeSet<String>) {
         match v {
             Value::Atom(s) if s.starts_with('@') => {
@@ -37,6 +40,10 @@ fn used_variables(v: &Value, all: &BTreeMap<String, String>) -> BTreeMap<String,
     }
     let mut needed = BTreeSet::new();
     walk(v, &mut needed);
+    let issues = needed
+        .iter()
+        .filter_map(|key| script::resolve_variable(key, |k| all.get(k).map(String::as_str)).err())
+        .collect();
     let mut todo: Vec<_> = needed.into_iter().collect();
     let mut used = BTreeMap::new();
     while let Some(key) = todo.pop() {
@@ -50,7 +57,7 @@ fn used_variables(v: &Value, all: &BTreeMap<String, String>) -> BTreeMap<String,
             }
         }
     }
-    used
+    (used, issues)
 }
 fn combine(op: &str, children: Vec<Json>) -> Json {
     let identity = op == "all";
@@ -134,29 +141,15 @@ pub fn ids(expr: &Json) -> Vec<String> {
     out
 }
 fn resolve(raw: &str, variables: &BTreeMap<String, String>) -> Result<f64> {
-    let mut current = raw.trim().to_owned();
-    let mut seen = BTreeSet::new();
-    for _ in 0..64 {
-        if !current.starts_with('@') {
-            let n: f64 = current
-                .parse()
-                .map_err(|_| format!("Unsupported numeric expression: {current}"))?;
-            return if n.is_finite() {
-                Ok(n)
-            } else {
-                Err("Non-finite source number".into())
-            };
-        }
-        if !seen.insert(current.clone()) {
-            return Err(format!("Scripted-variable cycle: {current}"));
-        }
-        current = variables
-            .get(&current)
-            .ok_or_else(|| format!("Unresolved scripted variable: {current}"))?
-            .trim()
-            .to_owned();
+    let value = script::resolve_variable(raw.trim(), |k| variables.get(k).map(String::as_str))?;
+    let n: f64 = value
+        .parse()
+        .map_err(|_| format!("Unsupported numeric expression: {value}"))?;
+    if n.is_finite() {
+        Ok(n)
+    } else {
+        Err("Non-finite source number".into())
     }
-    Err("Scripted-variable depth limit".into())
 }
 fn numeric(
     block: &Value,
@@ -242,7 +235,14 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
         .collect();
     for input in tier_inputs {
         tier_files = true;
-        for e in script::parse(&sources.expand(&input)?)?.entries() {
+        let raw = sources.expand(&input)?;
+        let parsed = script::parse(&raw).map_err(|e| {
+            format!(
+                "{} / {}: {e}",
+                sources.layers[input.layer].name, input.relative
+            )
+        })?;
+        for e in parsed.entries() {
             if let Some(key) = &e.key {
                 if matches!(&e.value, Value::Block(_)) {
                     if let Ok(tier) = key.parse::<i64>() {
@@ -300,7 +300,8 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
     for path in paths {
         let input = sources.files[&path].clone();
         let raw: Arc<str> = sources.expand(&input)?.into();
-        let parsed = script::parse(&raw)?;
+        let source_file = format!("{} / {}", sources.layers[input.layer].name, input.relative);
+        let parsed = script::parse(&raw).map_err(|e| format!("{source_file}: {e}"))?;
         let filename = input.relative.rsplit('/').next().unwrap().to_owned();
         let mut local = vars.clone();
         for e in parsed.entries() {
@@ -321,7 +322,7 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
             let end_chars = char_offset;
             last_byte = e.span.end;
             let Some(id) = &e.key else {
-                return Err(format!("Bare top-level technology token in {filename}"));
+                return Err(format!("{source_file}: Bare top-level technology token"));
             };
             if id.starts_with('@') {
                 continue;
@@ -329,8 +330,9 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
             if !matches!(e.value, Value::Block(_)) {
                 continue;
             }
+            let context = |error: String| format!("{source_file} / {id}: {error}");
             if !identifier(id) {
-                return Err(format!("Invalid technology ID: {id}"));
+                return Err(context("Invalid technology ID".into()));
             }
             for key in ["area", "tier", "cost", "levels", "prerequisites"] {
                 let mut fields = e
@@ -344,26 +346,18 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
                         || next.op != "="
                         || script::data(&first.value) != script::data(&next.value)
                 }) {
-                    return Err(format!(
-                        "{filename}:{id}: ambiguous duplicate {key} field; engine precedence is not guessed"
-                    ));
+                    return Err(context(format!(
+                        "ambiguous duplicate {key} field; engine precedence is not guessed"
+                    )));
                 }
             }
             let area = e
                 .value
                 .scalar("area")
-                .ok_or_else(|| format!("{filename}:{id}: no literal area"))?;
+                .ok_or_else(|| context("no literal area".into()))?;
             if !["physics", "society", "engineering"].contains(&area) {
-                return Err(format!(
-                    "{filename}:{id}: unsupported technology area {area}"
-                ));
+                return Err(context(format!("unsupported technology area {area}")));
             }
-            let context = |error| {
-                format!(
-                    "{} / {} / {id}: {error}",
-                    sources.layers[input.layer].name, input.relative
-                )
-            };
             let tier = numeric(&e.value, "tier", "0", &local).map_err(context)?;
             let cost = numeric(&e.value, "cost", "1000", &local).map_err(context)?;
             let levels = numeric(&e.value, "levels", "1", &local).map_err(context)?;
@@ -372,7 +366,7 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
                 || tier.abs() >= i64::MAX as f64
                 || levels.abs() >= i64::MAX as f64
             {
-                return Err(format!("{id}: non-integer or out-of-range tier/levels"));
+                return Err(context("non-integer or out-of-range tier/levels".into()));
             }
             let cond = condition(e.value.first("prerequisites"), "all").map_err(context)?;
             let mut shadowed = definitions
@@ -409,15 +403,19 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
             if !ambiguous.is_empty() {
                 sources.warnings.push(json!({"issue":"ambiguous_optional_technology_fields","id":id,"fields":ambiguous,"handling":"Potential remains unknown; ambiguous display hints are omitted; engine definition preserved"}));
             }
-            let record = json!({"id":id,"area":area,"tier":tier as i64,"cost":cost,"condition":cond,"ambiguousOptionalFields":ambiguous,
+            let (variables, issues) = used_variables(&e.value, &local);
+            let mut record = json!({"id":id,"area":area,"tier":tier as i64,"cost":cost,"condition":cond,"ambiguousOptionalFields":ambiguous,
                 "source":filename,"sourceLayer":input.layer,"tierDefined":!tier_files||tiers.contains(&(tier as i64)),
                 "repeatable":levels == -1.0||levels>1.0,"levels":levels as i64,"shadowed":shadowed,
-                "sourceRelativePath":input.relative,"rawDefinitionFields":script::data(&e.value),"scriptedVariables":used_variables(&e.value,&local),
+                "sourceRelativePath":input.relative,"rawDefinitionFields":script::data(&e.value),"scriptedVariables":variables,
                 "tierDefaulted":e.value.first("tier").is_none(),"costDefaulted":e.value.first("cost").is_none(),
                 "prerequisiteOperatorSemanticsVerified":false,
                 "numericBlocks":numeric_blocks,"numericValueSemantics":"base factor only; dynamic modifiers remain engine-controlled",
                 "definitionSpanBasis":"expanded BOM-stripped LF-normalised source; character offsets",
                 "definitionSha256":sha(raw[e.span.clone()].as_bytes())});
+            if !issues.is_empty() {
+                record["scriptedVariableIssues"] = json!(issues);
+            }
             definitions.insert(
                 id.clone(),
                 Tech {
@@ -466,6 +464,13 @@ pub fn collect(sources: &mut Sources) -> Result<Json> {
     let mut records = BTreeMap::new();
     let mut adjacency: BTreeMap<String, Vec<String>> = BTreeMap::new();
     for (id, mut tech) in definitions {
+        if let Some(issues) = tech.record.get("scriptedVariableIssues") {
+            sources
+                .warnings
+                .push(json!({"issue":"unresolved_technology_variables","id":id,
+                "source":sources.layers[tech.record["sourceLayer"].as_u64().unwrap() as usize].name,
+                "file":tech.record["sourceRelativePath"],"details":issues}));
+        }
         let original = tech.record["condition"].clone();
         let reference = annotated(&original, &known, &by_name);
         let mut unresolved = Vec::new();

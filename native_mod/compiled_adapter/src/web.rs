@@ -86,7 +86,7 @@ fn expand(text: &str, values: &BTreeMap<String, String>) -> String {
     plain(&current)
 }
 
-fn installed_game_version(root: &Path) -> Json {
+pub(crate) fn installed_game_version(root: &Path) -> Json {
     let settings = sources::text(&root.join("launcher-settings.json"))
         .ok()
         .and_then(|text| serde_json::from_str::<Json>(&text).ok())

@@ -430,6 +430,90 @@ fn uncertain_potentials_and_missing_refs_never_become_permanent_false() {
 }
 
 #[test]
+fn unknown_draw_variables_preserve_original_rules_and_name_the_effective_source() {
+    let f = Fixture::new();
+    owned_gui_fixture(&f);
+    let reference = "@ap_technological_ascendancy_rare_tech";
+    let file = "common/technology/rare.txt";
+    write(
+        &f.source.join("descriptor.mod"),
+        "name=\"Unknown standard source\" dependencies={a b c d e f g h i j}",
+    );
+    let modifier = format!("weight_modifier={{ modifier={{ factor={reference} has_ascension_perk=ap_technological_ascendancy }} }}");
+    write(&f.source.join(file), &format!(
+        "@loop=@again @again=@loop rare={{area=physics tier=1 cost=20 prerequisites={{base}} {modifier} potential={{has_origin=@unknown_origin}} modifier={{ship_speed_mult=@loop}}}}"));
+    let built = f.root.join("candidate");
+    let run = f.run(&[
+        "--mod",
+        f.source.to_str().unwrap(),
+        "--experimental-build",
+        built.to_str().unwrap(),
+    ]);
+    let log = String::from_utf8_lossy(&run.stderr);
+    assert!(
+        run.status.success()
+            && log.contains(reference)
+            && log.contains(file)
+            && log.contains("more notes"),
+        "{log}"
+    );
+    let report: Value =
+        serde_json::from_slice(&fs::read(f.root.join("result.json")).unwrap()).unwrap();
+    let warning = report["warnings"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|w| w["issue"] == "unresolved_technology_variables" && w["id"] == "rare")
+        .unwrap();
+    assert_eq!(warning["source"], "Unknown standard source");
+    assert_eq!(warning["file"], file);
+    assert!(warning["details"].to_string().contains(reference));
+    assert!(warning["details"].to_string().contains("cycle"));
+    assert!(fs::read_to_string(built.join(file))
+        .unwrap()
+        .contains(&modifier));
+    for dir in ["common/scripted_triggers", "common/scripted_effects"] {
+        for entry in fs::read_dir(built.join(dir)).unwrap() {
+            let generated = fs::read_to_string(entry.unwrap().path()).unwrap();
+            assert!(!generated.contains("@unknown_origin") && !generated.contains(reference));
+        }
+    }
+}
+
+#[test]
+fn required_missing_variables_fail_with_the_source_file_and_tech_before_installation() {
+    let f = Fixture::new();
+    owned_gui_fixture(&f);
+    let file = "common/technology/missing.txt";
+    for field in [
+        "cost=@missing",
+        "technology_swap={area=society trigger={has_origin=@missing}}",
+    ] {
+        write(
+            &f.source.join(file),
+            &format!("mystery={{area=physics tier=1 {field}}}"),
+        );
+        let built = f.root.join("candidate");
+        let out = f.run(&[
+            "--mod",
+            f.source.to_str().unwrap(),
+            "--experimental-build",
+            built.to_str().unwrap(),
+        ]);
+        let error = String::from_utf8_lossy(&out.stderr);
+        assert!(
+            !out.status.success()
+                && error.contains("Unknown standard source")
+                && error.contains(file)
+                && error.contains("mystery")
+                && error.contains("@missing"),
+            "{error}"
+        );
+        assert!(!built.exists());
+    }
+}
+
+#[test]
 fn report_variable_tables_only_include_used_transitive_dependencies() {
     let f = Fixture::new();
     let globals = (0..2000)
@@ -1096,11 +1180,15 @@ fn registered_local_mods_without_inner_descriptors_keep_their_metadata() {
         &registration,
         &registered.replace("{\"Loading Screen\"}", "{\"Missing Mod\"}"),
     );
-    let missing_dependency = f.run(&["--documents", f.docs.to_str().unwrap()]);
-    assert!(!missing_dependency.status.success());
-    assert!(String::from_utf8_lossy(&missing_dependency.stderr)
-        .contains("missing source dependency Missing Mod"));
-    assert!(!f.root.join("result.json").exists());
+    let report = f.ok(&["--documents", f.docs.to_str().unwrap()]);
+    assert!(report["warnings"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|w| w["issue"] == "unselected_declared_dependency"
+            && w["source"] == "Legacy Tech"
+            && w["dependency"] == "Missing Mod"));
+    assert_eq!(report["sources"].as_array().unwrap().len(), 3);
 }
 
 #[test]
@@ -1302,6 +1390,127 @@ fn launcher_archives_are_read_only_and_stale_directory_is_not_guessed() {
     assert!(String::from_utf8_lossy(&failure.stderr).contains("conflicting path/archive"));
 }
 #[test]
+fn same_named_folder_and_zip_follow_playset_order_and_identify_the_failing_technology() {
+    let f = Fixture::new();
+    fs::remove_file(f.source.join("descriptor.mod")).unwrap();
+    let shared = "common/technology/shared.txt";
+    write(&f.source.join(shared), "shared={area=physics cost=12}");
+    write(
+        &f.source.join("common/technology/unique.txt"),
+        "folder_only={area=society}",
+    );
+    f.enable("mod/Original.mod", &f.source, 0, false);
+    let files = f.root.join("local fork");
+    write(&files.join(shared), "shared={area=physics cost=45}");
+    let pack = f.root.join("fork.zip");
+    zip_source(&files, &pack);
+    f.enable("mod/My copy.mod", &files, 1, false);
+    write(
+        &f.docs.join("mod/My copy.mod"),
+        &format!(
+            r#"name="Unknown standard source" dependencies={{"Unknown standard source"}} archive={}"#,
+            json!(pack.to_string_lossy().replace('\\', "/"))
+        ),
+    );
+    let db = Connection::open(f.docs.join("launcher-v2.sqlite")).unwrap();
+    db.execute(
+        "update mods set dirPath=null,archivePath=?1 where id='mod1'",
+        [pack.to_str().unwrap()],
+    )
+    .unwrap();
+    drop(db);
+    let args = ["--documents", f.docs.to_str().unwrap()];
+    let report = f.ok(&args);
+    assert_eq!(
+        report["technologies"]["shared"]["cost"].as_f64(),
+        Some(45.0)
+    );
+    assert_eq!(report["technologies"]["folder_only"]["sourceLayer"], 1);
+    assert_eq!(report["technologies"]["shared"]["sourceLayer"], 2);
+    assert_eq!(report["sources"][1]["name"], "Unknown standard source (#1)");
+    assert_eq!(report["sources"][2]["name"], "Unknown standard source (#2)");
+    assert_eq!(
+        report["selection"]["registrations"][1],
+        json!({
+            "name":"Unknown standard source", "kind":"zip","registration":"mod/My copy.mod",
+            "descriptorSource":"registration"
+        })
+    );
+    assert!(!report["warnings"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|w| w["issue"] == "unselected_declared_dependency"));
+    assert_eq!(
+        report["selection"]["warnings"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|w| w
+                .as_str()
+                .unwrap()
+                .contains("because descriptor.mod is missing"))
+            .count(),
+        2
+    );
+
+    for mode in ["--build-wizard", "--web-wizard"] {
+        let mut cmd = Command::new(env!("CARGO_BIN_EXE_tte-core"));
+        let result = cmd
+            .args([mode, "--game"])
+            .arg(&f.game)
+            .args(args)
+            .arg("--output-parent")
+            .arg(f.root.join("preview"))
+            .output()
+            .unwrap();
+        let preview = String::from_utf8_lossy(&result.stderr);
+        assert!(
+            preview.contains("#1 Unknown standard source (folder / 目录) — mod/Original.mod"),
+            "{preview}"
+        );
+        assert!(
+            preview.contains("#2 Unknown standard source (ZIP) — mod/My copy.mod"),
+            "{preview}"
+        );
+        assert_eq!(
+            preview.matches("because descriptor.mod is missing").count(),
+            1,
+            "{preview}"
+        );
+        assert!(
+            preview.contains("2 mod(s)") && preview.contains("Last launched mod list differs"),
+            "{preview}"
+        );
+        assert!(!f.root.join("preview").exists());
+    }
+
+    fs::remove_file(f.root.join("result.json")).unwrap();
+    write(&files.join(shared), "broken_local_tech={area=unknown}");
+    zip_source(&files, &pack);
+    let result = f.run(&args);
+    assert!(!result.status.success());
+    let message = String::from_utf8_lossy(&result.stderr);
+    assert!(message.contains("Unknown standard source (#2) / common/technology/shared.txt / broken_local_tech: unsupported technology area"), "{message}");
+    assert!(!f.root.join("result.json").exists());
+}
+
+#[test]
+fn two_registrations_for_the_same_content_report_both_source_numbers() {
+    let f = Fixture::new();
+    f.enable("mod/First.mod", &f.source, 0, false);
+    f.enable("mod/Second.mod", &f.source, 1, false);
+    let result = f.run(&["--documents", f.docs.to_str().unwrap()]);
+    assert!(!result.status.success());
+    let message = String::from_utf8_lossy(&result.stderr);
+    assert!(
+        message.contains("Source #2 and #1 select the same content"),
+        "{message}"
+    );
+    assert!(!f.root.join("result.json").exists());
+}
+
+#[test]
 fn registered_zip_can_use_outer_descriptor_only_for_game_content_at_its_root() {
     let f = Fixture::new();
     let pack = f.root.join("local.zip");
@@ -1383,26 +1592,43 @@ dependencies={{B}} dependencies={{C}} replace_path="gfx\loadingscreens/" replace
     );
     f.ok(&["--documents", f.docs.to_str().unwrap()]);
     fs::remove_file(f.root.join("result.json")).unwrap();
-    for (descriptor, expected) in [
-        (
-            "dependencies={B} dependencies={Missing}",
-            "missing source dependency Missing",
-        ),
-        ("dependencies={B}", "dependencies mismatch"),
-        (
-            "dependencies={B Missing} replace_path=gfx",
-            "replace_path mismatch",
-        ),
+    write(
+        &reg,
+        &format!("{outer}\ndependencies={{B}} dependencies={{Missing}}"),
+    );
+    for (descriptor, missing) in [
+        ("dependencies={B} dependencies={Missing}", true),
+        ("dependencies={B}", false),
     ] {
-        write(
-            &reg,
-            &format!("{outer}\ndependencies={{B}} dependencies={{Missing}}"),
-        );
         write(&inner, &format!("{name}\n{descriptor}"));
-        let r = f.run(&["--documents", f.docs.to_str().unwrap()]);
-        assert!(!r.status.success() && String::from_utf8_lossy(&r.stderr).contains(expected));
-        assert!(!f.root.join("result.json").exists());
+        let r = f.ok(&["--documents", f.docs.to_str().unwrap()]);
+        assert_eq!(
+            r["warnings"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|w| w["dependency"] == "Missing"),
+            missing
+        );
+        assert_eq!(
+            r["selection"]["warnings"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|w| w.as_str().unwrap().contains("list different dependencies")),
+            !missing
+        );
+        fs::remove_file(f.root.join("result.json")).unwrap();
     }
+    write(
+        &inner,
+        &format!("{name}\ndependencies={{B Missing}} replace_path=gfx"),
+    );
+    let r = f.run(&["--documents", f.docs.to_str().unwrap()]);
+    assert!(
+        !r.status.success() && String::from_utf8_lossy(&r.stderr).contains("replace_path mismatch")
+    );
+    assert!(!f.root.join("result.json").exists());
 }
 
 #[test]
@@ -1640,6 +1866,8 @@ fn wizard_does_not_silently_omit_source_mod_selection() {
 fn automatic_wizard(f: &Fixture, output: &Path) -> std::process::Child {
     use std::process::Stdio;
     Command::new(env!("CARGO_BIN_EXE_tte-core"))
+        .env("HOME", &f.root)
+        .env("USERPROFILE", &f.root)
         .args(["--build-wizard", "--game"])
         .arg(&f.game)
         .arg("--documents")
@@ -1682,6 +1910,8 @@ fn workshop_fixture(f: &Fixture) -> (PathBuf, PathBuf) {
 
 fn workshop_wizard(f: &Fixture, exe: &Path, output: &str) -> std::process::Child {
     Command::new(exe)
+        .env("HOME", &f.root)
+        .env("USERPROFILE", &f.root)
         .arg("--workshop-wizard")
         .arg("--game")
         .arg(&f.game)
@@ -1707,6 +1937,226 @@ fn send_input(child: &mut std::process::Child, input: &[u8]) {
         // written on Unix. Assertions still check its nonzero result/output.
         assert_eq!(e.kind(), std::io::ErrorKind::BrokenPipe);
     }
+}
+
+fn support_report(f: &Fixture, exe: &Path, out: &str) -> Value {
+    let dir = f.root.join(out);
+    let output = Command::new(exe)
+        .arg("--support-report")
+        .arg("--game")
+        .arg(&f.game)
+        .arg("--documents")
+        .arg(&f.docs)
+        .arg("--output-parent")
+        .arg(&dir)
+        .env("HOME", &f.root)
+        .env("USERPROFILE", &f.root)
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    let files = fs::read_dir(dir)
+        .unwrap()
+        .map(|e| e.unwrap().path())
+        .collect::<Vec<_>>();
+    assert_eq!(files.len(), 1);
+    serde_json::from_slice(&fs::read(&files[0]).unwrap()).unwrap()
+}
+
+#[test]
+fn support_report_survives_adapter_failure_and_includes_inactive_mods_without_raw_logs() {
+    let f = Fixture::new();
+    owned_gui_fixture(&f);
+    f.enable("mod/locally installed.mod", &f.source, 0, false);
+    write(
+        &f.source.join("common/technology/third-party.txt"),
+        "broken={area=society tier=@missing}",
+    );
+    f.enable("mod/disabled.mod", &f.source, 1, false);
+    let db = Connection::open(f.docs.join("launcher-v2.sqlite")).unwrap();
+    db.execute("UPDATE playsets_mods SET enabled=0 WHERE position=1", [])
+        .unwrap();
+    db.execute_batch("WITH RECURSIVE n(i) AS (VALUES(1) UNION ALL SELECT i+1 FROM n WHERE i<100)
+        INSERT INTO mods(id,gameRegistryId,status) SELECT 'other'||i,'mod/Unrelated-'||i||'.mod','ready_to_play' FROM n").unwrap();
+    drop(db);
+    let (kit, exe) = workshop_fixture(&f);
+    write(
+        &f.docs.join("dlc_load.json"),
+        r#"{"enabled_mods":["mod/locally installed.mod"]}"#,
+    );
+    write(
+        &f.docs.join("logs/error.log"),
+        "[19:30:00][technology.cpp:42]: Authorization: Bearer PRIVATE-CANARY file: common/technology/third-party.txt line: 8\n",
+    );
+    write(
+        &f.docs.join("settings.txt"),
+        "language=l_english gui_scale=2 graphics={size={x=3840 y=2160}} account=PRIVATE-CANARY",
+    );
+    let db_before = fs::read(f.docs.join("launcher-v2.sqlite")).unwrap();
+    let zip_before = fs::read(kit.join("tte_runtime.zip")).unwrap();
+    let failure = answer_enter(workshop_wizard(&f, &exe, "failed work"));
+    assert_eq!(failure.status.code(), Some(1));
+    let logs: Vec<_> = fs::read_dir(f.root.join("TTE-Research-Planner/Support"))
+        .unwrap()
+        .map(|e| e.unwrap().path())
+        .collect();
+    assert_eq!(logs.len(), 1);
+    assert_eq!(logs[0].extension().unwrap(), "log");
+    let stderr = String::from_utf8_lossy(&failure.stderr);
+    assert!(stderr.contains(logs[0].file_name().unwrap().to_str().unwrap()));
+    assert!(stderr.contains("FAILED") && stderr.contains("@missing"));
+    let auto: Value = serde_json::from_slice(&fs::read(&logs[0]).unwrap()).unwrap();
+    let comment = auto["workshopComment"].as_str().unwrap();
+    assert!(stderr.contains(&format!("---\n{comment}\n---")));
+    assert!(comment.contains("Source: Unknown standard source\nFile: common/technology/third-party.txt\nTech: broken\nError: Unresolved scripted variable: @missing"), "{comment}");
+    for private in [
+        "Unrelated-",
+        "disabled.mod",
+        "own.mod",
+        "PRIVATE-CANARY",
+        "native_core_tests",
+    ] {
+        assert!(!comment.contains(private));
+    }
+    let report = support_report(&f, &exe, "shared diagnostic");
+    let recheck = report["workshopComment"].as_str().unwrap();
+    assert!(
+        recheck.starts_with("TTE diagnostic")
+            && recheck.contains("@missing")
+            && !recheck.contains("disabled.mod")
+    );
+    for field in [
+        "launcher",
+        "registrationFiles",
+        "lastLaunchRegistrations",
+        "lastRecordedFailure",
+        "gameSettings",
+        "gameErrorLog",
+    ] {
+        assert_eq!(auto[field], report[field], "{field}");
+    }
+    assert_eq!(auto["readOnlyCheck"]["status"], "not run");
+    assert!(!auto.to_string().contains("PRIVATE-CANARY"));
+    assert_eq!(
+        report["launcher"]["installed"].as_array().unwrap().len(),
+        103
+    );
+    assert_eq!(
+        report["launcher"]["activePlaysets"][0]["entries"][1]["enabled"],
+        false
+    );
+    assert_eq!(
+        report["lastLaunchRegistrations"][0],
+        "mod/locally installed.mod"
+    );
+    assert_eq!(report["gameSettings"]["guiScale"], 2.0);
+    assert_eq!(
+        report["gameErrorLog"]["engineErrorSites"]["technology.cpp:42"],
+        1
+    );
+    assert_eq!(report["lastRecordedFailure"]["mode"], "adapter");
+    assert_eq!(
+        report["gameErrorLog"]["scriptFiles"],
+        json!(["common/technology/third-party.txt"])
+    );
+    assert_eq!(report["lastRecordedFailure"]["phase"], 3);
+    for err in [
+        &report["lastRecordedFailure"]["message"],
+        &report["readOnlyCheck"]["error"],
+    ] {
+        assert!(err.as_str().unwrap().contains("@missing"), "{err}");
+        assert!(err.as_str().unwrap().contains("third-party.txt"), "{err}");
+    }
+    assert!(!report.to_string().contains("PRIVATE-CANARY"));
+    assert!(!report.to_string().contains("native_core_tests"));
+    assert_eq!(
+        db_before,
+        fs::read(f.docs.join("launcher-v2.sqlite")).unwrap()
+    );
+    assert_eq!(zip_before, fs::read(kit.join("tte_runtime.zip")).unwrap());
+}
+
+#[test]
+fn edited_user_folder_and_original_error_survive_early_adapter_failure() {
+    let f = Fixture::new();
+    let (_, exe) = workshop_fixture(&f);
+    let custom = f.root.join("Edited user data");
+    write(&custom.join("mod/edited.mod"), "name=Edited");
+    write(
+        &custom.join("launcher-v2.sqlite"),
+        "invalid fixture database",
+    );
+    let mut child = workshop_wizard(&f, &exe, "work");
+    send_input(
+        &mut child,
+        format!("e\n\n{}\n\n", custom.display()).as_bytes(),
+    );
+    let failure = child.wait_with_output().unwrap();
+    assert_eq!(failure.status.code(), Some(1));
+    let dir = f.root.join("TTE-Research-Planner/Support");
+    let log = fs::read_dir(&dir).unwrap().next().unwrap().unwrap().path();
+    let data: Value = serde_json::from_slice(&fs::read(log).unwrap()).unwrap();
+    assert_eq!(data["registrationFiles"], json!(["mod/edited.mod"]));
+    assert_eq!(data["lastRecordedFailure"]["phase"], 1);
+    assert!(data["launcher"]["unavailable"].is_string());
+    assert!(data["workshopComment"]
+        .as_str()
+        .unwrap()
+        .contains("Source: undetermined"));
+    // If the support location itself is unavailable, the original error and
+    // exit status must still reach the player.
+    fs::rename(&dir, dir.with_file_name("first report")).unwrap();
+    write(&dir, "fixture path occupied by a file");
+    let mut child = workshop_wizard(&f, &exe, "work");
+    send_input(
+        &mut child,
+        format!("e\n\n{}\n\n", custom.display()).as_bytes(),
+    );
+    let failure = child.wait_with_output().unwrap();
+    assert_eq!(failure.status.code(), Some(1));
+    let stderr = String::from_utf8_lossy(&failure.stderr);
+    assert!(
+        stderr.contains("FAILED")
+            && stderr.contains("Could not save the support log")
+            && stderr.contains("---\nTTE adapter | step 1/4"),
+        "{stderr}"
+    );
+    assert_eq!(
+        fs::read_to_string(dir).unwrap(),
+        "fixture path occupied by a file"
+    );
+}
+
+#[test]
+fn support_report_keeps_registration_and_launch_evidence_if_launcher_database_is_broken() {
+    let f = Fixture::new();
+    f.enable("mod/Legacy folder.mod", &f.source, 0, false);
+    let db = f.docs.join("launcher-v2.sqlite");
+    fs::write(&db, b"not a database").unwrap();
+    write(
+        &f.docs.join("dlc_load.json"),
+        r#"{"enabled_mods":["mod/Legacy folder.mod","/unrelated/private/path"]}"#,
+    );
+    let report = support_report(
+        &f,
+        Path::new(env!("CARGO_BIN_EXE_tte-core")),
+        "partial report",
+    );
+    assert_eq!(
+        report["registrationFiles"],
+        json!(["mod/Legacy folder.mod"])
+    );
+    assert_eq!(
+        report["lastLaunchRegistrations"],
+        report["registrationFiles"]
+    );
+    assert!(report["launcher"]["unavailable"].is_string());
+    assert_eq!(report["readOnlyCheck"]["status"], "failed");
+    assert_eq!(report["readOnlyCheck"]["phase"], "launcher selection");
+    assert_eq!(fs::read(&db).unwrap(), b"not a database");
 }
 
 #[test]
@@ -1909,12 +2359,19 @@ fn automatic_wizard_eof_cancel_and_source_output_leave_no_candidate() {
         send_input(&mut child, input);
         assert!(!child.wait_with_output().unwrap().status.success());
         assert!(!output.exists());
+        assert!(!f.root.join("TTE-Research-Planner/Support").exists());
     }
     let output = f.game.join("must_not_create");
     let mut child = automatic_wizard(&f, &output);
     send_input(&mut child, b"\n");
     assert!(!child.wait_with_output().unwrap().status.success());
     assert!(!output.exists());
+    assert_eq!(
+        fs::read_dir(f.root.join("TTE-Research-Planner/Support"))
+            .unwrap()
+            .count(),
+        1
+    );
     assert_eq!(fs::read_dir(f.docs.join("mod")).unwrap().count(), 0);
 }
 

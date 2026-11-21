@@ -1,5 +1,5 @@
 //! Auto-filled full-build entry, with manual fallback for unknown installations.
-use crate::{script, Args};
+use crate::{script, support::InputFolders, Args};
 use std::{
     env,
     io::{BufRead, Write},
@@ -7,7 +7,7 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
-fn home() -> Option<PathBuf> {
+pub(crate) fn home() -> Option<PathBuf> {
     env::var_os(if cfg!(windows) { "USERPROFILE" } else { "HOME" }).map(PathBuf::from)
 }
 #[cfg(windows)]
@@ -107,7 +107,11 @@ fn unique_game(steamapps: Vec<PathBuf>) -> Option<PathBuf> {
         None
     }
 }
-fn game_guess() -> Option<PathBuf> {
+pub(crate) fn documents_guess() -> Option<PathBuf> {
+    documents().map(|p| p.join("Paradox Interactive/Stellaris"))
+}
+
+pub(crate) fn game_guess() -> Option<PathBuf> {
     let mut steamapps = Vec::new();
     if let Ok(exe) = env::current_exe() {
         for p in exe.ancestors().take(10) {
@@ -205,8 +209,7 @@ fn question(
 pub fn guided(
     input: &mut impl BufRead,
     output: &mut impl Write,
-    guessed_game: Option<&Path>,
-    guessed_docs: Option<&Path>,
+    inputs: &mut InputFolders,
     guessed_output: Option<&Path>,
     stamp: u128,
 ) -> script::Result<Args> {
@@ -215,8 +218,9 @@ pub fn guided(
         input,
         output,
         "Stellaris game folder / 群星游戏目录",
-        guessed_game,
+        inputs.game.as_deref(),
     )?;
+    inputs.game = Some(PathBuf::from(&game));
     if game.is_empty() {
         return Err("Game folder is required".into());
     }
@@ -232,7 +236,7 @@ pub fn guided(
                 input,
                 output,
                 "Stellaris user-data folder / 群星用户目录",
-                guessed_docs,
+                inputs.docs.as_deref(),
             )?;
             if d.is_empty() {
                 return Err("Documents folder is required for playset collection".into());
@@ -242,6 +246,7 @@ pub fn guided(
         "2" => None,
         _ => return Err("Choose 1 or 2 explicitly; no source mods were silently omitted".into()),
     };
+    inputs.docs.clone_from(&docs);
     let parent = PathBuf::from(question(
         input,
         output,
@@ -279,17 +284,65 @@ pub fn guided(
         ..Args::default()
     })
 }
+fn show_playset_sources(
+    output: &mut impl Write,
+    selection: &serde_json::Value,
+    mods: &[crate::sources::ModSource],
+) -> std::io::Result<()> {
+    for (i, (source, entry)) in selection["registrations"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .zip(mods)
+        .enumerate()
+    {
+        let kind = if source["kind"] == "zip" {
+            "ZIP"
+        } else {
+            "folder / 目录"
+        };
+        writeln!(
+            output,
+            "  #{} {} ({kind}) — {} → {}",
+            i + 1,
+            crate::safe(source["name"].as_str().unwrap_or("Unnamed mod")),
+            crate::safe(source["registration"].as_str().unwrap_or_default()),
+            crate::safe(&crate::sources::path_json(&entry.root))
+        )?;
+    }
+    let mut fallback = 0;
+    for warning in selection["warnings"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter_map(|w| w.as_str())
+    {
+        if warning.ends_with(crate::sources::REGISTRATION_FALLBACK_NOTE) {
+            fallback += 1;
+        } else {
+            writeln!(output, "  Note / 提示：{}", crate::safe(warning))?;
+        }
+    }
+    if fallback > 0 {
+        writeln!(
+            output,
+            "  {fallback} mod(s): {} / 已从启动器登记读取信息，可继续。",
+            crate::sources::REGISTRATION_FALLBACK_NOTE
+        )?;
+    }
+    Ok(())
+}
+
 pub fn automatic(
     input: &mut impl BufRead,
     output: &mut impl Write,
-    guessed_game: Option<&Path>,
-    guessed_docs: Option<&Path>,
+    inputs: &mut InputFolders,
     parent: &Path,
     stamp: u128,
     workshop: Option<crate::workshop::Target>,
 ) -> script::Result<Args> {
     writeln!(output,"Tech Tree & Research Planner — Technology Adapter / 科技适配工具\nNo Python required. / 无需安装 Python。") .map_err(|e|e.to_string())?;
-    let game = match guessed_game {
+    let game = match inputs.game.as_deref() {
         Some(path) => path.to_owned(),
         None => PathBuf::from(question(
             input,
@@ -298,10 +351,11 @@ pub fn automatic(
             None,
         )?),
     };
+    inputs.game = Some(game.clone());
     if !game.join("common/technology").is_dir() {
         return Err("Game folder needs common/technology / 群星目录不正确".into());
     }
-    let docs = match guessed_docs {
+    let docs = match inputs.docs.as_deref() {
         Some(path) => path.to_owned(),
         None => PathBuf::from(question(
             input,
@@ -310,6 +364,7 @@ pub fn automatic(
             None,
         )?),
     };
+    inputs.docs = Some(docs.clone());
     if !docs.join("launcher-v2.sqlite").is_file() || !docs.join("mod").is_dir() {
         return Err("Stellaris user-data/mod and launcher database are required. Start the game and launcher once first. / 请先启动一次群星和启动器，生成用户目录与播放集。".into());
     }
@@ -358,22 +413,7 @@ pub fn automatic(
     } else {
         writeln!(output,"Action: build and register a NEW local planner; keep playset selection unchanged.\n操作：生成并登记本地规划器，不自动切换播放集。").map_err(|e|e.to_string())?;
     }
-    for source in &mods {
-        writeln!(
-            output,
-            "  {}",
-            crate::safe(&source.root.display().to_string())
-        )
-        .map_err(|e| e.to_string())?;
-    }
-    for warning in selection["warnings"].as_array().into_iter().flatten() {
-        writeln!(
-            output,
-            "  Note / 提示：{}",
-            crate::safe(&warning.to_string())
-        )
-        .map_err(|e| e.to_string())?;
-    }
+    show_playset_sources(output, &selection, &mods).map_err(|e| e.to_string())?;
     let answer = question(
         input,
         output,
@@ -400,21 +440,14 @@ pub fn automatic(
                 "Working files / 生成记录目录",
                 Some(&parent),
             )?);
-            return automatic(
-                input,
-                output,
-                Some(&game),
-                Some(&docs),
-                &parent,
-                stamp,
-                workshop,
-            );
+            inputs.game = Some(game);
+            inputs.docs = Some(docs);
+            return automatic(input, output, inputs, &parent, stamp, workshop);
         }
         return guided(
             input,
             output,
-            Some(&game),
-            Some(&docs),
+            inputs,
             parent
                 .is_dir()
                 .then_some(parent.as_path())
@@ -443,22 +476,21 @@ pub fn automatic(
     })
 }
 pub fn run(
-    game_override: Option<&Path>,
-    docs_override: Option<&Path>,
+    inputs: &mut InputFolders,
     parent_override: Option<&Path>,
     in_workshop: bool,
 ) -> script::Result<Args> {
+    if inputs.game.is_none() {
+        inputs.game = game_guess();
+    }
+    if inputs.docs.is_none() {
+        inputs.docs = documents_guess().filter(|p| p.join("launcher-v2.sqlite").is_file());
+    }
     let workshop = if in_workshop {
         Some(crate::workshop::Target::from_exe()?)
     } else {
         None
     };
-    let g = game_override.map(Path::to_owned).or_else(game_guess);
-    let d = docs_override.map(Path::to_owned).or_else(|| {
-        documents()
-            .map(|p| p.join("Paradox Interactive/Stellaris"))
-            .filter(|p| p.join("launcher-v2.sqlite").is_file())
-    });
     let o = parent_override
         .map(Path::to_owned)
         .or_else(|| home().map(|p| p.join("TTE-Research-Planner")))
@@ -470,8 +502,7 @@ pub fn run(
     automatic(
         &mut std::io::stdin().lock(),
         &mut std::io::stderr(),
-        g.as_deref(),
-        d.as_deref(),
+        inputs,
         &o,
         stamp,
         workshop,
@@ -545,14 +576,7 @@ pub fn web_automatic(
         mods.len()
     )
     .map_err(|e| e.to_string())?;
-    for source in &mods {
-        writeln!(
-            output,
-            "  {}",
-            crate::safe(&source.root.display().to_string())
-        )
-        .map_err(|e| e.to_string())?;
-    }
+    show_playset_sources(output, &selection, &mods).map_err(|e| e.to_string())?;
     let answer = question(
         input,
         output,
@@ -608,11 +632,9 @@ pub fn web_run(
     open_browser: bool,
 ) -> script::Result<Args> {
     let game = game.map(Path::to_owned).or_else(game_guess);
-    let docs = docs.map(Path::to_owned).or_else(|| {
-        documents()
-            .map(|p| p.join("Paradox Interactive/Stellaris"))
-            .filter(|p| p.join("launcher-v2.sqlite").is_file())
-    });
+    let docs = docs
+        .map(Path::to_owned)
+        .or_else(|| documents_guess().filter(|p| p.join("launcher-v2.sqlite").is_file()));
     let parent = parent
         .map(Path::to_owned)
         .or_else(|| home().map(|p| p.join("TTE-Research-Planner")))
@@ -705,8 +727,10 @@ mod tests {
         let a = guided(
             &mut std::io::Cursor::new(b"'game path'\n2\n\n\n"),
             &mut out,
-            None,
-            Some(&temp),
+            &mut InputFolders {
+                game: None,
+                docs: Some(temp.clone()),
+            },
             Some(&temp),
             4,
         )
@@ -721,8 +745,7 @@ mod tests {
         assert!(guided(
             &mut std::io::Cursor::new(b"game\n\n"),
             &mut out,
-            None,
-            None,
+            &mut InputFolders::default(),
             Some(&temp),
             1
         )
@@ -730,8 +753,7 @@ mod tests {
         let a = guided(
             &mut std::io::Cursor::new(b"game\n1\ndocs\n\nn\n"),
             &mut out,
-            None,
-            None,
+            &mut InputFolders::default(),
             Some(&temp),
             2,
         )
@@ -742,8 +764,7 @@ mod tests {
         let b = guided(
             &mut std::io::Cursor::new(b"game\n2\n\n\n"),
             &mut out,
-            None,
-            None,
+            &mut InputFolders::default(),
             Some(&temp),
             3,
         )

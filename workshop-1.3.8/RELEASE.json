@@ -1,0 +1,22 @@
+{
+  "version": "1.3.8",
+  "item": 3818261596,
+  "sourceTag": "tools-1.3.8",
+  "runtimeSourceCommit": "1d8666a1b9e2554b0c81df40a986f65bd16b8d78",
+  "targets": [
+    "Windows-x86_64",
+    "Linux-x86_64-musl",
+    "macOS-x86_64",
+    "macOS-arm64"
+  ],
+  "browserEntryTargets": [
+    "Windows-x86_64",
+    "Linux-x86_64-musl",
+    "macOS-x86_64",
+    "macOS-arm64"
+  ],
+  "verification": "Adapter entry, automatic local report and short Workshop comment exercised on Windows, Ubuntu under WSL and macOS (Intel via Rosetta). The final Windows package was exercised with a 107-item test playset. The Windows browser executable matches 1.3.7. No in-game session for this tools update.",
+  "toolFiles": 225,
+  "windowsViewerSha256": "118e0fa494f97f206d8d5ed219ae58d49dd8ad68a8886b68d183ef8df0fe1e5a",
+  "windowsViewerSourceTag": "tools-1.3.7"
+}

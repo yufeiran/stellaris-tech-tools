@@ -28,11 +28,20 @@ For multiplayer, all players need the same source combination AND generated
 planner data; sharing an item subscription alone does not make checksums equal.
 
 If detection fails, enter the requested path, or use e to edit detected defaults.
+If the adapter fails, copy the short block between the two --- lines into a
+Workshop comment. It names the source when known. The full log stays in
+your home folder under TTE-Research-Planner/Support.
+For a fresh check, use COLLECT-SUPPORT-REPORT next to this installer (.bat on
+Windows, .command on Mac, or sh COLLECT-SUPPORT-REPORT.sh on Linux).
 On macOS/Linux, if the launcher file is not executable, open Terminal and run
 sh followed by the path to INSTALL-TECH-ADAPTER.sh. The tool does not request
 administrator rights or modify operating-system security settings.
 
 科技适配工具（可选）已附在工坊下载目录里，无需另行下载或安装 Python。
+适配器报错时，复制窗口里两条 --- 之间的几行，贴到工坊评论即可。能定位时会列出
+报错来源。完整日志保存在主目录的 TTE-Research-Planner/Support 下。
+想重新检查播放集，可运行安装器旁的 COLLECT-SUPPORT-REPORT（Windows 双击 .bat，
+Mac 打开 .command，Linux 用 sh 运行 .sh）。
 在启动器选好来源 Mod 后关闭游戏与启动器，打开本条目的工坊目录：
 Windows 双击 INSTALL-TECH-ADAPTER.bat；Mac／Linux 在终端用 sh 运行 .sh。
 核对自动检测到的路径、播放集，按回车开始。完成后仍启用同一个工坊 Mod，排在来源

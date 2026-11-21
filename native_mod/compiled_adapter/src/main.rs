@@ -28,6 +28,7 @@ mod script;
 #[allow(dead_code)]
 mod selection;
 mod sources;
+mod support;
 mod traditional;
 #[allow(dead_code)]
 mod view;
@@ -68,6 +69,7 @@ Usage: tte-core --game PATH [--mod PATH ... | --documents PATH [--playset ID]] -
        tte-core --build-wizard [--game PATH] [--documents PATH] [--output-parent PATH]
        tte-core --workshop-wizard [--game PATH] [--documents PATH] [--output-parent PATH]
        tte-core --web-wizard [--game PATH] [--documents PATH] [--output-parent PATH] [--no-open]
+       tte-core --support-report [--documents PATH] [--game PATH] [--output-parent PATH]
 
 --web-wizard previews the current playset, then Enter opens the local browser
 tree. It never changes the planner ZIP, launcher configuration or saves.
@@ -149,7 +151,11 @@ fn ask_optional(label: &str) -> Result<Option<String>> {
     Ok((!value.is_empty()).then_some(value))
 }
 
-fn parse_args() -> Result<Option<Args>> {
+fn parse_args(inputs: &mut support::InputFolders) -> Result<Option<Args>> {
+    if env::args_os().nth(1).as_deref() == Some(std::ffi::OsStr::new("--support-report")) {
+        support::run(env::args_os().skip(2))?;
+        return Ok(None);
+    }
     let mut args = Args::default();
     let wizard = env::args_os().len() == 1;
     let mut build_wizard = false;
@@ -229,6 +235,8 @@ fn parse_args() -> Result<Option<Args>> {
         }
     }
     if build_wizard || workshop_wizard || web_wizard {
+        inputs.game.clone_from(&args.game);
+        inputs.docs.clone_from(&args.docs);
         if [build_wizard, workshop_wizard, web_wizard]
             .into_iter()
             .filter(|v| *v)
@@ -265,13 +273,7 @@ fn parse_args() -> Result<Option<Args>> {
         if no_open {
             return Err("--no-open requires --web-wizard".into());
         }
-        return wizard::run(
-            args.game.as_deref(),
-            args.docs.as_deref(),
-            wizard_parent.as_deref(),
-            workshop_wizard,
-        )
-        .map(Some);
+        return wizard::run(inputs, wizard_parent.as_deref(), workshop_wizard).map(Some);
     }
     if no_open {
         return Err("--no-open requires --web-wizard".into());
@@ -412,6 +414,7 @@ fn run(args: Args) -> Result<()> {
             .map_err(|e| e.to_string())?;
     }
     eprintln!("[2/4] Collect source overlays / 收录来源与覆盖关系");
+    support::PHASE.store(2, std::sync::atomic::Ordering::Relaxed);
     let mut languages = args.languages;
     if build.is_some() {
         for language in languages::LANGUAGES {
@@ -429,7 +432,31 @@ fn run(args: Args) -> Result<()> {
     }
     let mut sources = sources::Sources::load(&game, &mods, languages, build.is_some() || args.web)?;
     eprintln!("[3/4] Parse technology graph / 解析科技与前置关系");
+    support::PHASE.store(3, std::sync::atomic::Ordering::Relaxed);
     let mut report = catalog::collect(&mut sources)?;
+    let mut dependency_notes = 0;
+    let mut variable_notes = 0;
+    let mut omitted = 0;
+    for warning in &sources.warnings {
+        let (count, message) = match warning["issue"].as_str() {
+            Some("unselected_declared_dependency") => (&mut dependency_notes, format!(
+                "{}: {} is listed in the descriptor but absent from this playset / 播放集未启用此项，继续处理",
+                warning["source"], warning["dependency"])),
+            Some("unresolved_technology_variables") => (&mut variable_notes, format!(
+                "{} / {} / {}: {} (source rules preserved / 保留来源规则)",
+                warning["source"], warning["file"], warning["id"], warning["details"])),
+            _ => continue,
+        };
+        *count += 1;
+        if *count <= 8 {
+            eprintln!("Note / 提示: {}", safe(&message));
+        } else {
+            omitted += 1;
+        }
+    }
+    if omitted > 0 {
+        eprintln!("{omitted} more notes in the JSON report / 更多提示见报告");
+    }
     if build.is_some() || args.web {
         metadata::enrich(&mut sources, &mut report)?;
     }
@@ -444,6 +471,7 @@ fn run(args: Args) -> Result<()> {
         None
     };
     eprintln!("[4/4] Verify unchanged sources / 核对来源未改变");
+    support::PHASE.store(4, std::sync::atomic::Ordering::Relaxed);
     sources.verify()?;
     dbsnapshot::verify(&selection_hashes)?;
     dbsnapshot::verify(&args.selection_guard)?;
@@ -502,10 +530,12 @@ fn run(args: Args) -> Result<()> {
 }
 
 fn main() {
-    match parse_args().and_then(|args| args.map(run).transpose()) {
+    let mut inputs = support::InputFolders::default();
+    match parse_args(&mut inputs).and_then(|args| args.map(run).transpose()) {
         Ok(_) => (),
         Err(e) => {
             eprintln!("FAILED / 失败: {}", safe(&e));
+            support::report_failure(&e, inputs);
             std::process::exit(1);
         }
     }

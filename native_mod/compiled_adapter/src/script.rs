@@ -2,6 +2,25 @@ use std::ops::Range;
 
 pub type Result<T> = std::result::Result<T, String>;
 
+pub fn resolve_variable<'a>(
+    mut value: &'a str,
+    lookup: impl Fn(&str) -> Option<&'a str>,
+) -> Result<&'a str> {
+    let mut seen = std::collections::BTreeSet::new();
+    while value.starts_with('@') {
+        if !seen.insert(value) {
+            return Err(format!("Scripted-variable cycle: {value}"));
+        }
+        if seen.len() > 64 {
+            return Err(format!("Scripted-variable depth limit: {value}"));
+        }
+        value = lookup(value)
+            .ok_or_else(|| format!("Unresolved scripted variable: {value}"))?
+            .trim();
+    }
+    Ok(value)
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub enum Value {
     Atom(String),

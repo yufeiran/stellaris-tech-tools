@@ -19,7 +19,7 @@ import subprocess
 import tarfile
 import zipfile
 from urllib.request import build_opener, ProxyHandler
-from package import machine, linkage
+from package import machine, linkage, SUPPORT_ENTRIES
 
 
 def sha(path):
@@ -256,6 +256,55 @@ def check(archive, output):
                'sameModRerunChangedPrerequisite':True,
                'hostPlatform':__import__('platform').platform(),'hostMachine':__import__('platform').machine(),
                'nativeGameValidation': 'NOT RUN; authored fixture only'}
+    if manifest.get('supportReport'):
+        for name in SUPPORT_ENTRIES:
+            shutil.copyfile(root/name,embedded/name)
+        suffix = 'bat' if os.name=='nt' else ('command' if manifest['target'].startswith('macOS') else 'sh')
+        tool = embedded/('COLLECT-SUPPORT-REPORT.'+suffix)
+        out = output/'support'
+        args = [str(tool),'--documents',str(docs),'--output-parent',str(out)]
+        cmd = (subprocess.list2cmdline(entry)+' "'+subprocess.list2cmdline(args)+'"') if os.name=='nt' else ['/bin/sh',*args]
+        subprocess.run(cmd,env=env,cwd=output,stdin=subprocess.DEVNULL,check=True,timeout=60)
+        reports = list(out.glob('TTE-Support-*.json'))
+        if len(reports)!=1:
+            raise ValueError('Support entry must produce one shareable report')
+        support = json.loads(reports[0].read_bytes())
+        if support['readOnlyCheck']['status']!='passed' or not support['launcher']['activePlaysets']:
+            raise ValueError('Support report missing playset or technology check')
+        receipt['supportEntryVerified'] = True
+    if manifest.get('automaticFailureLog'):
+        auto_dir = isolated_home/'TTE-Research-Planner/Support'
+        if auto_dir.exists() and any(auto_dir.iterdir()):
+            raise ValueError('Successful adapter runs must not create failure logs')
+        invalid = source/'common/technology/support-failure-fixture.txt'
+        with invalid.open('x', encoding='utf-8') as f:
+            f.write('broken_support_test={area=society tier=@missing_support_tier}')
+        current_zip = sha(owned_zip)
+        try:
+            failure = subprocess.run(install_command, cwd=output, env=env, input=b'\n',
+                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=60)
+        finally:
+            invalid.unlink()
+        logs = list(auto_dir.glob('*')) if auto_dir.is_dir() else []
+        if failure.returncode != 1 or len(logs) != 1 or logs[0].suffix != '.log':
+            raise ValueError('Failed installer must leave one support log and keep its exit code')
+        recorded = json.loads(logs[0].read_bytes())
+        if (logs[0].name.encode() not in failure.stderr or
+                '@missing_support_tier' not in recorded['lastRecordedFailure']['message'] or
+                recorded['lastRecordedFailure']['phase'] != 3 or
+                not recorded['launcher']['activePlaysets'] or
+                sha(owned_zip) != current_zip or any(sha(p) != h for p,h in second_protected.items())):
+            raise ValueError('Automatic support log does not match the failing adapter run')
+        receipt['automaticFailureLogVerified'] = True
+        if manifest.get('workshopComment'):
+            comment = recorded.get('workshopComment', '')
+            block = ('---\n'+comment+'\n---').encode()
+            if (block not in failure.stderr.replace(b'\r\n', b'\n') or len(block) > 700 or
+                    'Source: Never listed source\nFile: common/technology/support-failure-fixture.txt' not in comment or
+                    'Tech: broken_support_test\nError: Unresolved scripted variable: @missing_support_tier' not in comment or
+                    'ugc_3818261596' in comment or str(isolated_home) in comment):
+                raise ValueError('Copyable Workshop comment must identify only the failing source')
+            receipt['workshopCommentVerified'] = True
     if manifest.get('webAtlas'):
         receipt.update(embeddedWebEntrySingleEnter=True,webSourceAndLauncherUnchanged=True,
                        webGameDetectedFromWorkshopLayout=True,webUnlistedPrerequisiteChange=True,

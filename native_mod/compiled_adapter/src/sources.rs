@@ -11,6 +11,8 @@ use std::{
 };
 
 pub const OWN_ID: &str = "3818261596";
+pub(crate) const REGISTRATION_FALLBACK_NOTE: &str =
+    "using .mod registration metadata because descriptor.mod is missing";
 const MAX_FILE: u64 = 64 * 1024 * 1024;
 pub fn sha(raw: &[u8]) -> String {
     format!("{:x}", Sha256::digest(raw))
@@ -202,6 +204,7 @@ pub fn selection(
         })
         .map_err(|e| e.to_string())?;
     let mut roots = Vec::new();
+    let mut registrations = Vec::new();
     let mut excluded = Vec::new();
     let mut warnings = Vec::new();
     let mut positions = BTreeSet::new();
@@ -219,7 +222,7 @@ pub fn selection(
         if !rel.starts_with("mod/") || !rel.ends_with(".mod") || rel.split('/').count() != 2 {
             return Err(format!("Invalid launcher registration {rel}"));
         }
-        let entry = canonical(&docs.join(&rel))?;
+        let entry = canonical(&docs.join(&rel)).map_err(|e| format!("{rel}: {e}"))?;
         if entry.parent() != Some(canonical(&docs.join("mod"))?.as_path()) {
             return Err("Launcher registration escapes Documents/mod".into());
         }
@@ -306,6 +309,11 @@ pub fn selection(
             };
             (root, inner)
         };
+        registrations.push(json!({
+            "registration": rel, "name": meta.scalar("name").unwrap_or("Unnamed mod"),
+            "kind": if has_archive { "zip" } else { "directory" },
+            "descriptorSource": if inner.is_some() { "descriptor.mod" } else { "registration" },
+        }));
         let Some(inner) = inner else {
             if meta
                 .scalar("name")
@@ -315,9 +323,7 @@ pub fn selection(
                     "{rel}: missing descriptor.mod and registration name"
                 ));
             }
-            warnings.push(format!(
-                "{rel}: using .mod registration metadata because descriptor.mod is missing"
-            ));
+            warnings.push(format!("{rel}: {REGISTRATION_FALLBACK_NOTE}"));
             roots.push(ModSource {
                 root,
                 descriptor: DescriptorOrigin::RegistrationFile(entry),
@@ -331,8 +337,8 @@ pub fn selection(
         }
         let deps = |record: &Value| dependency_names(record).map_err(|e| format!("{rel}: {e}"));
         if deps(&meta)? != deps(&inner)? {
-            return Err(format!(
-                "{rel}: registration/descriptor dependencies mismatch; refresh source registration"
+            warnings.push(format!(
+                "{rel}: registration and descriptor list different dependencies; using the enabled playset order"
             ));
         }
         let prefixes = |record: &Value| {
@@ -375,7 +381,7 @@ pub fn selection(
     }
     Ok((
         roots,
-        json!({"kind":"launcher-playset","playsetId":id,"playsetName":name,"excluded":excluded,"warnings":warnings}),
+        json!({"kind":"launcher-playset","playsetId":id,"playsetName":name,"registrations":registrations,"excluded":excluded,"warnings":warnings}),
         hashes,
     ))
 }
@@ -481,13 +487,20 @@ impl Sources {
             include_ui,
             mod_sources: mods.to_vec(),
         };
-        let mut names = BTreeSet::new();
+        let mut name_counts = BTreeMap::<String, usize>::new();
+        let mut selected_roots = BTreeMap::new();
         let entries = std::iter::once((game, &DescriptorOrigin::Explicit)).chain(
             mods.iter()
                 .map(|source| (source.root.as_path(), &source.descriptor)),
         );
         for (index, (root, origin)) in entries.enumerate() {
             let root = canonical(root)?;
+            if let Some(previous) = selected_roots.insert(root.clone(), index) {
+                return Err(format!(
+                    "Source #{index} and #{previous} select the same content: {} / 同一目录或压缩包被重复启用",
+                    path_json(&root)
+                ));
+            }
             if index == 0 && !root.is_dir() {
                 return Err("Game source must be a directory".into());
             }
@@ -551,9 +564,7 @@ impl Sources {
             } else {
                 meta.scalar("name").unwrap_or("Unnamed mod").to_owned()
             };
-            if !names.insert(name.clone()) {
-                return Err(format!("Duplicate source name: {name}"));
-            }
+            *name_counts.entry(name.clone()).or_default() += 1;
             for value in meta.all("replace_path") {
                 let prefix = replacement_prefix(value)?;
                 let before = result.files.len();
@@ -609,11 +620,17 @@ impl Sources {
             for (rel, bytes) in inputs {
                 let key = rel.to_lowercase();
                 if !seen.insert(key.clone()) {
-                    return Err(format!("Case-colliding source file: {rel}"));
+                    return Err(format!(
+                        "Source #{index} / {} / {rel}: Case-colliding source file",
+                        result.layers[index].name
+                    ));
                 }
-                let raw = script::normalise(
-                    std::str::from_utf8(&bytes).map_err(|e| format!("{rel}: not UTF-8: {e}"))?,
-                );
+                let raw = script::normalise(std::str::from_utf8(&bytes).map_err(|e| {
+                    format!(
+                        "Source #{index} / {} / {rel}: not UTF-8: {e}",
+                        result.layers[index].name
+                    )
+                })?);
                 let hash = sha(&bytes);
                 if let Some(previous) = result.files.get(&key) {
                     result.collisions.push(
@@ -631,12 +648,18 @@ impl Sources {
                 );
             }
         }
-        for layer in result.layers.iter().skip(1) {
+        for (index, layer) in result.layers.iter_mut().enumerate().skip(1) {
+            if name_counts[&layer.name] > 1 {
+                layer.name = format!("{} (#{index})", layer.name);
+            }
             for name in
                 dependency_names(&layer.metadata).map_err(|e| format!("{}: {e}", layer.name))?
             {
-                if !names.contains(&name) {
-                    return Err(format!("{}: missing source dependency {name}", layer.name));
+                if !name_counts.contains_key(&name) {
+                    result.warnings.push(json!({
+                        "issue": "unselected_declared_dependency", "source": layer.name,
+                        "dependency": name, "handling": "Only selected sources were loaded"
+                    }));
                 }
             }
         }

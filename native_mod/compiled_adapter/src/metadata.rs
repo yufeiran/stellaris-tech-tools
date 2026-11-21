@@ -47,6 +47,9 @@ fn effects(block: &Value, values: &BTreeMap<String, String>, vocab: &Json) -> Ve
             continue;
         }
         let Some(raw) = e.value.atom() else { continue };
+        if raw.starts_with('@') {
+            continue;
+        }
         if matches!(key, "description" | "custom_tooltip") {
             if catalog::identifier(raw) {
                 result.push(format!("${raw}$"));

@@ -3,10 +3,10 @@
 Open-source external tools bundled with **Tech Tree & Research Planner**:
 [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3818261596).
 
-| Workshop 1.3.7 tools | Source |
+| Workshop 1.3.8 tools | Source |
 | --- | --- |
-| Windows, Linux, Intel Mac and Apple Silicon in-game adapter | `tools-1.3.7` tag |
-| Cross-platform local browser tree and searchable PDF export | `tools-1.3.7` tag + optional display restoration below |
+| Windows, Linux, Intel Mac and Apple Silicon in-game adapter | `tools-1.3.8` tag |
+| Local browser tree and searchable PDF export | Windows: `tools-1.3.7`; Linux and macOS: `tools-1.3.8` + optional display restoration below |
 
 The Workshop already includes the programs. Players do not need Python, Rust,
 this repository or a separate download. This repository publishes the external
@@ -32,8 +32,8 @@ MIT applies to our code; third-party notices keep their original licenses.
 
 ## Verify the distributed programs
 
-`workshop-1.3.7/SHA256SUMS` lists the exact executable, launcher and notice files
-included in the frozen Workshop 1.3.7 tools. You can use your own SHA-256 tool, or optionally:
+`workshop-1.3.8/SHA256SUMS` lists the exact executable, launcher and notice files
+included in the frozen Workshop 1.3.8 tools. You can use your own SHA-256 tool, or optionally:
 
 ```text
 python tools/verify_workshop.py PATH_TO_3818261596
@@ -59,9 +59,9 @@ linking. Sources include authored fixtures for unknown IDs, changed parents,
 overrides, localization, five goals, advice, repeatables, safe writes and launchers.
 They do not require a user's game, saves or account. Fixture tests are not game QA.
 
-1.3.7 accepts legacy mod descriptors that retain an author's install path. It also
-preserves the original technology IDs when generating goals for mods that use
-hyphens or periods. See `workshop-1.3.7/RELEASE.json` for the test scope.
+If the adapter stops, copy the short summary from its window into a Workshop
+comment. It includes the source mod, file and technology when available. The full
+report stays on your computer. Run `COLLECT-SUPPORT-REPORT` to collect it manually. See `workshop-1.3.8/RELEASE.json` for the test scope.
 Earlier versions are available in the repository tags.
 
 The default public browser build uses authored field icons and no bundled
@@ -87,7 +87,7 @@ No bit-for-bit build reproducibility is claimed across compilers/platforms.
 
 适配工具读取当前播放集，备份后只替换本规划器的科技脚本包；浏览器入口仅在
 本机回环地址提供只读科技资料，不同步存档进度与游戏内目标。源码、构建说明、
-随包文件的 SHA-256 与只读校验工具均在仓库内。1.3.7 支持带旧路径的模组描述文件，以及 ID 含连字符或点号的科技。
+随包文件的 SHA-256 与只读校验工具均在仓库内。适配器报错时，可将窗口里的摘要贴到工坊评论。摘要会在能定位时列出相关 Mod、文件和科技。完整报告保存在本机。
 浏览器可导出含中英文名称和 ID 文字层的 PDF。默认源码构建使用学科占位图；
 有游戏美术与旧拼音提示数据的原版展示资源可从已订阅的精确版本程序中本地
 恢复，恢复脚本不执行该程序、不扫描硬盘、不接触游戏内存。
